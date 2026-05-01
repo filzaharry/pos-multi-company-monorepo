@@ -1,0 +1,41 @@
+[14:41:37] ACTION: CREATE_TESTIMONIAL | DETAILS: {"data":{"id":7,"name":"tes","role":"tes","content":"tes","avatar":"/public/uploads/testimonials/1775720497-0f8553c6-4a46-4cbf-8629-aa629fc04420.jpg","created_at":"2026-04-09T14:41:37.623851+07:00","updated_at":"2026-04-09T14:41:37.623851+07:00"},"user_id":1}
+[2026-04-09 14:43:42] 127.0.0.1 | 200 |    1.593167ms | GET | /docs
+Req Body: EMPTY
+------------------------------------------------
+[2026-04-09 14:43:42] 127.0.0.1 | 304 |    9.072333ms | GET | /swagger.json
+Req Body: EMPTY
+------------------------------------------------
+[2026-04-09 14:43:43] 127.0.0.1 | 200 |     180.708µs | GET | /favicon.ico
+Req Body: EMPTY
+------------------------------------------------
+[2026-04-09 14:43:57] 127.0.0.1 | 204 |       980.5µs | OPTIONS | /api/v1/auth/login
+Req Body: EMPTY
+------------------------------------------------
+[2026-04-09 14:43:57] 127.0.0.1 | 200 |   91.098541ms | POST | /api/v1/auth/login
+Req Body: {
+  "email": "harryfilza@gmail.com",
+  "password": "filza123"
+}
+------------------------------------------------
+[2026-04-09 14:44:05] 127.0.0.1 | 204 |     512.334µs | OPTIONS | /api/v1/testimonials
+Req Body: EMPTY
+------------------------------------------------
+[2026-04-09 14:44:05] 127.0.0.1 | 200 |    4.472708ms | GET | /api/v1/testimonials
+Req Body: EMPTY
+------------------------------------------------
+[2026-04-09 14:44:09] 127.0.0.1 | 400 |     535.625µs | POST | /api/v1/testimonials
+Req Body: ERROR PARSING MULTIPART
+------------------------------------------------
+[2026-04-09 14:44:12] 127.0.0.1 | 204 |     365.458µs | OPTIONS | /api/v1/testimonials
+Req Body: EMPTY
+------------------------------------------------
+[2026-04-09 14:44:12] 127.0.0.1 | 400 |    2.770167ms | POST | /api/v1/testimonials
+Req Body: {"avatar":"","content":"","name":"asd","role":""}
+------------------------------------------------
+[2026-04-09 14:44:20] 127.0.0.1 | 204 |     307.166µs | OPTIONS | /api/v1/testimonials
+Req Body: EMPTY
+------------------------------------------------
+[14:44:20] ACTION: CREATE_TESTIMONIAL | DETAILS: {"data":{"id":8,"name":"asd","role":"ss","content":"sda","avatar":"/public/uploads/testimonials/1775720660-0ca6fbef-39a5-41a0-9189-1189db320dee.jpeg","created_at":"2026-04-09T14:44:20.621271+07:00","updated_at":"2026-04-09T14:44:20.621271+07:00"},"user_id":1}
+[2026-04-09 14:44:20] 127.0.0.1 | 200 |    6.659917ms | POST | /api/v1/testimonials
+Req Body: {"avatar":"/public/uploads/testimonials/1775720660-0ca6fbef-39a5-41a0-9189-1189db320dee.jpeg","content":"sda","name":"asd","role":"ss"}
+------------------------------------------------

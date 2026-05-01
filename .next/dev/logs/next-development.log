@@ -1,0 +1,56 @@
+[00:29:55.039] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/client/components/builtin/global-not-found'
+Require stack:
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-server.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/start-server.js
+[00:29:55.075] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-server.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/start-server.js
+[00:29:55.108] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-server.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/start-server.js
+[00:29:55.137] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-server.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/start-server.js
+[00:29:55.290] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/client/components/builtin/global-not-found'
+Require stack:
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-server.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/start-server.js
+[00:29:55.446] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-server.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/start-server.js
+[00:29:55.533] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-server.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/start-server.js
+[00:29:55.556] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/router-server.js
+- /Users/redbox-906/Me/Project/Sample/digisupreme/pos-multi-company/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/server/lib/start-server.js
