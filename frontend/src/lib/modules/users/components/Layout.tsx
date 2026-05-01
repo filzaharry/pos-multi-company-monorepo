@@ -33,6 +33,8 @@ export const Layout = () => {
     const [roleId, setRoleId] = useState('');
     const [companyId, setCompanyId] = useState('');
     const [page, setPage] = useState(1);
+    const [sortKey, setSortKey] = useState<string>('name');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     const isSuperAdmin = currentUser?.role?.name === 'Super Admin';
 
@@ -52,7 +54,9 @@ export const Layout = () => {
                 limit: 10,
                 search,
                 role_id: roleId,
-                company_id: companyId
+                company_id: companyId,
+                sort_key: sortKey,
+                sort_order: sortOrder
             });
             if (response.status === 'success' || response.status === 'Success') {
                 setUsers(response.data.result.users);
@@ -63,7 +67,7 @@ export const Layout = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [page, search, roleId, companyId]);
+    }, [page, search, roleId, companyId, sortKey, sortOrder]);
 
     useEffect(() => {
         fetchUsers();
@@ -119,6 +123,15 @@ export const Layout = () => {
                     roleId={roleId} setRoleId={setRoleId}
                     companyId={companyId} setCompanyId={setCompanyId}
                     page={page} setPage={setPage}
+                    sortKey={sortKey} sortOrder={sortOrder}
+                    onSort={(key) => {
+                        if (sortKey === key) {
+                            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                        } else {
+                            setSortKey(key);
+                            setSortOrder('asc');
+                        }
+                    }}
                     onAdd={() => { setSelectedUser(null); setIsModalOpen(true); }}
                     onEdit={(u) => { setSelectedUser(u); setIsModalOpen(true); }}
                     onDelete={(u) => { setUserToDelete(u); setIsDeleteModalOpen(true); }}

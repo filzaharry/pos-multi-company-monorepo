@@ -1,15 +1,18 @@
 import { apiRouter } from '@/lib/api/router';
-import { ApiResponse, User } from '../../login/types';
+import { ApiResponse } from '@/lib/types/api';
+import { User } from '../../login/types';
 import { UserListResponse, Role, Company, UserPayload, RoleListResponse, RolePayload, Permission } from '../types';
 
 export const userService = {
-    getUsers: async (params: { page?: number; limit?: number; search?: string; role_id?: string; company_id?: string }): Promise<ApiResponse<UserListResponse>> => {
+    getUsers: async (params: { page?: number; limit?: number; search?: string; role_id?: string; company_id?: string; sort_key?: string; sort_order?: string }): Promise<ApiResponse<UserListResponse>> => {
         const query = new URLSearchParams();
         if (params.page) query.append('page', params.page.toString());
         if (params.limit) query.append('limit', params.limit.toString());
         if (params.search) query.append('search', params.search);
         if (params.role_id) query.append('role_id', params.role_id);
         if (params.company_id) query.append('company_id', params.company_id);
+        if (params.sort_key) query.append('sort_key', params.sort_key);
+        if (params.sort_order) query.append('sort_order', params.sort_order);
 
         return apiRouter.get<ApiResponse<UserListResponse>>(`/users?${query.toString()}`);
     },
@@ -31,11 +34,13 @@ export const userService = {
         return apiRouter.get<ApiResponse<Role[]>>('/roles/all');
     },
 
-    getRolesPaginated: async (params: { page?: number; limit?: number; search?: string }): Promise<ApiResponse<RoleListResponse>> => {
+    getRolesPaginated: async (params: { page?: number; limit?: number; search?: string; sort_key?: string; sort_order?: string }): Promise<ApiResponse<RoleListResponse>> => {
         const query = new URLSearchParams();
         if (params.page) query.append('page', params.page.toString());
         if (params.limit) query.append('limit', params.limit.toString());
         if (params.search) query.append('search', params.search);
+        if (params.sort_key) query.append('sort_key', params.sort_key);
+        if (params.sort_order) query.append('sort_order', params.sort_order);
 
         return apiRouter.get<ApiResponse<RoleListResponse>>(`/roles?${query.toString()}`);
     },

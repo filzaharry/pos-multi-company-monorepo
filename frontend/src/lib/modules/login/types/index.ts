@@ -1,11 +1,4 @@
-export interface ApiResponse<T> {
-    status_code: number;
-    status: string;
-    data: {
-        message: string;
-        result: T;
-    };
-}
+
 
 export interface User {
     id: number;
@@ -26,6 +19,7 @@ export interface User {
     company?: {
         id: number;
         name: string;
+        email: string;
     };
 }
 

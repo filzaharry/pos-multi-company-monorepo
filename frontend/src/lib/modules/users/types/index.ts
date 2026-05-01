@@ -1,4 +1,5 @@
-import { User, ApiResponse } from '../../login/types';
+import { ApiResponse } from '@/lib/types/api';
+import { User } from '../../login/types';
 
 export interface PaginationData {
     total: number;

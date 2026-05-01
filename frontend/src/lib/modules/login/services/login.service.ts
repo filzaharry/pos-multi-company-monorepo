@@ -1,5 +1,6 @@
 import { apiHandler } from '@/lib/api/handler';
-import { ApiResponse, LoginPayload, LoginResponse, User } from '../types';
+import { ApiResponse } from '@/lib/types/api';
+import { LoginPayload, LoginResponse, User } from '../types';
 
 export const loginService = {
     requestOTP: (payload: LoginPayload) => {

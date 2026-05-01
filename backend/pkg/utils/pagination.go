@@ -14,6 +14,8 @@ type FilterParams struct {
 	Limit     int    `query:"limit"`
 	Search    string `query:"search"`
 	Status    string `query:"status"`
+	SortKey   string `query:"sort_key"`
+	SortOrder string `query:"sort_order"`
 	StartDate string `query:"start_date"`
 	EndDate   string `query:"end_date"`
 }
@@ -48,4 +50,17 @@ func Paginate(query *gorm.DB, page, limit int, data interface{}) (Pagination, er
 		Limit:    limit,
 		LastPage: lastPage,
 	}, err
+}
+
+func ManualPaginate(page, limit int, total int64) Pagination {
+	lastPage := int(math.Ceil(float64(total) / float64(limit)))
+	if lastPage == 0 {
+		lastPage = 1
+	}
+	return Pagination{
+		Total:    total,
+		Page:     page,
+		Limit:    limit,
+		LastPage: lastPage,
+	}
 }

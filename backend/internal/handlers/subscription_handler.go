@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"pos-backend/internal/models"
+	"pos-backend/internal/repository"
+	"pos-backend/internal/service"
 	"pos-backend/pkg/database"
 	"pos-backend/pkg/utils"
 	"strconv"
@@ -9,76 +11,84 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-
-func CreateSubscription(c *fiber.Ctx) error {
-	var company models.Company
-	if err := c.BodyParser(&company); err != nil {
-		return utils.ErrorResponse(c, 400, "Invalid input")
-	}
-
-	if err := database.DB.Create(&company).Error; err != nil {
-		return utils.ErrorResponse(c, 500, "Failed to create subscription")
-	}
-
-	return utils.SuccessResponse(c, "Subscription created", company)
+func subService() service.SubscriptionService {
+	repo := repository.NewSubscriptionRepository(database.DB)
+	return service.NewSubscriptionService(repo)
 }
 
-func UpdateSubscription(c *fiber.Ctx) error {
-	id := c.Params("id")
-	var company models.Company
-	if err := database.DB.First(&company, id).Error; err != nil {
-		return utils.ErrorResponse(c, 404, "Subscription not found")
+func GetSubscriptions(c *fiber.Ctx) error {
+	params := new(utils.FilterParams)
+	if err := c.QueryParser(params); err != nil {
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid query parameters")
 	}
 
-	if err := c.BodyParser(&company); err != nil {
-		return utils.ErrorResponse(c, 400, "Invalid input")
+	subscriptions, pagination, err := subService().GetAll(params)
+	if err != nil {
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to fetch subscriptions")
 	}
 
-	database.DB.Save(&company)
-	return utils.SuccessResponse(c, "Subscription updated", company)
-}
-
-func DeleteSubscription(c *fiber.Ctx) error {
-	id := c.Params("id")
-	if err := database.DB.Delete(&models.Company{}, id).Error; err != nil {
-		return utils.ErrorResponse(c, 500, "Failed to delete subscription")
-	}
-	return utils.SuccessResponse(c, "Subscription deleted", nil)
+	return utils.SuccessResponse(c, "Subscriptions fetched successfully", fiber.Map{
+		"subscriptions": subscriptions,
+		"pagination":    pagination,
+	})
 }
 
 func GetSubscriptionStats(c *fiber.Ctx) error {
-	var total int64
-	var active int64
-	var inactive int64
-	var pending int64
-
-	database.DB.Model(&models.Company{}).Count(&total)
-	database.DB.Model(&models.Company{}).Where("subscription_status = ?", "active").Count(&active)
-	database.DB.Model(&models.Company{}).Where("subscription_status = ?", "inactive").Count(&inactive)
-	database.DB.Model(&models.Company{}).Where("subscription_status = ?", "pending").Count(&pending)
-
-	return utils.SuccessResponse(c, "Stats fetched", fiber.Map{
-		"total":    total,
-		"active":   active,
-		"inactive": inactive,
-		"pending":  pending,
-	})
-}
-func GetSubscriptions(c *fiber.Ctx) error {
-	var companies []models.Company
-	if err := database.DB.Find(&companies).Error; err != nil {
-		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to fetch subscriptions")
+	stats, err := subService().GetStats()
+	if err != nil {
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to fetch stats")
 	}
-	return utils.SuccessResponse(c, "Subscriptions fetched successfully", companies)
+	return utils.SuccessResponse(c, "Stats fetched", stats)
 }
 
 func GetDetailSubscription(c *fiber.Ctx) error {
-	id := c.Params("id")
-	var company models.Company
-	if err := database.DB.First(&company, id).Error; err != nil {
+	idStr := c.Params("id")
+	id, _ := strconv.ParseUint(idStr, 10, 32)
+	
+	sub, err := subService().GetByID(uint(id))
+	if err != nil {
 		return utils.ErrorResponse(c, fiber.StatusNotFound, "Subscription not found")
 	}
-	return utils.SuccessResponse(c, "Subscription fetched successfully", company)
+	return utils.SuccessResponse(c, "Subscription fetched successfully", sub)
+}
+
+func CreateSubscription(c *fiber.Ctx) error {
+	var sub models.CompanySubscription
+	if err := c.BodyParser(&sub); err != nil {
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
+	}
+
+	if err := subService().Create(&sub); err != nil {
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to create subscription")
+	}
+
+	return utils.SuccessResponse(c, "Subscription created", sub)
+}
+
+func UpdateSubscription(c *fiber.Ctx) error {
+	idStr := c.Params("id")
+	id, _ := strconv.ParseUint(idStr, 10, 32)
+
+	var sub models.CompanySubscription
+	if err := c.BodyParser(&sub); err != nil {
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
+	}
+
+	if err := subService().Update(uint(id), &sub); err != nil {
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to update subscription")
+	}
+
+	return utils.SuccessResponse(c, "Subscription updated", nil)
+}
+
+func DeleteSubscription(c *fiber.Ctx) error {
+	idStr := c.Params("id")
+	id, _ := strconv.ParseUint(idStr, 10, 32)
+
+	if err := subService().Delete(uint(id)); err != nil {
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to delete subscription")
+	}
+	return utils.SuccessResponse(c, "Subscription deleted", nil)
 }
 
 func ApproveSubscription(c *fiber.Ctx) error {
@@ -94,3 +104,5 @@ func ApproveSubscription(c *fiber.Ctx) error {
 
 	return utils.SuccessResponse(c, "Subscription approved, company and user created", nil)
 }
+
+

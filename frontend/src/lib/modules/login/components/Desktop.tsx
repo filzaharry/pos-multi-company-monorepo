@@ -55,9 +55,8 @@ export const Desktop: React.FC<DesktopProps> = ({ isLoading, error, requestOTP }
                             name="email"
                             type="email"
                             placeholder="admin@pos-service.com"
-                            className={`flex w-full rounded-xl text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border ${
-                                formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-white/10'
-                            } bg-white/5 focus:border-primary h-14 pl-12 pr-4 text-base transition-all`}
+                            className={`flex w-full rounded-xl text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-white/10'
+                                } bg-white/5 focus:border-primary h-14 pl-12 pr-4 text-base transition-all`}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.email}
@@ -71,7 +70,7 @@ export const Desktop: React.FC<DesktopProps> = ({ isLoading, error, requestOTP }
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
                         <label className="text-white text-sm font-medium">Password</label>
-                        <Link href="/login/forgot-password" size="sm" className="text-slate-400 hover:text-primary text-xs transition-colors">
+                        <Link href="/login/forgot-password" className="text-slate-400 hover:text-primary text-xs transition-colors">
                             Forgot password?
                         </Link>
                     </div>
@@ -81,9 +80,8 @@ export const Desktop: React.FC<DesktopProps> = ({ isLoading, error, requestOTP }
                             name="password"
                             type={showPassword ? 'text' : 'password'}
                             placeholder="••••••••"
-                            className={`flex w-full rounded-xl text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border ${
-                                formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-white/10'
-                            } bg-white/5 focus:border-primary h-14 pl-12 pr-12 text-base transition-all`}
+                            className={`flex w-full rounded-xl text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-white/10'
+                                } bg-white/5 focus:border-primary h-14 pl-12 pr-12 text-base transition-all`}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
@@ -129,15 +127,6 @@ export const Desktop: React.FC<DesktopProps> = ({ isLoading, error, requestOTP }
                     <span>{isLoading ? 'Signing In...' : 'Sign In'}</span>
                     {!isLoading && <ArrowRight className="w-5 h-5 ml-2" />}
                 </button>
-
-                <div className="flex justify-center pt-6 border-t border-white/5">
-                    <p className="text-slate-400 text-sm">
-                        Don&apos;t have an account?{' '}
-                        <Link href="/checkout" className="text-primary font-bold hover:underline">
-                            Get Started
-                        </Link>
-                    </p>
-                </div>
             </form>
         </AuthLayout>
     );

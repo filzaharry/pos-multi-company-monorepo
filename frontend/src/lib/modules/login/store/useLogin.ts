@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { apiRouter } from '@/lib/api/router';
 import { setCookie, deleteCookie, getCookie } from '@/lib/utils';
-import { LoginState, ApiResponse, LoginPayload, LoginResponse, User } from '../types';
+import { ApiResponse } from '@/lib/types/api';
+import { LoginState, LoginPayload, LoginResponse, User } from '../types';
 
 export const useLogin = create<LoginState>((set) => ({
     user: null,

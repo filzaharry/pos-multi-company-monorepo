@@ -55,9 +55,8 @@ export const Mobile: React.FC<MobileProps> = ({ isLoading, error, requestOTP }) 
                             name="email"
                             type="email"
                             placeholder="Email address"
-                            className={`flex w-full rounded-xl text-white border ${
-                                formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-white/10'
-                            } bg-white/5 h-14 pl-12 pr-4 transition-all`}
+                            className={`flex w-full rounded-xl text-white border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-white/10'
+                                } bg-white/5 h-14 pl-12 pr-4 transition-all`}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.email}
@@ -76,9 +75,8 @@ export const Mobile: React.FC<MobileProps> = ({ isLoading, error, requestOTP }) 
                             name="password"
                             type={showPassword ? 'text' : 'password'}
                             placeholder="Password"
-                            className={`flex w-full rounded-xl text-white border ${
-                                formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-white/10'
-                            } bg-white/5 h-14 pl-12 pr-12 transition-all`}
+                            className={`flex w-full rounded-xl text-white border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-white/10'
+                                } bg-white/5 h-14 pl-12 pr-12 transition-all`}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
@@ -109,15 +107,6 @@ export const Mobile: React.FC<MobileProps> = ({ isLoading, error, requestOTP }) 
                 >
                     <span>{isLoading ? 'Signing In...' : 'Sign In'}</span>
                 </button>
-
-                <div className="flex justify-center pt-4">
-                    <p className="text-slate-400 text-sm">
-                        Don&apos;t have an account?{' '}
-                        <Link href="/checkout" className="text-primary font-bold">
-                            Register
-                        </Link>
-                    </p>
-                </div>
             </form>
         </AuthLayout>
     );
