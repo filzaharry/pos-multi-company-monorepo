@@ -16,13 +16,17 @@ interface CanProps {
 export const Can = ({ permission, children, fallback = null }: CanProps) => {
     const { user } = useLogin();
 
-    if (!user || !user.role || !user.role.permissions) {
+    if (!user || !user.role) {
         return <>{fallback}</>;
     }
 
     // Super Admin always has access
     if (user.role.name === 'Super Admin') {
         return <>{children}</>;
+    }
+
+    if (!user.role.permissions) {
+        return <>{fallback}</>;
     }
 
     const userPermissions = user.role.permissions.map(p => p.slug);

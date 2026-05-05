@@ -4,12 +4,13 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:808
 
 export async function POST(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     const token = request.cookies.get('accessToken')?.value;
 
     try {
-        const response = await fetch(`${BACKEND_URL}/subscriptions/${params.id}/approve`, {
+        const response = await fetch(`${BACKEND_URL}/subscriptions/${id}/approve`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,

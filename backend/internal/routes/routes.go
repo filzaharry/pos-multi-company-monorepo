@@ -25,6 +25,8 @@ func SetupRoutes(app *fiber.App) {
 
 	// Landing routes (Public)
 	landing := api.Group("/landing")
+	landing.Get("/header", handlers.GetLandingHeader)
+	landing.Put("/header", middleware.AuthRequired, handlers.UpdateLandingHeader)
 	landing.Get("/testimonials", handlers.GetAllTestimonials)
 	landing.Get("/faq", handlers.GetAllFAQ)
 	landing.Get("/news", handlers.GetAllNews)

@@ -57,7 +57,14 @@ export interface TNC {
     content: string;
 }
 
+export interface Header {
+    title: string;
+    subtitle: string;
+    image: string;
+}
+
 export interface LandingState {
+    header: Header | null;
     testimonials: Testimonial[];
     packages: Package[];
     faqs: FAQ[];

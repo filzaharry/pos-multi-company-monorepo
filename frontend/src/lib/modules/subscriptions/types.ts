@@ -52,4 +52,5 @@ export interface SubscriptionPayload {
     package_id: number;
     payment_method: number;
     payment_receipt?: string;
+    payment_status?: number;
 }

@@ -6,6 +6,7 @@ import {
     Clock,
     CreditCard,
     Filter,
+    Plus,
     Search,
     TrendingUp,
     Users,
@@ -15,6 +16,7 @@ import React from 'react';
 import { getSubscriptionColumns } from '../constants/columns';
 import { CompanySubscription, SubscriptionStats } from '../types';
 import { StatCard } from './widgets/StatCard';
+import { cn } from '@/lib/utils';
 
 interface DesktopProps {
     subscriptions: CompanySubscription[];
@@ -25,6 +27,10 @@ interface DesktopProps {
     setSearch: (val: string) => void;
     status: string;
     setStatus: (val: string) => void;
+    startDate: string;
+    setStartDate: (val: string) => void;
+    endDate: string;
+    setEndDate: (val: string) => void;
     page: number;
     setPage: (val: number) => void;
     sortKey: string;
@@ -34,6 +40,7 @@ interface DesktopProps {
     onEdit: (sub: CompanySubscription) => void;
     onDelete: (sub: CompanySubscription) => void;
     onApprove: (sub: CompanySubscription) => void;
+    onOpenFilter: () => void;
 }
 
 export const Desktop: React.FC<DesktopProps> = ({
@@ -45,6 +52,10 @@ export const Desktop: React.FC<DesktopProps> = ({
     setSearch,
     status,
     setStatus,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
     page,
     setPage,
     sortKey,
@@ -53,88 +64,59 @@ export const Desktop: React.FC<DesktopProps> = ({
     onAdd,
     onEdit,
     onDelete,
-    onApprove
+    onApprove,
+    onOpenFilter
 }) => {
     const columns = getSubscriptionColumns({ onEdit, onDelete, onApprove });
 
-
+    const activeFiltersCount = [status, startDate, endDate].filter(Boolean).length;
 
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-2xl font-bold text-white tracking-tight">Subscription Management</h1>
-                    <p className="text-gray-400 text-sm">Monitor company billing and license life-cycles.</p>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-3xl font-black text-white tracking-tight uppercase italic">Subscription <span className="text-primary">Console</span></h1>
+                    <p className="text-gray-500 text-sm font-medium tracking-wide">Monitor company billing and license life-cycles.</p>
                 </div>
-            </div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard
-                    title="Total Revenue"
-                    value={stats?.total_revenue || 0}
-                    icon={TrendingUp}
-                    color="bg-emerald-500"
-                    trend="+12% VS LAST MONTH"
-                />
-                <StatCard
-                    title="Active Licenses"
-                    value={stats?.active_subscriptions || 0}
-                    icon={Users}
-                    color="bg-blue-500"
-                />
-                <StatCard
-                    title="Pending Approvals"
-                    value={stats?.pending_approvals || 0}
-                    icon={Clock}
-                    color="bg-orange-500"
-                />
-                <StatCard
-                    title="Total Orders"
-                    value={stats?.total_subscriptions || 0}
-                    icon={CreditCard}
-                    color="bg-purple-500"
-                />
-            </div>
-
-            {/* Filters */}
-            <div className="p-6 bg-background-dark/50 border border-white/5 rounded-3xl backdrop-blur-sm">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                <div className="flex items-center gap-3 self-end">
+                    <div className="relative group w-64 lg:w-80">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-primary transition-colors" />
                         <input
                             type="text"
-                            placeholder="Search by company or email..."
+                            placeholder="Search subscriptions..."
                             value={search}
                             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
                             className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-gray-600 shadow-inner"
                         />
                     </div>
 
-                    <div className="relative">
-                        <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                        <select
-                            value={status}
-                            onChange={(e) => { setStatus(e.target.value); setPage(1); }}
-                            className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all appearance-none cursor-pointer shadow-inner"
-                        >
-                            <option value="" className="bg-background-dark">All Status</option>
-                            <option value="0" className="bg-background-dark">Pending</option>
-                            <option value="1" className="bg-background-dark">Active</option>
-                            <option value="2" className="bg-background-dark">Failed</option>
-                        </select>
-                    </div>
+                    <button
+                        onClick={onOpenFilter}
+                        className={cn(
+                            "flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all border",
+                            activeFiltersCount > 0
+                                ? "bg-primary/10 border-primary text-primary shadow-lg shadow-primary/10"
+                                : "bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20"
+                        )}
+                    >
+                        <Filter className="w-4 h-4" />
+                        <span>Filter</span>
+                        {activeFiltersCount > 0 && (
+                            <span className="flex items-center justify-center w-5 h-5 bg-primary text-white text-[10px] rounded-full">
+                                {activeFiltersCount}
+                            </span>
+                        )}
+                    </button>
 
-                    {(search || status) && (
-                        <button
-                            onClick={() => { setSearch(''); setStatus(''); setPage(1); }}
-                            className="flex items-center justify-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors font-black uppercase tracking-widest"
-                        >
-                            <X className="w-4 h-4" />
-                            <span>Clear Filters</span>
-                        </button>
-                    )}
+                    <button
+                        onClick={onAdd}
+                        className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-sm transition-all shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                        <Plus className="w-5 h-5" />
+                        <span>New License</span>
+                    </button>
                 </div>
             </div>
 

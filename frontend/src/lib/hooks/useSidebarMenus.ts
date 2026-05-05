@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { apiRouter } from '@/lib/api/router';
 import { useLogin } from '../modules/login/store/useLogin';
-import { ApiResponse } from '../modules/login/types';
+import { ApiResponse } from '../types/api';
 
 export interface MenuItem {
     id: number;
@@ -10,6 +10,7 @@ export interface MenuItem {
     path: string;
     icon: string;
     type: string;
+    parent_id?: number | null;
     children?: MenuItem[];
 }
 

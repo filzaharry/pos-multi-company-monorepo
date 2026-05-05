@@ -3,14 +3,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { userService } from '@/lib/modules/users/services/user.service';
 import { User } from '@/lib/modules/login/types';
-import { PaginationData, UserPayload } from '@/lib/modules/users/types';
+import { Company, PaginationData, Role, UserPayload } from '@/lib/modules/users/types';
 import { useLogin } from '@/lib/modules/login/store/useLogin';
-import { UserModal } from '@/app/dashboard/users/UserModal';
+import { UserModal } from '@/lib/modules/users/components/widget/UserModal';
 import { useToast } from '@/components/ui/Toast';
 import { Desktop } from './Desktop';
 import { Mobile } from './Mobile';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Building2, Calendar, Shield } from 'lucide-react';
+import { FilterModal } from '@/components/ui/modal';
 
 export const Layout = () => {
     const { user: currentUser } = useLogin();
@@ -21,9 +22,12 @@ export const Layout = () => {
     const [pagination, setPagination] = useState<PaginationData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isMobile, setIsMobile] = useState(false);
+    const [roles, setRoles] = useState<Role[]>([]);
+    const [companies, setCompanies] = useState<Company[]>([]);
 
     // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
@@ -32,6 +36,8 @@ export const Layout = () => {
     const [search, setSearch] = useState('');
     const [roleId, setRoleId] = useState('');
     const [companyId, setCompanyId] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const [page, setPage] = useState(1);
     const [sortKey, setSortKey] = useState<string>('name');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -46,6 +52,23 @@ export const Layout = () => {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    const fetchInitialData = useCallback(async () => {
+        try {
+            const [rolesRes, companiesRes] = await Promise.all([
+                userService.getRoles(),
+                userService.getCompanies()
+            ]);
+            if (rolesRes.status === 'success' || rolesRes.status === 'Success') setRoles(rolesRes.data.result);
+            if (companiesRes.status === 'success' || companiesRes.status === 'Success') setCompanies(companiesRes.data.result);
+        } catch (error) {
+            console.error('Failed to fetch initial data:', error);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchInitialData();
+    }, [fetchInitialData]);
+
     const fetchUsers = useCallback(async () => {
         setIsLoading(true);
         try {
@@ -55,6 +78,8 @@ export const Layout = () => {
                 search,
                 role_id: roleId,
                 company_id: companyId,
+                start_date: startDate,
+                end_date: endDate,
                 sort_key: sortKey,
                 sort_order: sortOrder
             });
@@ -67,7 +92,7 @@ export const Layout = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [page, search, roleId, companyId, sortKey, sortOrder]);
+    }, [page, search, roleId, companyId, startDate, endDate, sortKey, sortOrder]);
 
     useEffect(() => {
         fetchUsers();
@@ -106,7 +131,7 @@ export const Layout = () => {
             {isMobile ? (
                 <Mobile
                     users={users} isLoading={isLoading} pagination={pagination}
-                    roles={[]} companies={[]} isSuperAdmin={isSuperAdmin}
+                    roles={roles} companies={companies} isSuperAdmin={isSuperAdmin}
                     search={search} setSearch={setSearch}
                     roleId={roleId} setRoleId={setRoleId}
                     companyId={companyId} setCompanyId={setCompanyId}
@@ -118,10 +143,12 @@ export const Layout = () => {
             ) : (
                 <Desktop
                     users={users} isLoading={isLoading} pagination={pagination}
-                    roles={[]} companies={[]} isSuperAdmin={isSuperAdmin}
+                    roles={roles} companies={companies} isSuperAdmin={isSuperAdmin}
                     search={search} setSearch={setSearch}
                     roleId={roleId} setRoleId={setRoleId}
                     companyId={companyId} setCompanyId={setCompanyId}
+                    startDate={startDate} setStartDate={setStartDate}
+                    endDate={endDate} setEndDate={setEndDate}
                     page={page} setPage={setPage}
                     sortKey={sortKey} sortOrder={sortOrder}
                     onSort={(key) => {
@@ -135,6 +162,7 @@ export const Layout = () => {
                     onAdd={() => { setSelectedUser(null); setIsModalOpen(true); }}
                     onEdit={(u) => { setSelectedUser(u); setIsModalOpen(true); }}
                     onDelete={(u) => { setUserToDelete(u); setIsDeleteModalOpen(true); }}
+                    onOpenFilter={() => setIsFilterModalOpen(true)}
                 />
             )}
 
@@ -143,10 +171,93 @@ export const Layout = () => {
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={handleFormSubmit}
                 user={selectedUser}
-                roles={[]}
-                companies={[]}
+                roles={roles}
+                companies={companies}
                 isSuperAdmin={isSuperAdmin}
             />
+
+            <FilterModal
+                isOpen={isFilterModalOpen}
+                onClose={() => setIsFilterModalOpen(false)}
+                onReset={() => {
+                    setRoleId('');
+                    setCompanyId('');
+                    setStartDate('');
+                    setEndDate('');
+                    setPage(1);
+                }}
+                onApply={() => {
+                    setPage(1);
+                    fetchUsers();
+                }}
+            >
+                <div className="grid grid-cols-1 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-primary uppercase tracking-widest">Role</label>
+                            <div className="relative">
+                                <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                <select
+                                    value={roleId}
+                                    onChange={(e) => setRoleId(e.target.value)}
+                                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
+                                >
+                                    <option value="" className="bg-background-dark text-gray-400">All Roles</option>
+                                    {roles.map(role => (
+                                        <option key={role.id} value={role.id.toString()} className="bg-background-dark text-white">{role.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        {isSuperAdmin && (
+                            <div className="space-y-2">
+                                <label className="text-xs font-black text-primary uppercase tracking-widest">Company</label>
+                                <div className="relative">
+                                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                    <select
+                                        value={companyId}
+                                        onChange={(e) => setCompanyId(e.target.value)}
+                                        className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
+                                    >
+                                        <option value="" className="bg-background-dark text-gray-400">All Companies</option>
+                                        {companies.map(company => (
+                                            <option key={company.id} value={company.id.toString()} className="bg-background-dark text-white">{company.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-primary uppercase tracking-widest">Joined After</label>
+                            <div className="relative">
+                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                <input
+                                    type="date"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-primary uppercase tracking-widest">Joined Before</label>
+                            <div className="relative">
+                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                <input
+                                    type="date"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </FilterModal>
 
             <AnimatePresence>
                 {isDeleteModalOpen && (

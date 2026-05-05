@@ -56,6 +56,10 @@ export const useLogin = create<LoginState>((set) => ({
         set({ user: null, activeCompanyId: null });
         deleteCookie('accessToken');
         deleteCookie('refreshToken');
+        if (typeof window !== 'undefined') {
+            localStorage.clear();
+            sessionStorage.clear();
+        }
     },
 
     getMe: async () => {

@@ -52,12 +52,12 @@ export const getSubscriptionColumns = ({ onEdit, onDelete, onApprove }: Subscrip
                 <span className={cn(
                     "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border flex items-center gap-1.5 w-fit",
                     status === 1 ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
-                    status === 2 ? "bg-red-500/10 text-red-400 border-red-500/20" :
-                    "bg-orange-500/10 text-orange-400 border-orange-500/20"
+                        status === 2 ? "bg-red-500/10 text-red-400 border-red-500/20" :
+                            "bg-orange-500/10 text-orange-400 border-orange-500/20"
                 )}>
-                    {status === 1 ? <CheckCircle className="w-3 h-3" /> : 
-                     status === 2 ? <AlertCircle className="w-3 h-3" /> : 
-                     <Clock className="w-3 h-3" />}
+                    {status === 1 ? <CheckCircle className="w-3 h-3" /> :
+                        status === 2 ? <AlertCircle className="w-3 h-3" /> :
+                            <Clock className="w-3 h-3" />}
                     {status === 1 ? 'Active' : status === 2 ? 'Failed' : 'Pending'}
                 </span>
             );
@@ -76,31 +76,26 @@ export const getSubscriptionColumns = ({ onEdit, onDelete, onApprove }: Subscrip
     {
         header: 'Actions',
         align: 'right',
-        cell: (sub) => (
-            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                {sub.payment_status === 0 && (
+        cell: (u) => (
+            <div className="flex items-center justify-end gap-1 opacity-100 transition-opacity">
+                <Can permission="user.edit">
                     <button
-                        onClick={() => onApprove(sub)}
-                        className="p-2 text-emerald-500 hover:bg-emerald-500/10 rounded-lg transition-all"
-                        title="Approve Subscription"
+                        onClick={() => onEdit(u)}
+                        className="p-2 text-white bg-white/5 rounded-lg transition-all"
+                        title="Edit User"
                     >
-                        <CheckCircle className="w-4 h-4" />
+                        <Edit2 className="w-4 h-4" />
                     </button>
-                )}
-                <button
-                    onClick={() => onEdit(sub)}
-                    className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                    title="Edit Details"
-                >
-                    <Edit2 className="w-4 h-4" />
-                </button>
-                <button
-                    onClick={() => onDelete(sub)}
-                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
-                    title="Delete"
-                >
-                    <Trash2 className="w-4 h-4" />
-                </button>
+                </Can>
+                <Can permission="user.delete">
+                    <button
+                        onClick={() => onDelete(u)}
+                        className="p-2 text-red-500 bg-red-500/10 rounded-lg transition-all"
+                        title="Delete User"
+                    >
+                        <Trash2 className="w-4 h-4" />
+                    </button>
+                </Can>
             </div>
         )
     }

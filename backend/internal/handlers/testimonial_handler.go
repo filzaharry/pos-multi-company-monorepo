@@ -49,11 +49,16 @@ func CreateTestimonial(c *fiber.Ctx) error {
 		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Validation failed", validationErrors)
 	}
 
+	status := req.Status
+	if status == "" {
+		status = "approved"
+	}
+
 	testimonial := &models.Testimonial{
 		Name:    req.Name,
 		Content: req.Content,
 		Avatar:  req.Avatar,
-		Status:  req.Status,
+		Status:  status,
 		Rating:  req.Rating,
 	}
 

@@ -51,7 +51,7 @@ export default function CheckoutSuccessPage() {
                             transition={{ delay: 0.1 }}
                             className="text-white/60 text-lg md:text-xl font-normal leading-relaxed pb-8 pt-1 px-4 max-w-2xl mx-auto"
                         >
-                            We've sent a confirmation email to your inbox. Your account is being prepared and your premium features are now unlocked.
+                            {"We've sent a confirmation email to your inbox. Your account is being prepared and your premium features are now unlocked."}
                         </motion.p>
                     </div>
 

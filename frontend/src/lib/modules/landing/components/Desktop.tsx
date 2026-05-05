@@ -8,9 +8,10 @@ import { TestimonialCard } from "@/components/ui/landing/TestimonialCard";
 import { ContactForm } from "@/components/ui/landing/ContactForm";
 import { NewsCard } from "@/components/ui/landing/NewsCard";
 import { Accordion } from "@/components/ui/Accordion";
-import { Testimonial, Package, FAQ, News, TNC } from '../types';
+import { Testimonial, Package, FAQ, News, TNC, Header } from '../types';
 
 interface DesktopProps {
+    header: Header | null;
     testimonials: Testimonial[];
     packages: Package[];
     faqs: FAQ[];
@@ -19,7 +20,11 @@ interface DesktopProps {
     isLoading: boolean;
 }
 
-export const Desktop: React.FC<DesktopProps> = ({ testimonials, packages, faqs, news, isLoading }) => {
+export const Desktop: React.FC<DesktopProps> = ({ header, testimonials, packages, faqs, news, isLoading }) => {
+    const heroTitle = header?.title || "Powerful POS Subscription for Your Business";
+    const heroSubtitle = header?.subtitle || "Streamline your retail or hospitality operations with our all-in-one point of sale solution. Manage inventory, sales, and staff effortlessly from any device.";
+    const heroImage = header?.image || "/assets/banner.png";
+
     return (
         <div className="w-full">
             {/* Hero Section */}
@@ -27,7 +32,7 @@ export const Desktop: React.FC<DesktopProps> = ({ testimonials, packages, faqs, 
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="/assets/banner.png"
+                        src={heroImage}
                         alt="Hero Banner"
                         className="w-full h-full object-cover"
                     />
@@ -39,18 +44,19 @@ export const Desktop: React.FC<DesktopProps> = ({ testimonials, packages, faqs, 
                         <div className="flex flex-col gap-4">
                             <span className="text-primary font-bold tracking-widest text-xs uppercase bg-primary/10 w-fit px-3 py-1 rounded-full">Evolution of Retail</span>
                             <h1 className="text-white text-7xl font-black leading-[1.1] tracking-tight">
-                                Powerful POS Subscription <br /> <span className="text-primary">for Your Business</span>
+                                {heroTitle.split(' ').slice(0, -2).join(' ')} <br />
+                                <span className="text-primary">{heroTitle.split(' ').slice(-2).join(' ')}</span>
                             </h1>
                             <p className="text-gray-300 text-xl font-normal leading-relaxed max-w-[640px]">
-                                Streamline your retail or hospitality operations with our all-in-one point of sale solution. Manage inventory, sales, and staff effortlessly from any device.
+                                {heroSubtitle}
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-4">
-                            <button className="flex min-w-[180px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-base font-bold transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 active:scale-95">
+                            <button
+                                onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="flex min-w-[180px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-base font-bold transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 active:scale-95"
+                            >
                                 Explore Packages
-                            </button>
-                            <button className="flex min-w-[180px] cursor-pointer items-center justify-center rounded-lg h-14 px-8 border border-white/20 text-white text-base font-bold transition-all hover:bg-white/10 active:scale-95">
-                                Watch Demo
                             </button>
                         </div>
                     </div>
@@ -230,7 +236,7 @@ export const Desktop: React.FC<DesktopProps> = ({ testimonials, packages, faqs, 
             </section>
 
             {/* Contact Section */}
-            <section id="contact" className="py-24 bg-gray-50 dark:bg-background-dark/50">
+            {/* <section id="contact" className="py-24 bg-gray-50 dark:bg-background-dark/50">
                 <div className="max-w-[1440px] mx-auto px-20">
                     <div className="grid grid-cols-2 gap-16 items-center">
                         <div className="space-y-8">
@@ -260,10 +266,10 @@ export const Desktop: React.FC<DesktopProps> = ({ testimonials, packages, faqs, 
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
             {/* Call to Action */}
-            <section className="py-24 bg-primary relative overflow-hidden">
+            {/* <section className="py-24 bg-primary relative overflow-hidden">
                 <div className="absolute inset-0 hero-pattern opacity-10"></div>
                 <div className="max-w-[1440px] mx-auto px-20 relative z-10">
                     <div className="flex flex-col items-center gap-8 text-center text-white">
@@ -277,7 +283,7 @@ export const Desktop: React.FC<DesktopProps> = ({ testimonials, packages, faqs, 
                         </Link>
                     </div>
                 </div>
-            </section>
+            </section> */}
         </div>
     );
 };

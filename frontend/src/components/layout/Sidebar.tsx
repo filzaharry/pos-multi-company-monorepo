@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
     LayoutDashboard,
@@ -15,11 +14,15 @@ import {
     FileText,
     Shield,
     BarChart,
-    CreditCard
+    CreditCard,
+    type LucideIcon
 } from 'lucide-react';
 import { useSidebarMenus, MenuItem } from '@/lib/hooks/useSidebarMenus';
+import { useLogin } from '@/lib/modules/login/store/useLogin';
+import { SidebarItem } from './sidebar/SidebarItem';
+import { SidebarDropdown } from './sidebar/SidebarDropdown';
 
-const IconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+const IconMap: Record<string, LucideIcon> = {
     LayoutDashboard,
     Package,
     Users,
@@ -38,27 +41,33 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onLogout }) => {
     const pathname = usePathname();
-    const { menus, isLoading: isMenusLoading } = useSidebarMenus();
+    const router = useRouter();
+    const { logout } = useLogin();
+    const { menus, isLoading: isMenusLoading, error } = useSidebarMenus();
+    const [openMenus, setOpenMenus] = useState<Record<number, boolean>>({});
 
-    const renderMenuItem = (item: MenuItem) => {
-        const IconComponent = IconMap[item.icon] || LayoutDashboard;
-        const isActive = pathname === item.path;
+    useEffect(() => {
+        if (error && error.includes('401 Unauthorized')) {
+            if (typeof window !== 'undefined') {
+                localStorage.clear();
+                sessionStorage.clear();
+                document.cookie.split(";").forEach((c) => {
+                    document.cookie = c
+                        .replace(/^ +/, "")
+                        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+                logout();
+                router.push('/');
+            }
+        }
+    }, [error, logout, router]);
 
-        return (
-            <Link
-                key={item.id}
-                href={item.path || '#'}
-                className={cn(
-                    "flex items-center gap-3 px-3 py-2 rounded-lg transition-all group",
-                    isActive
-                        ? "bg-primary text-white shadow-lg shadow-primary/20"
-                        : "text-gray-400 hover:bg-white/5 hover:text-white"
-                )}
-            >
-                <IconComponent className={cn("w-5 h-5 shrink-0", isActive ? "text-white" : "text-gray-400 group-hover:text-white")} />
-                {isOpen && <span className="font-medium text-sm">{item.name}</span>}
-            </Link>
-        );
+    const toggleMenu = (id: number) => {
+        setOpenMenus(prev => {
+            const isParentOfActive = menus.find(m => m.id === id)?.children?.some(child => pathname === child.path);
+            const currentState = prev[id] ?? isParentOfActive;
+            return { ...prev, [id]: !currentState };
+        });
     };
 
     const groupedMenus = menus.reduce((acc, menu) => {
@@ -100,7 +109,38 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onLogout }) => {
                                 </h4>
                             )}
                             <div className="space-y-1">
-                                {groupedMenus[groupName].map(renderMenuItem)}
+                                {groupedMenus[groupName].map(menu => {
+                                    const hasChildren = menu.children && menu.children.length > 0;
+                                    const Icon = IconMap[menu.icon] || LayoutDashboard;
+                                    
+                                    // Calculate expansion state during render (Derived State)
+                                    const isParentOfActive = menu.children?.some(child => pathname === child.path);
+                                    const isExpanded = openMenus[menu.id] ?? isParentOfActive;
+
+                                    if (hasChildren) {
+                                        return (
+                                            <SidebarDropdown
+                                                key={menu.id}
+                                                item={menu}
+                                                icon={Icon}
+                                                isOpen={isOpen}
+                                                isExpanded={!!isExpanded}
+                                                onToggle={toggleMenu}
+                                            />
+                                        );
+                                    }
+
+                                    return (
+                                        <SidebarItem
+                                            key={menu.id}
+                                            id={menu.id}
+                                            name={menu.name}
+                                            path={menu.path}
+                                            icon={Icon}
+                                            isOpen={isOpen}
+                                        />
+                                    );
+                                })}
                             </div>
                         </div>
                     ))

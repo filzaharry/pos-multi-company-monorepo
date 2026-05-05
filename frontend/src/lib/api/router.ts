@@ -72,7 +72,7 @@ api.interceptors.response.use(
                         refresh_token: refreshToken
                     });
 
-                    const { access_token, refresh_token } = response.data.data;
+                    const { access_token, refresh_token } = (response.data as any).data.result;
 
                     setCookie('accessToken', access_token, 30);
                     setCookie('refreshToken', refresh_token, 30);

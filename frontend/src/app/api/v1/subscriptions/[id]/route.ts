@@ -4,12 +4,13 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:808
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     const token = request.cookies.get('accessToken')?.value;
 
     try {
-        const response = await fetch(`${BACKEND_URL}/subscriptions/${params.id}`, {
+        const response = await fetch(`${BACKEND_URL}/subscriptions/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -25,13 +26,14 @@ export async function GET(
 
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     const body = await request.json();
     const token = request.cookies.get('accessToken')?.value;
 
     try {
-        const response = await fetch(`${BACKEND_URL}/subscriptions/${params.id}`, {
+        const response = await fetch(`${BACKEND_URL}/subscriptions/${id}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -49,12 +51,13 @@ export async function PUT(
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     const token = request.cookies.get('accessToken')?.value;
 
     try {
-        const response = await fetch(`${BACKEND_URL}/subscriptions/${params.id}`, {
+        const response = await fetch(`${BACKEND_URL}/subscriptions/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,

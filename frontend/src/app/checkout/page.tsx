@@ -1,30 +1,29 @@
 'use client';
 
-import React, { useState } from 'react';
 import { LandingLayout } from '@/components/layout/LandingLayout';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import {
-    ChevronRight,
-    CheckCircle2,
     ArrowRight,
+    Building2,
+    CheckCircle2,
+    ChevronRight,
+    CloudUpload,
+    CreditCard,
+    Loader2,
     Shield,
     User,
-    CreditCard,
-    Building2,
-    Wallet,
-    CloudUpload,
-    Loader2
+    Wallet
 } from 'lucide-react';
+import { useState } from 'react';
+import * as Yup from 'yup';
 
+import { ConfirmationModal } from '@/components/ui/modal';
 import { useRouter } from 'next/navigation';
-import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 
 export default function CheckoutPage() {
     const router = useRouter();
-    const [paymentMethod, setPaymentMethod] = useState<'card' | 'bank' | 'wallet'>('card');
+    const [paymentMethod, setPaymentMethod] = useState("");
     const [isUploading, setIsUploading] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -221,7 +220,7 @@ export default function CheckoutPage() {
                                             type="radio"
                                             name="payment-method"
                                             className="sr-only"
-                                            onClick={() => setPaymentMethod(method.id as any)}
+                                            onClick={() => setPaymentMethod(method.id)}
                                         />
                                         <method.icon className={cn(
                                             "w-8 h-8 mb-4 transition-colors",

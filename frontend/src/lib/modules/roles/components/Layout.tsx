@@ -7,13 +7,14 @@ import { useToast } from '@/components/ui/Toast';
 import { Desktop } from './Desktop';
 import { Mobile } from './Mobile';
 import { RoleModal } from './RoleModal';
-import { PermissionMatrixModal } from './PermissionMatrixModal';
+import { RoleDetailModal } from './RoleDetail';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Calendar, Shield } from 'lucide-react';
+import { FilterModal } from '@/components/ui/modal';
 
 export const Layout = () => {
     const { showToast } = useToast();
-    
+
     // State
     const [roles, setRoles] = useState<Role[]>([]);
     const [pagination, setPagination] = useState<PaginationData | null>(null);
@@ -22,6 +23,7 @@ export const Layout = () => {
 
     // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
     const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState<Role | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -29,7 +31,10 @@ export const Layout = () => {
 
     // Filters
     const [search, setSearch] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const [page, setPage] = useState(1);
+    const [viewMode, setViewMode] = useState<'list' | 'detail'>('list');
 
     // Responsiveness
     useEffect(() => {
@@ -45,7 +50,9 @@ export const Layout = () => {
             const response = await userService.getRolesPaginated({
                 page,
                 limit: 10,
-                search
+                search,
+                start_date: startDate,
+                end_date: endDate
             });
             if (response.status === 'success' || response.status === 'Success') {
                 setRoles(response.data.result.roles);
@@ -56,7 +63,7 @@ export const Layout = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [page, search]);
+    }, [page, search, startDate, endDate]);
 
     useEffect(() => {
         fetchRoles();
@@ -93,7 +100,7 @@ export const Layout = () => {
     return (
         <>
             {isMobile ? (
-                <Mobile 
+                <Mobile
                     roles={roles} isLoading={isLoading} pagination={pagination}
                     search={search} setSearch={setSearch}
                     page={page} setPage={setPage}
@@ -101,16 +108,21 @@ export const Layout = () => {
                     onEdit={(r) => { setSelectedRole(r); setIsModalOpen(true); }}
                     onDelete={(r) => { setRoleToDelete(r); setIsDeleteModalOpen(true); }}
                     onPermissions={(r) => { setSelectedRole(r); setIsPermissionModalOpen(true); }}
+                    onDetail={(r) => { setSelectedRole(r); setIsPermissionModalOpen(true); }}
                 />
             ) : (
-                <Desktop 
+                <Desktop
                     roles={roles} isLoading={isLoading} pagination={pagination}
                     search={search} setSearch={setSearch}
+                    startDate={startDate} setStartDate={setStartDate}
+                    endDate={endDate} setEndDate={setEndDate}
                     page={page} setPage={setPage}
                     onAdd={() => { setSelectedRole(null); setIsModalOpen(true); }}
                     onEdit={(r) => { setSelectedRole(r); setIsModalOpen(true); }}
                     onDelete={(r) => { setRoleToDelete(r); setIsDeleteModalOpen(true); }}
                     onPermissions={(r) => { setSelectedRole(r); setIsPermissionModalOpen(true); }}
+                    onDetail={(r) => { setSelectedRole(r); setIsPermissionModalOpen(true); }}
+                    onOpenFilter={() => setIsFilterModalOpen(true)}
                 />
             )}
 
@@ -121,7 +133,50 @@ export const Layout = () => {
                 role={selectedRole}
             />
 
-            <PermissionMatrixModal
+            <FilterModal
+                isOpen={isFilterModalOpen}
+                onClose={() => setIsFilterModalOpen(false)}
+                onReset={() => {
+                    setStartDate('');
+                    setEndDate('');
+                    setPage(1);
+                }}
+                onApply={() => {
+                    setPage(1);
+                    fetchRoles();
+                }}
+            >
+                <div className="grid grid-cols-1 gap-6">
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-primary uppercase tracking-widest">Created After</label>
+                            <div className="relative">
+                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                <input
+                                    type="date"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-primary uppercase tracking-widest">Created Before</label>
+                            <div className="relative">
+                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                <input
+                                    type="date"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </FilterModal>
+
+            <RoleDetailModal
                 isOpen={isPermissionModalOpen}
                 onClose={() => setIsPermissionModalOpen(false)}
                 onSaveSuccess={fetchRoles}

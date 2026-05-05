@@ -12,7 +12,8 @@ import { useToast } from '@/components/ui/Toast';
 import { Desktop } from './Desktop';
 import { SubscriptionModal } from './widgets/SubscriptionModal';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Calendar, ShieldCheck } from 'lucide-react';
+import { FilterModal } from '@/components/ui/modal';
 
 export const Layout = () => {
     const { showToast } = useToast();
@@ -27,12 +28,15 @@ export const Layout = () => {
     // Filters
     const [search, setSearch] = useState('');
     const [status, setStatus] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const [page, setPage] = useState(1);
     const [sortKey, setSortKey] = useState('created_at');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
     // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
     const [selectedSub, setSelectedSub] = useState<CompanySubscription | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [subToDelete, setSubToDelete] = useState<CompanySubscription | null>(null);
@@ -131,6 +135,8 @@ export const Layout = () => {
                 pagination={pagination}
                 search={search} setSearch={setSearch}
                 status={status} setStatus={setStatus}
+                startDate={startDate} setStartDate={setStartDate}
+                endDate={endDate} setEndDate={setEndDate}
                 page={page} setPage={setPage}
                 sortKey={sortKey} sortOrder={sortOrder}
                 onSort={(key) => {
@@ -145,6 +151,7 @@ export const Layout = () => {
                 onEdit={(sub) => { setSelectedSub(sub); setIsModalOpen(true); }}
                 onDelete={(sub) => { setSubToDelete(sub); setIsDeleteModalOpen(true); }}
                 onApprove={handleApprove}
+                onOpenFilter={() => setIsFilterModalOpen(true)}
             />
 
             <SubscriptionModal
@@ -153,6 +160,67 @@ export const Layout = () => {
                 onSubmit={handleFormSubmit}
                 subscription={selectedSub}
             />
+
+            <FilterModal
+                isOpen={isFilterModalOpen}
+                onClose={() => setIsFilterModalOpen(false)}
+                onReset={() => {
+                    setStatus('');
+                    setStartDate('');
+                    setEndDate('');
+                    setPage(1);
+                }}
+                onApply={() => {
+                    setPage(1);
+                    fetchData();
+                }}
+            >
+                <div className="grid grid-cols-1 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-xs font-black text-primary uppercase tracking-widest">Status</label>
+                        <div className="relative">
+                            <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                            <select
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                                className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
+                            >
+                                <option value="" className="bg-background-dark">All Status</option>
+                                <option value="0" className="bg-background-dark">Pending</option>
+                                <option value="1" className="bg-background-dark">Active</option>
+                                <option value="2" className="bg-background-dark">Failed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-primary uppercase tracking-widest">Start Date</label>
+                            <div className="relative">
+                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                <input
+                                    type="date"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-primary uppercase tracking-widest">End Date</label>
+                            <div className="relative">
+                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                <input
+                                    type="date"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </FilterModal>
 
             <AnimatePresence>
                 {isDeleteModalOpen && (

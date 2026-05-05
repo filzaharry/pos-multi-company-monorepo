@@ -56,8 +56,9 @@ export const Desktop = () => {
                 <p className="text-gray-400">{"Welcome back! Here's what's happening today."}</p>
             </div>
 
+
             {/* Stats Grid */}
-            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, index) => (
                     <motion.div
                         key={stat.label}
@@ -79,10 +80,10 @@ export const Desktop = () => {
                         <h3 className="text-2xl font-bold text-white">{stat.value}</h3>
                     </motion.div>
                 ))}
-            </div> */}
+            </div>
 
             {/* Charts Section */}
-            {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 p-6 bg-background-dark border border-white/5 rounded-2xl">
                     <div className="flex justify-between items-center mb-8">
                         <h3 className="text-lg font-bold text-white">Sales Performance</h3>
@@ -113,7 +114,7 @@ export const Desktop = () => {
                         View All Activity
                     </button>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 };

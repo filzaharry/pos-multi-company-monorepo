@@ -119,10 +119,10 @@ func UpdateUser(c *fiber.Ctx) error {
 	// Auth check
 	currentUserID := c.Locals("user_id").(uint)
 	currentCompanyID := c.Locals("company_id")
-	
+
 	userRepo := repository.NewUserRepository(database.DB)
 	currentUser, _ := userRepo.GetByID(currentUserID)
-	
+
 	var authCompanyID *uint
 	if cid, ok := currentCompanyID.(*uint); ok {
 		authCompanyID = cid
@@ -143,16 +143,16 @@ func DeleteUser(c *fiber.Ctx) error {
 	idStr := c.Params("id")
 	id, err := strconv.ParseUint(idStr, 10, 32)
 	if err != nil {
-		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid ID format")
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid ID format: '"+idStr+"'")
 	}
 
 	// Auth check
 	currentUserID := c.Locals("user_id").(uint)
 	currentCompanyID := c.Locals("company_id")
-	
+
 	userRepo := repository.NewUserRepository(database.DB)
 	currentUser, _ := userRepo.GetByID(currentUserID)
-	
+
 	var authCompanyID *uint
 	if cid, ok := currentCompanyID.(*uint); ok {
 		authCompanyID = cid

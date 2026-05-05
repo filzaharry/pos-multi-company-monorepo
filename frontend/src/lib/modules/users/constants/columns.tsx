@@ -65,11 +65,11 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
         header: 'Actions',
         align: 'right',
         cell: (u) => (
-            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex items-center justify-end gap-1 opacity-100 transition-opacity">
                 <Can permission="user.edit">
                     <button
                         onClick={() => onEdit(u)}
-                        className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                        className="p-2 text-white bg-white/5 rounded-lg transition-all"
                         title="Edit User"
                     >
                         <Edit2 className="w-4 h-4" />
@@ -78,7 +78,7 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
                 <Can permission="user.delete">
                     <button
                         onClick={() => onDelete(u)}
-                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                        className="p-2 text-red-500 bg-red-500/10 rounded-lg transition-all"
                         title="Delete User"
                     >
                         <Trash2 className="w-4 h-4" />

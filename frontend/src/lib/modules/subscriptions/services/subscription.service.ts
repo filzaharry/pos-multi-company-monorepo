@@ -16,6 +16,8 @@ export const subscriptionService = {
         status?: string;
         sort_key?: string;
         sort_order?: string;
+        start_date?: string;
+        end_date?: string;
     }): Promise<ApiResponse<SubscriptionListResponse>> => {
         const query = new URLSearchParams();
         if (params.page) query.append('page', params.page.toString());
@@ -24,6 +26,8 @@ export const subscriptionService = {
         if (params.status) query.append('status', params.status);
         if (params.sort_key) query.append('sort_key', params.sort_key);
         if (params.sort_order) query.append('sort_order', params.sort_order);
+        if (params.start_date) query.append('start_date', params.start_date);
+        if (params.end_date) query.append('end_date', params.end_date);
 
         return apiRouter.get<ApiResponse<SubscriptionListResponse>>(`/subscriptions?${query.toString()}`);
     },

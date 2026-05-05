@@ -3,6 +3,7 @@ import { apiRouter } from '@/lib/api/router';
 import { LandingState, ApiResponse, Testimonial, Package, FAQ, News, TNC, ListResult } from '../types';
 
 export const useLanding = create<LandingState>((set) => ({
+    header: null,
     testimonials: [],
     packages: [],
     faqs: [],
@@ -13,12 +14,13 @@ export const useLanding = create<LandingState>((set) => ({
     fetchData: async () => {
         set({ isLoading: true, error: null });
         try {
-            const [testimonialsRes, packagesRes, faqRes, newsRes, tncRes] = await Promise.all([
+            const [testimonialsRes, packagesRes, faqRes, newsRes, tncRes, headerRes] = await Promise.all([
                 apiRouter.get<ApiResponse<ListResult<Testimonial>>>('/landing/testimonials'),
                 apiRouter.get<ApiResponse<Package[]>>('/landing/packages'),
                 apiRouter.get<ApiResponse<FAQ[]>>('/landing/faq'),
                 apiRouter.get<ApiResponse<News[]>>('/landing/news'),
-                apiRouter.get<ApiResponse<TNC>>('/landing/tnc')
+                apiRouter.get<ApiResponse<TNC>>('/landing/tnc'),
+                apiRouter.get<ApiResponse<{ title: string; subtitle: string; image: string }>>('/landing/header')
             ]);
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,6 +32,7 @@ export const useLanding = create<LandingState>((set) => ({
                 faqs: isSuccess(faqRes) ? faqRes.data.result : [],
                 news: isSuccess(newsRes) ? newsRes.data.result : [],
                 tnc: isSuccess(tncRes) ? tncRes.data.result : null,
+                header: isSuccess(headerRes) ? headerRes.data.result : null,
                 isLoading: false
             });
         } catch (error: unknown) {

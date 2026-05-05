@@ -8,9 +8,10 @@ import { TestimonialCard } from "@/components/ui/landing/TestimonialCard";
 import { ContactForm } from "@/components/ui/landing/ContactForm";
 import { NewsCard } from "@/components/ui/landing/NewsCard";
 import { Accordion } from "@/components/ui/Accordion";
-import { Testimonial, Package, FAQ, News, TNC } from '../types';
+import { Testimonial, Package, FAQ, News, TNC, Header } from '../types';
 
 interface MobileProps {
+    header: Header | null;
     testimonials: Testimonial[];
     packages: Package[];
     faqs: FAQ[];
@@ -19,16 +20,20 @@ interface MobileProps {
     isLoading: boolean;
 }
 
-export const Mobile: React.FC<MobileProps> = ({ testimonials, packages, faqs, news, isLoading }) => {
+export const Mobile: React.FC<MobileProps> = ({ header, testimonials, packages, faqs, news, isLoading }) => {
+    const heroTitle = header?.title || "Powerful POS Subscription";
+    const heroSubtitle = header?.subtitle || "Streamline your retail or hospitality operations with our all-in-one point of sale solution.";
+    const heroImage = header?.image || "/assets/banner.png";
+
     return (
         <div className="w-full">
             {/* Hero Section */}
             <section className="relative overflow-hidden py-24 min-h-[500px] flex items-center">
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
-                    <img 
-                        src="/assets/banner.png" 
-                        alt="Hero Banner" 
+                    <img
+                        src={heroImage}
+                        alt="Hero Banner"
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black/60"></div>
@@ -39,18 +44,19 @@ export const Mobile: React.FC<MobileProps> = ({ testimonials, packages, faqs, ne
                         <div className="flex flex-col gap-4 items-center">
                             <span className="text-primary font-bold tracking-widest text-xs uppercase bg-primary/10 w-fit px-3 py-1 rounded-full">Evolution of Retail</span>
                             <h1 className="text-white text-5xl font-black leading-[1.1] tracking-tight">
-                                Powerful POS <br /> <span className="text-primary">Subscription</span>
+                                {heroTitle.split(' ').slice(0, -1).join(' ')} <br />
+                                <span className="text-primary">{heroTitle.split(' ').slice(-1).join(' ')}</span>
                             </h1>
                             <p className="text-gray-300 text-lg font-normal leading-relaxed max-w-[640px]">
-                                Streamline your retail or hospitality operations with our all-in-one point of sale solution.
+                                {heroSubtitle}
                             </p>
                         </div>
                         <div className="flex flex-col gap-4 items-center">
-                            <button className="w-full max-w-[280px] flex cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-base font-bold transition-all hover:bg-primary/90 active:scale-95">
+                            <button
+                                onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="w-full max-w-[280px] flex cursor-pointer items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-base font-bold transition-all hover:bg-primary/90 active:scale-95"
+                            >
                                 Explore Packages
-                            </button>
-                            <button className="w-full max-w-[280px] flex cursor-pointer items-center justify-center rounded-lg h-14 px-8 border border-white/20 text-white text-base font-bold transition-all hover:bg-white/10 active:scale-95">
-                                Watch Demo
                             </button>
                         </div>
                     </div>

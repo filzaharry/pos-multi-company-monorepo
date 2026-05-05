@@ -70,9 +70,6 @@ export const Desktop: React.FC<DesktopProps> = ({ isLoading, error, requestOTP }
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
                         <label className="text-white text-sm font-medium">Password</label>
-                        <Link href="/login/forgot-password" className="text-slate-400 hover:text-primary text-xs transition-colors">
-                            Forgot password?
-                        </Link>
                     </div>
                     <div className="relative group">
                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
@@ -98,8 +95,11 @@ export const Desktop: React.FC<DesktopProps> = ({ isLoading, error, requestOTP }
                         <span className="text-red-500 text-xs">{formik.errors.password}</span>
                     )}
                 </div>
+                <Link href="/login/forgot-password" className="text-slate-400 hover:text-primary text-xs transition-colors">
+                    Forgot password?
+                </Link>
 
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                     <input
                         id="rememberMe"
                         name="rememberMe"
@@ -111,7 +111,7 @@ export const Desktop: React.FC<DesktopProps> = ({ isLoading, error, requestOTP }
                     <label htmlFor="rememberMe" className="text-sm text-slate-400 cursor-pointer">
                         Remember me for 30 days
                     </label>
-                </div>
+                </div> */}
 
                 {error && (
                     <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
