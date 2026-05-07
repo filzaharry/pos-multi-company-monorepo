@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Role } from '@/lib/modules/users/types';
-import { Shield, ShieldCheck, Edit2, Trash2, Clock, Settings } from 'lucide-react';
+import { Shield, ShieldCheck, Edit2, Trash2, Clock, Settings, Building2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import moment from 'moment';
 import { Can } from '@/components/auth/Can';
@@ -33,6 +33,12 @@ export const RoleCard: React.FC<RoleCardProps> = ({ role, onEdit, onDelete, onPe
                             <p className="text-[10px] text-gray-500 uppercase tracking-wider font-medium">
                                 Modified {moment(role.created_at).fromNow()}
                             </p>
+                            {role.company_name && (
+                                <div className="flex items-center gap-1 mt-0.5">
+                                    <Building2 className="w-2.5 h-2.5 text-primary/70" />
+                                    <span className="text-[10px] text-primary/70 font-bold uppercase">{role.company_name}</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="flex gap-1">
@@ -50,8 +56,8 @@ export const RoleCard: React.FC<RoleCardProps> = ({ role, onEdit, onDelete, onPe
                             <Settings className="w-4 h-4" />
                         </button>
                         <Can permission="role.delete">
-                            <button 
-                                onClick={() => onDelete(role)} 
+                            <button
+                                onClick={() => onDelete(role)}
                                 disabled={isSystemRole}
                                 className="p-2 text-gray-400 hover:text-red-500 disabled:opacity-0"
                             >
@@ -129,15 +135,17 @@ export const RoleCard: React.FC<RoleCardProps> = ({ role, onEdit, onDelete, onPe
                 {role.description || 'No description provided.'}
             </p>
 
-            <div className="pt-4 border-t border-white/5 flex items-center justify-between text-[10px] text-gray-500 font-medium uppercase tracking-wider">
-                <div className="flex items-center gap-1.5">
-                    <Clock className="w-3 h-3" />
-                    <span>Modified {moment(role.created_at).fromNow()}</span>
-                </div>
-                {isSystemRole && (
-                    <span className="text-primary/60">System Role</span>
+            <div className="flex flex-col gap-1">
+                {role.company_name && (
+                    <div className="flex items-center gap-1.5 text-primary font-black uppercase tracking-widest text-xs bg-primary/5 px-2 py-0.5 rounded-full border border-primary/10 w-fit">
+                        <Building2 className="w-3 h-3" />
+                        <span>{role.company_name}</span>
+                    </div>
                 )}
             </div>
+            {isSystemRole && (
+                <span className="text-primary/60">System Role</span>
+            )}
         </motion.div>
     );
 };

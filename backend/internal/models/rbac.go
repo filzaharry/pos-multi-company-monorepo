@@ -11,11 +11,13 @@ type Role struct {
 	CompanyID   *uint          `json:"company_id"` // NULL for system roles, or specific to company
 	Name        string         `gorm:"size:100;not null" json:"name"`
 	Description string         `gorm:"type:text" json:"description"`
+	IsActive    bool           `gorm:"default:true" json:"is_active"`
+	CompanyName string         `gorm:"->" json:"company_name"`
 	Permissions []Permission   `gorm:"many2many:role_permissions;" json:"permissions"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
-	Company     *Company       `gorm:"foreignKey:CompanyID" json:"-"`
+	Company     *Company       `gorm:"foreignKey:CompanyID" json:"company,omitempty"`
 }
 
 type Permission struct {

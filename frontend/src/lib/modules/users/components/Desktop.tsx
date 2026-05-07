@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { User } from '@/lib/modules/login/types';
-import { PaginationData, Role, Company } from '@/lib/modules/users/types';
+import { PaginationData, Role, Company, LookupOption } from '@/lib/modules/users/types';
 import {
     Search,
     Plus,
@@ -20,8 +20,8 @@ interface DesktopProps {
     users: User[];
     isLoading: boolean;
     pagination: PaginationData | null;
-    roles: Role[];
-    companies: Company[];
+    roles: LookupOption[];
+    companies: LookupOption[];
     isSuperAdmin: boolean;
     search: string;
     setSearch: (val: string) => void;
@@ -42,6 +42,7 @@ interface DesktopProps {
     onEdit: (user: User) => void;
     onDelete: (user: User) => void;
     onOpenFilter: () => void;
+    appliedFiltersCount: number;
 }
 
 export const Desktop: React.FC<DesktopProps> = ({
@@ -69,11 +70,12 @@ export const Desktop: React.FC<DesktopProps> = ({
     onAdd,
     onEdit,
     onDelete,
-    onOpenFilter
+    onOpenFilter,
+    appliedFiltersCount
 }) => {
     const columns = getUserColumns({ onEdit, onDelete });
 
-    const activeFiltersCount = [roleId, companyId, startDate, endDate].filter(Boolean).length;
+    const activeFiltersCount = appliedFiltersCount;
 
     return (
         <div className="space-y-6">

@@ -136,6 +136,11 @@ func SetupRoutes(app *fiber.App) {
 
 	pos.Get("/stats", handlers.GetPosDashboardStats)
 
+	// Lookup routes
+	lookups := api.Group("/lookups", middleware.AuthRequired)
+	lookups.Get("/roles", handlers.GetRoleOptions)
+	lookups.Get("/companies", handlers.GetCompanyOptions)
+
 	// General Parameter routes
 	genParams := api.Group("/general-parameters", middleware.AuthRequired)
 	genParams.Get("/", handlers.GetGeneralParameters)

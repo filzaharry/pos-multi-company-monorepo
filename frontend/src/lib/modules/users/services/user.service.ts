@@ -1,7 +1,7 @@
 import { apiRouter } from '@/lib/api/router';
 import { ApiResponse } from '@/lib/types/api';
 import { User } from '../../login/types';
-import { UserListResponse, Role, Company, UserPayload, RoleListResponse, RolePayload, Permission } from '../types';
+import { UserListResponse, Role, Company, UserPayload, RoleListResponse, RolePayload, Permission, LookupOption } from '../types';
 
 export const userService = {
     getUsers: async (params: { 
@@ -42,8 +42,12 @@ export const userService = {
     },
 
     // Roles Management
-    getRoles: async (): Promise<ApiResponse<Role[]>> => {
-        return apiRouter.get<ApiResponse<Role[]>>('/roles/all');
+    getRoleOptions: async (): Promise<ApiResponse<LookupOption[]>> => {
+        return apiRouter.get<ApiResponse<LookupOption[]>>('/lookups/roles');
+    },
+
+    getCompanyOptions: async (search?: string): Promise<ApiResponse<LookupOption[]>> => {
+        return apiRouter.get<ApiResponse<LookupOption[]>>(`/lookups/companies${search ? `?search=${search}` : ''}`);
     },
 
     getRolesPaginated: async (params: { 
@@ -52,8 +56,8 @@ export const userService = {
         search?: string; 
         sort_key?: string; 
         sort_order?: string;
-        start_date?: string;
-        end_date?: string;
+        company_id?: string;
+        status?: string;
     }): Promise<ApiResponse<RoleListResponse>> => {
         const query = new URLSearchParams();
         if (params.page) query.append('page', params.page.toString());
@@ -61,8 +65,8 @@ export const userService = {
         if (params.search) query.append('search', params.search);
         if (params.sort_key) query.append('sort_key', params.sort_key);
         if (params.sort_order) query.append('sort_order', params.sort_order);
-        if (params.start_date) query.append('start_date', params.start_date);
-        if (params.end_date) query.append('end_date', params.end_date);
+        if (params.company_id) query.append('company_id', params.company_id);
+        if (params.status) query.append('status', params.status);
 
         return apiRouter.get<ApiResponse<RoleListResponse>>(`/roles?${query.toString()}`);
     },

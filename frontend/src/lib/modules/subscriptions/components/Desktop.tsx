@@ -41,6 +41,9 @@ interface DesktopProps {
     onDelete: (sub: CompanySubscription) => void;
     onApprove: (sub: CompanySubscription) => void;
     onOpenFilter: () => void;
+    onApplyFilters: () => void;
+    onResetFilters: () => void;
+    appliedFiltersCount: number;
 }
 
 export const Desktop: React.FC<DesktopProps> = ({
@@ -65,11 +68,14 @@ export const Desktop: React.FC<DesktopProps> = ({
     onEdit,
     onDelete,
     onApprove,
-    onOpenFilter
+    onOpenFilter,
+    onApplyFilters,
+    onResetFilters,
+    appliedFiltersCount
 }) => {
     const columns = getSubscriptionColumns({ onEdit, onDelete, onApprove });
 
-    const activeFiltersCount = [status, startDate, endDate].filter(Boolean).length;
+    const activeFiltersCount = appliedFiltersCount;
 
     return (
         <div className="space-y-6">
@@ -109,14 +115,15 @@ export const Desktop: React.FC<DesktopProps> = ({
                             </span>
                         )}
                     </button>
+                    <div className=""></div>
 
-                    <button
+                    {/* <button
                         onClick={onAdd}
                         className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-sm transition-all shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
                     >
                         <Plus className="w-5 h-5" />
                         <span>New License</span>
-                    </button>
+                    </button> */}
                 </div>
             </div>
 

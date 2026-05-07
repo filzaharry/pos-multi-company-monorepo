@@ -33,7 +33,10 @@ func NewRoleRepository(db *gorm.DB) RoleRepository {
 
 func (r *roleRepository) GetAll(params *utils.FilterParams, companyID *uint, isSuperAdmin bool) ([]models.Role, utils.Pagination, error) {
 	var roles []models.Role
-	query := r.db.Model(&models.Role{}).Preload("Permissions")
+	query := r.db.Model(&models.Role{}).
+		Preload("Permissions").
+		Joins("left join companies on companies.id = roles.company_id").
+		Select("roles.*, companies.name as company_name")
 
 	if !isSuperAdmin {
 		if companyID != nil {
@@ -45,6 +48,15 @@ func (r *roleRepository) GetAll(params *utils.FilterParams, companyID *uint, isS
 
 	if params.Search != "" {
 		query = query.Where("name ILIKE ? OR description ILIKE ?", "%"+params.Search+"%", "%"+params.Search+"%")
+	}
+
+	if params.CompanyID != "" && isSuperAdmin {
+		query = query.Where("company_id = ?", params.CompanyID)
+	}
+
+	if params.Status != "" {
+		isActive := params.Status == "1"
+		query = query.Where("is_active = ?", isActive)
 	}
 
 	pagination, err := utils.Paginate(query, params.Page, params.Limit, &roles)

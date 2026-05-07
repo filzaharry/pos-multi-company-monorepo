@@ -18,6 +18,7 @@ type FilterParams struct {
 	SortOrder string `query:"sort_order"`
 	StartDate string `query:"start_date"`
 	EndDate   string `query:"end_date"`
+	CompanyID string `query:"company_id"`
 }
 
 type Pagination struct {

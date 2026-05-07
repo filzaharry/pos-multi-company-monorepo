@@ -727,6 +727,92 @@
         }
       }
     },
+    "/api/v1/lookups/roles": {
+      "get": {
+        "summary": "Get role options for dropdown",
+        "tags": [
+          "Lookups"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Successful Response",
+                    "value": {
+                      "status_code": 200,
+                      "status": "success",
+                      "data": {
+                        "message": "Roles fetched successfully",
+                        "result": [
+                          {
+                            "label": "Admin",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lookups/companies": {
+      "get": {
+        "summary": "Get company options for dropdown",
+        "tags": [
+          "Lookups"
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Successful Response",
+                    "value": {
+                      "status_code": 200,
+                      "status": "success",
+                      "data": {
+                        "message": "Companies fetched successfully",
+                        "result": [
+                          {
+                            "label": "My Company",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "summary": "Check API health",
@@ -7018,6 +7104,24 @@
           },
           "status": {
             "type": "integer"
+          }
+        }
+      },
+      "LookupOption": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ]
           }
         }
       },

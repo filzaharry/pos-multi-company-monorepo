@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { User } from '@/lib/modules/login/types';
-import { Role, Company, UserPayload } from '@/lib/modules/users/types';
+import { Role, Company, UserPayload, LookupOption } from '@/lib/modules/users/types';
 import {
     User as UserIcon,
     Mail,
@@ -22,8 +22,8 @@ interface UserModalProps {
     onClose: () => void;
     onSubmit: (values: UserPayload) => Promise<void>;
     user?: User | null;
-    roles: Role[];
-    companies: Company[];
+    roles: LookupOption[];
+    companies: LookupOption[];
     isSuperAdmin: boolean;
 }
 
@@ -199,7 +199,7 @@ export const UserModal = ({
                             >
                                 <option value="" className="bg-background-dark">Select Role</option>
                                 {roles.map(r => (
-                                    <option key={r.id} value={r.id} className="bg-background-dark">{r.name}</option>
+                                    <option key={r.value} value={r.value} className="bg-background-dark">{r.label}</option>
                                 ))}
                             </select>
                         </div>
@@ -224,7 +224,7 @@ export const UserModal = ({
                                 >
                                     <option value="" className="bg-background-dark">Select Company</option>
                                     {companies.map(c => (
-                                        <option key={c.id} value={c.id} className="bg-background-dark">{c.name}</option>
+                                        <option key={c.value} value={c.value} className="bg-background-dark">{c.label}</option>
                                     ))}
                                 </select>
                             </div>

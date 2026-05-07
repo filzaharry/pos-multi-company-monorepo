@@ -12,8 +12,9 @@ import { useToast } from '@/components/ui/Toast';
 import { Desktop } from './Desktop';
 import { SubscriptionModal } from './widgets/SubscriptionModal';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertCircle, Calendar, ShieldCheck } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { FilterModal } from '@/components/ui/modal';
+import { SubscriptionFilter } from './widgets/SubscriptionFilter';
 
 export const Layout = () => {
     const { showToast } = useToast();
@@ -33,6 +34,13 @@ export const Layout = () => {
     const [page, setPage] = useState(1);
     const [sortKey, setSortKey] = useState('created_at');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+ 
+    // Applied Filters
+    const [appliedFilters, setAppliedFilters] = useState({
+        status: '',
+        startDate: '',
+        endDate: ''
+    });
 
     // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,7 +65,9 @@ export const Layout = () => {
                     page,
                     limit: 10,
                     search,
-                    status,
+                    status: appliedFilters.status,
+                    start_date: appliedFilters.startDate,
+                    end_date: appliedFilters.endDate,
                     sort_key: sortKey,
                     sort_order: sortOrder
                 }),
@@ -81,7 +91,7 @@ export const Layout = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [page, search, status, sortKey, sortOrder, showToast]);
+    }, [page, search, appliedFilters, sortKey, sortOrder, showToast]);
 
     useEffect(() => {
         fetchData();
@@ -126,6 +136,27 @@ export const Layout = () => {
         }
     };
 
+    const applyFilters = () => {
+        setAppliedFilters({
+            status,
+            startDate,
+            endDate
+        });
+        setPage(1);
+    };
+
+    const resetFilters = () => {
+        setStatus('');
+        setStartDate('');
+        setEndDate('');
+        setAppliedFilters({
+            status: '',
+            startDate: '',
+            endDate: ''
+        });
+        setPage(1);
+    };
+
     return (
         <>
             <Desktop
@@ -151,7 +182,15 @@ export const Layout = () => {
                 onEdit={(sub) => { setSelectedSub(sub); setIsModalOpen(true); }}
                 onDelete={(sub) => { setSubToDelete(sub); setIsDeleteModalOpen(true); }}
                 onApprove={handleApprove}
-                onOpenFilter={() => setIsFilterModalOpen(true)}
+                onOpenFilter={() => {
+                    setStatus(appliedFilters.status);
+                    setStartDate(appliedFilters.startDate);
+                    setEndDate(appliedFilters.endDate);
+                    setIsFilterModalOpen(true);
+                }}
+                onApplyFilters={applyFilters}
+                onResetFilters={resetFilters}
+                appliedFiltersCount={[appliedFilters.status, appliedFilters.startDate, appliedFilters.endDate].filter(Boolean).length}
             />
 
             <SubscriptionModal
@@ -165,61 +204,22 @@ export const Layout = () => {
                 isOpen={isFilterModalOpen}
                 onClose={() => setIsFilterModalOpen(false)}
                 onReset={() => {
-                    setStatus('');
-                    setStartDate('');
-                    setEndDate('');
-                    setPage(1);
+                    resetFilters();
+                    setIsFilterModalOpen(false);
                 }}
                 onApply={() => {
-                    setPage(1);
-                    fetchData();
+                    applyFilters();
+                    setIsFilterModalOpen(false);
                 }}
             >
-                <div className="grid grid-cols-1 gap-6">
-                    <div className="space-y-2">
-                        <label className="text-xs font-black text-primary uppercase tracking-widest">Status</label>
-                        <div className="relative">
-                            <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                            <select
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                                className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
-                            >
-                                <option value="" className="bg-background-dark">All Status</option>
-                                <option value="0" className="bg-background-dark">Pending</option>
-                                <option value="1" className="bg-background-dark">Active</option>
-                                <option value="2" className="bg-background-dark">Failed</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <label className="text-xs font-black text-primary uppercase tracking-widest">Start Date</label>
-                            <div className="relative">
-                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                                <input
-                                    type="date"
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
-                                />
-                            </div>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-xs font-black text-primary uppercase tracking-widest">End Date</label>
-                            <div className="relative">
-                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                                <input
-                                    type="date"
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <SubscriptionFilter
+                    status={status}
+                    setStatus={setStatus}
+                    startDate={startDate}
+                    setStartDate={setStartDate}
+                    endDate={endDate}
+                    setEndDate={setEndDate}
+                />
             </FilterModal>
 
             <AnimatePresence>

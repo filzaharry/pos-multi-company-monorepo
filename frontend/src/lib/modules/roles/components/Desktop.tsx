@@ -24,10 +24,6 @@ interface DesktopProps {
     pagination: PaginationData | null;
     search: string;
     setSearch: (val: string) => void;
-    startDate: string;
-    setStartDate: (val: string) => void;
-    endDate: string;
-    setEndDate: (val: string) => void;
     page: number;
     setPage: (val: number | ((p: number) => number)) => void;
     onAdd: () => void;
@@ -36,6 +32,9 @@ interface DesktopProps {
     onPermissions: (role: Role) => void;
     onDetail: (role: Role) => void;
     onOpenFilter: () => void;
+    onApplyFilters: () => void;
+    onResetFilters: () => void;
+    appliedFiltersCount: number;
 }
 
 export const Desktop: React.FC<DesktopProps> = ({
@@ -44,10 +43,6 @@ export const Desktop: React.FC<DesktopProps> = ({
     pagination,
     search,
     setSearch,
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate,
     page,
     setPage,
     onAdd,
@@ -55,9 +50,12 @@ export const Desktop: React.FC<DesktopProps> = ({
     onDelete,
     onPermissions,
     onDetail,
-    onOpenFilter
+    onOpenFilter,
+    onApplyFilters,
+    onResetFilters,
+    appliedFiltersCount
 }) => {
-    const activeFiltersCount = [startDate, endDate].filter(Boolean).length;
+    const activeFiltersCount = appliedFiltersCount;
 
     return (
         <div className="space-y-6">

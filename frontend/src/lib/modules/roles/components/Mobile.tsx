@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Role, PaginationData } from '@/lib/modules/users/types';
+import { Role, PaginationData, LookupOption } from '@/lib/modules/users/types';
 import { RoleHeader } from './widgets/RoleHeader';
 import { RoleFilters } from './widgets/RoleFilters';
 import { RoleCard } from './widgets/RoleCard';
@@ -21,6 +21,16 @@ interface MobileProps {
     onDelete: (role: Role) => void;
     onPermissions: (role: Role) => void;
     onDetail: (role: Role) => void;
+    onOpenFilter: () => void;
+    onApplyFilters: () => void;
+    onResetFilters: () => void;
+    appliedFiltersCount: number;
+    companyId: string;
+    setCompanyId: (val: string) => void;
+    companies: LookupOption[];
+    status: string;
+    setStatus: (val: string) => void;
+    isSuperAdmin: boolean;
 }
 
 export const Mobile: React.FC<MobileProps> = ({
@@ -35,21 +45,41 @@ export const Mobile: React.FC<MobileProps> = ({
     onEdit,
     onDelete,
     onPermissions,
-    onDetail
+    onDetail,
+    onOpenFilter,
+    onApplyFilters,
+    onResetFilters,
+    appliedFiltersCount,
+    companyId,
+    setCompanyId,
+    companies,
+    status,
+    setStatus,
+    isSuperAdmin
 }) => {
     return (
         <div className="space-y-4">
-            <RoleHeader 
-                title="Roles" 
-                onAdd={onAdd} 
-                isMobile 
+            <RoleHeader
+                title="Roles"
+                onAdd={onAdd}
+                isMobile
             />
 
-            <RoleFilters 
-                search={search} 
-                setSearch={setSearch} 
-                setPage={setPage} 
-                isMobile 
+            <RoleFilters
+                search={search}
+                setSearch={setSearch}
+                setPage={setPage}
+                onOpenFilter={onOpenFilter}
+                appliedFiltersCount={appliedFiltersCount}
+                onApplyFilters={onApplyFilters}
+                onResetFilters={onResetFilters}
+                companyId={companyId}
+                setCompanyId={setCompanyId}
+                companies={companies}
+                status={status}
+                setStatus={setStatus}
+                isSuperAdmin={isSuperAdmin}
+                isMobile
             />
 
             <div className="space-y-3">
@@ -72,11 +102,11 @@ export const Mobile: React.FC<MobileProps> = ({
                 )}
             </div>
 
-            <RolePagination 
-                pagination={pagination} 
-                page={page} 
-                setPage={setPage} 
-                isMobile 
+            <RolePagination
+                pagination={pagination}
+                page={page}
+                setPage={setPage}
+                isMobile
             />
         </div>
     );

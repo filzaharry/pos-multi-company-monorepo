@@ -1,58 +1,69 @@
-import { Company } from './users/types';
+import { PaginationData } from '@/lib/modules/users/types';
+
+export interface PosItem {
+    id: number;
+    company_id: number;
+    category_id: number;
+    name: string;
+    description?: string;
+    sku: string;
+    price: number;
+    stock: number;
+    image_url?: string;
+    is_active: boolean;
+    created_at?: string;
+    updated_at?: string;
+    category?: PosCategory;
+}
 
 export interface PosCategory {
     id: number;
     company_id: number;
     name: string;
     description?: string;
-    sort_order: number;
+    is_active: boolean;
     created_at?: string;
+    updated_at?: string;
 }
 
-export interface PosProduct {
+export interface PosDelivery {
     id: number;
     company_id: number;
-    category_id: number;
-    name: string;
-    sku?: string;
-    description?: string;
-    price: number;
-    cost_price?: number;
-    stock_quantity: number;
-    image_url?: string;
-    is_available: boolean;
+    order_id: number;
+    courier_name: string;
+    tracking_number?: string;
+    status: 'pending' | 'shipped' | 'delivered' | 'cancelled';
+    shipped_at?: string;
+    delivered_at?: string;
     created_at?: string;
-    category?: PosCategory;
-}
-
-export interface PosOrderItem {
-    id?: number;
-    order_id?: number;
-    product_id: number;
-    quantity: number;
-    unit_price: number;
-    subtotal: number;
-    product?: PosProduct;
 }
 
 export interface PosOrder {
     id: number;
     company_id: number;
     user_id: number;
-    customer_name?: string;
     total_amount: number;
-    tax_amount: number;
-    discount_amount: number;
-    payment_method: string;
-    payment_status: 'paid' | 'pending' | 'refunded';
-    notes?: string;
-    order_items: PosOrderItem[];
+    status: 'pending' | 'paid' | 'completed' | 'cancelled';
+    payment_method?: string;
     created_at?: string;
 }
 
-export interface DashboardStats {
-    total_revenue: number;
-    total_orders: number;
-    total_sales: number;
-    low_stock: number;
+export interface ItemsListResponse {
+    items: PosItem[];
+    pagination: PaginationData;
+}
+
+export interface CategoriesListResponse {
+    categories: PosCategory[];
+    pagination: PaginationData;
+}
+
+export interface DeliveriesListResponse {
+    deliveries: PosDelivery[];
+    pagination: PaginationData;
+}
+
+export interface OrdersListResponse {
+    orders: PosOrder[];
+    pagination: PaginationData;
 }

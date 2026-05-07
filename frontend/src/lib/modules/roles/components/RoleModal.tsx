@@ -5,37 +5,54 @@ import { Role, RolePayload } from '@/lib/modules/users/types';
 import {
     Shield,
     AlignLeft,
-    Loader2
+    Loader2,
+    Building2,
+    ChevronDown
 } from 'lucide-react';
 import { BaseModal } from '@/components/ui/modal/BaseModal';
 import { cn } from '@/lib/utils';
+import { LookupOption } from '@/lib/modules/users/types';
 
 interface RoleModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (values: RolePayload) => Promise<void>;
     role?: Role | null;
+    companies: LookupOption[];
+    isSuperAdmin: boolean;
 }
 
 export const RoleModal = ({
     isOpen,
     onClose,
     onSubmit,
-    role
+    role,
+    companies,
+    isSuperAdmin
 }: RoleModalProps) => {
 
     const formik = useFormik({
         initialValues: {
             name: '',
             description: '',
+            company_id: '' as string | number,
         },
         validationSchema: Yup.object({
             name: Yup.string().required('Role name is required'),
             description: Yup.string().required('Description is required'),
+            company_id: Yup.mixed().when([], {
+                is: () => isSuperAdmin,
+                then: (schema) => schema.required('Company is required'),
+                otherwise: (schema) => schema.notRequired()
+            })
         }),
-        onSubmit: async (values) => {
+        onSubmit: async (values, { setSubmitting }) => {
             try {
-                await onSubmit(values);
+                const payload = {
+                    ...values,
+                    company_id: values.company_id ? Number(values.company_id) : undefined
+                };
+                await onSubmit(payload as RolePayload);
                 onClose();
             } catch (error) {
                 console.error('Submit error:', error);
@@ -48,6 +65,7 @@ export const RoleModal = ({
             formik.setValues({
                 name: role.name || '',
                 description: role.description || '',
+                company_id: role.company_id || '',
             });
         } else if (!role && isOpen) {
             formik.resetForm();
@@ -102,6 +120,35 @@ export const RoleModal = ({
                     </div>
                     {formik.touched.name && formik.errors.name && <p className="text-xs text-red-500 font-medium">*{formik.errors.name}</p>}
                 </div>
+
+                {/* Company Dropdown (Super Admin only) */}
+                {isSuperAdmin && (
+                    <div className="space-y-2">
+                        <label className="text-xs font-black text-primary uppercase tracking-widest">Company</label>
+                        <div className="relative group">
+                            <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-primary transition-colors" />
+                            <select
+                                name="company_id"
+                                value={formik.values.company_id}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                className={cn(
+                                    "w-full pl-11 pr-10 py-3 bg-white/5 border rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all appearance-none shadow-inner",
+                                    formik.touched.company_id && formik.errors.company_id ? "border-red-500/50" : "border-white/10"
+                                )}
+                            >
+                                <option value="" className="bg-background-dark">Select Company</option>
+                                {companies.map((company) => (
+                                    <option key={company.value} value={company.value} className="bg-background-dark">
+                                        {company.label}
+                                    </option>
+                                ))}
+                            </select>
+                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                        </div>
+                        {formik.touched.company_id && formik.errors.company_id && <p className="text-xs text-red-500 font-medium">*{formik.errors.company_id as string}</p>}
+                    </div>
+                )}
 
                 {/* Description */}
                 <div className="space-y-2">

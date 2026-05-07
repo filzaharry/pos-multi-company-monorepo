@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { User } from '@/lib/modules/login/types';
-import { PaginationData, Role, Company } from '@/lib/modules/users/types';
+import { PaginationData, Role, Company, LookupOption } from '@/lib/modules/users/types';
 import {
     Search,
     Plus,
@@ -19,8 +19,8 @@ interface MobileProps {
     users: User[];
     isLoading: boolean;
     pagination: PaginationData | null;
-    roles: Role[];
-    companies: Company[];
+    roles: LookupOption[];
+    companies: LookupOption[];
     isSuperAdmin: boolean;
     search: string;
     setSearch: (val: string) => void;
@@ -33,6 +33,9 @@ interface MobileProps {
     onAdd: () => void;
     onEdit: (user: User) => void;
     onDelete: (user: User) => void;
+    onApplyFilters: () => void;
+    onResetFilters: () => void;
+    appliedFiltersCount: number;
 }
 
 export const Mobile: React.FC<MobileProps> = ({
@@ -52,7 +55,10 @@ export const Mobile: React.FC<MobileProps> = ({
     setPage,
     onAdd,
     onEdit,
-    onDelete
+    onDelete,
+    onApplyFilters,
+    onResetFilters,
+    appliedFiltersCount
 }) => {
     const [showFilters, setShowFilters] = React.useState(false);
 
@@ -88,7 +94,14 @@ export const Mobile: React.FC<MobileProps> = ({
                         showFilters ? "bg-primary border-primary text-white" : "bg-white/5 border-white/10 text-gray-400"
                     )}
                 >
-                    <Filter className="w-5 h-5" />
+                    <div className="relative">
+                        <Filter className="w-5 h-5" />
+                        {appliedFiltersCount > 0 && (
+                            <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-background-dark">
+                                {appliedFiltersCount}
+                            </span>
+                        )}
+                    </div>
                 </button>
             </div>
 
@@ -98,12 +111,12 @@ export const Mobile: React.FC<MobileProps> = ({
                         <label className="text-[10px] font-bold text-gray-500 uppercase ml-1">Role</label>
                         <select
                             value={roleId}
-                            onChange={(e) => { setRoleId(e.target.value); setPage(1); }}
+                            onChange={(e) => setRoleId(e.target.value)}
                             className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                         >
                             <option value="">All Roles</option>
                             {roles.map(role => (
-                                <option key={role.id} value={role.id.toString()}>{role.name}</option>
+                                <option key={role.value} value={role.value.toString()}>{role.label}</option>
                             ))}
                         </select>
                     </div>
@@ -113,16 +126,31 @@ export const Mobile: React.FC<MobileProps> = ({
                             <label className="text-[10px] font-bold text-gray-500 uppercase ml-1">Company</label>
                             <select
                                 value={companyId}
-                                onChange={(e) => { setCompanyId(e.target.value); setPage(1); }}
+                                onChange={(e) => setCompanyId(e.target.value)}
                                 className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                             >
                                 <option value="">All Companies</option>
                                 {companies.map(company => (
-                                    <option key={company.id} value={company.id.toString()}>{company.name}</option>
+                                    <option key={company.value} value={company.value.toString()}>{company.label}</option>
                                 ))}
                             </select>
                         </div>
                     )}
+
+                    <div className="flex gap-2 pt-2">
+                        <button
+                            onClick={onResetFilters}
+                            className="flex-1 py-2 bg-white/5 text-gray-400 rounded-lg text-xs font-bold"
+                        >
+                            Reset
+                        </button>
+                        <button
+                            onClick={onApplyFilters}
+                            className="flex-1 py-2 bg-primary text-white rounded-lg text-xs font-bold"
+                        >
+                            Apply Filters
+                        </button>
+                    </div>
                 </div>
             )}
 

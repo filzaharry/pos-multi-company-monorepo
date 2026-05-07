@@ -1,5 +1,10 @@
 import { ApiResponse } from '@/lib/types/api';
 import { User } from '../../login/types';
+ 
+export interface LookupOption {
+    label: string;
+    value: string | number;
+}
 
 export interface PaginationData {
     total: number;
@@ -21,6 +26,9 @@ export interface Role {
     description?: string;
     created_at?: string;
     permissions?: Permission[];
+    company_id?: number;
+    company_name?: string;
+    company?: Company;
 }
 
 export interface Permission {
@@ -38,6 +46,7 @@ export interface RoleListResponse {
 export interface RolePayload {
     name: string;
     description: string;
+    company_id?: number;
 }
 
 export interface Company {
