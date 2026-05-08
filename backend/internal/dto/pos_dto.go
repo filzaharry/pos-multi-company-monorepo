@@ -7,17 +7,17 @@ type PosCategoryRequest struct {
 }
 
 type PosProductRequest struct {
-	CategoryID    uint    `json:"category_id" validate:"required"`
-	ProductType   int     `json:"product_type"` // 0: Retail, 1: Food/Drink
-	Name          string  `json:"name" validate:"required"`
-	SKU           string  `json:"sku"`
-	Description   string  `json:"description"`
-	Price         float64 `json:"price" validate:"required,gt=0"`
-	CostPrice     float64 `json:"cost_price"`
-	StockQuantity int     `json:"stock_quantity" validate:"min=0"`
-	ImageURL      string  `json:"image_url"`
-	TrackStock    bool    `json:"track_stock"`
-	IsAvailable   bool    `json:"is_available"`
+	CategoryID    uint    `json:"category_id" form:"category_id" validate:"required"`
+	ProductType   int     `json:"product_type" form:"product_type"` // 0: Retail, 1: Food/Drink
+	Name          string  `json:"name" form:"name" validate:"required"`
+	SKU           string  `json:"sku" form:"sku"`
+	Description   string  `json:"description" form:"description"`
+	Price         float64 `json:"price" form:"price" validate:"required,gt=0"`
+	CostPrice     float64 `json:"cost_price" form:"cost_price"`
+	StockQuantity int     `json:"stock_quantity" form:"stock_quantity" validate:"min=0"`
+	ImageURL      string  `json:"image_url" form:"image_url"`
+	TrackStock    bool    `json:"track_stock" form:"track_stock"`
+	IsAvailable   bool    `json:"is_available" form:"is_available"`
 }
 
 type PosOrderRequest struct {

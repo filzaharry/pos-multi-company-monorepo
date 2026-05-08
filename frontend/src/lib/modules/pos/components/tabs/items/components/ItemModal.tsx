@@ -1,0 +1,341 @@
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Package, Save, Image as ImageIcon, Upload } from 'lucide-react';
+import { PosItem } from '../../../../types';
+import { CustomInput } from '@/components/ui/CustomInput';
+import { CustomSelect } from '@/components/ui/CustomSelect';
+import { LookupOption } from '@/lib/modules/users/types';
+
+interface ItemModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onSubmit: (data: FormData) => Promise<void>;
+    item?: PosItem | null;
+    categories: LookupOption[];
+    companyId: number;
+}
+
+export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit, item, categories, companyId }) => {
+    const [formData, setFormData] = useState<Partial<PosItem>>({
+        name: '',
+        sku: '',
+        category_id: 0,
+        product_type: 0,
+        price: 0,
+        cost_price: 0,
+        stock_quantity: 0,
+        track_stock: true,
+        is_available: true,
+        description: '',
+    });
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const generateSKU = () => {
+        const d = new Date();
+        const ddmmyy = `${String(d.getDate()).padStart(2, '0')}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getFullYear()).slice(2)}`;
+        const randomStr = Math.random().toString(36).substring(2, 5).toUpperCase();
+        return `SKU${companyId}${ddmmyy}${randomStr}`;
+    };
+
+    useEffect(() => {
+        if (item) {
+            setFormData({
+                ...item,
+            });
+            setImageFile(null);
+            setImagePreview(item.image_url ? `${process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || ''}/${item.image_url}` : null);
+        } else {
+            setFormData({
+                name: '',
+                sku: generateSKU(),
+                category_id: categories.length > 0 ? Number(categories[0].value) : 0,
+                product_type: 0,
+                price: 0,
+                cost_price: 0,
+                stock_quantity: 0,
+                track_stock: true,
+                is_available: true,
+                description: '',
+            });
+            setImageFile(null);
+            setImagePreview(null);
+        }
+    }, [item, categories, isOpen]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value, type } = e.target;
+        let finalValue: unknown = value;
+
+        if (type === 'checkbox') {
+            finalValue = (e.target as HTMLInputElement).checked;
+        } else if (type === 'number' || name === 'category_id' || name === 'product_type') {
+            finalValue = Number(value);
+        }
+
+        setFormData((prev: Partial<PosItem>) => ({ ...prev, [name]: finalValue }));
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try {
+            const submitData = new FormData();
+            Object.entries(formData).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    submitData.append(key, value.toString());
+                }
+            });
+            if (imageFile) {
+                submitData.append('image', imageFile);
+            }
+            await onSubmit(submitData);
+            onClose();
+        } catch (error) {
+            console.error('Failed to submit item', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    if (!mounted) return null;
+
+    const modalContent = (
+        <AnimatePresence>
+            {isOpen && (
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={onClose}
+                        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                    />
+                    <motion.div
+                        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                        className="relative w-full max-w-2xl bg-background-dark border border-white/10 rounded-3xl p-6 lg:p-8 shadow-2xl flex flex-col max-h-[90vh]"
+                    >
+                        <div className="flex items-center justify-between mb-8 shrink-0">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-primary/10 border border-primary/20 rounded-2xl flex items-center justify-center text-primary">
+                                    <Package className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-black text-white italic uppercase tracking-wider">
+                                        {item ? 'Edit Item' : 'New Item'}
+                                    </h2>
+                                    <p className="text-sm text-gray-500">
+                                        {item ? 'Update item details and inventory' : 'Add a new product to your inventory'}
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={onClose}
+                                className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Item Name *</label>
+                                    <CustomInput
+                                        type="text"
+                                        name="name"
+                                        required
+                                        value={formData.name || ''}
+                                        onChange={handleChange}
+                                        placeholder="e.g. Classic Burger"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">SKU / Barcode</label>
+                                    <CustomInput
+                                        type="text"
+                                        name="sku"
+                                        value={formData.sku || ''}
+                                        onChange={handleChange}
+                                        placeholder="Auto-generated"
+                                        disabled={true}
+                                        className="opacity-50 cursor-not-allowed"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Category *</label>
+                                    <CustomSelect
+                                        name="category_id"
+                                        required
+                                        value={formData.category_id || ''}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="" disabled>Select Category</option>
+                                        {categories.map(cat => (
+                                            <option key={cat.value} value={cat.value} className="bg-background-dark">{cat.label}</option>
+                                        ))}
+                                    </CustomSelect>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Product Type</label>
+                                    <CustomSelect
+                                        name="product_type"
+                                        value={formData.product_type?.toString()}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="0" className="bg-background-dark">Retail (Barang Jadi)</option>
+                                        <option value="1" className="bg-background-dark">Food/Drink (Olahan)</option>
+                                    </CustomSelect>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Selling Price *</label>
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-bold z-10">Rp</span>
+                                        <CustomInput
+                                            type="number"
+                                            name="price"
+                                            required
+                                            min="0"
+                                            value={formData.price || ''}
+                                            onChange={handleChange}
+                                            className="pl-12"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Cost Price</label>
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-bold z-10">Rp</span>
+                                        <CustomInput
+                                            type="number"
+                                            name="cost_price"
+                                            min="0"
+                                            value={formData.cost_price || ''}
+                                            onChange={handleChange}
+                                            className="pl-12"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Stock Quantity</label>
+                                    <CustomInput
+                                        type="number"
+                                        name="stock_quantity"
+                                        value={formData.stock_quantity || ''}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="space-y-4 md:col-span-2 bg-white/5 p-4 rounded-xl border border-white/10 mt-2">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h4 className="text-sm font-bold text-white">Track Stock</h4>
+                                            <p className="text-xs text-gray-500">Automatically reduce stock upon sale</p>
+                                        </div>
+                                        <label className="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" name="track_stock" checked={formData.track_stock} onChange={handleChange} className="sr-only peer" />
+                                            <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                        </label>
+                                    </div>
+                                    <hr className="border-white/10" />
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h4 className="text-sm font-bold text-white">Available for Sale</h4>
+                                            <p className="text-xs text-gray-500">Show this item in the POS system</p>
+                                        </div>
+                                        <label className="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" name="is_available" checked={formData.is_available} onChange={handleChange} className="sr-only peer" />
+                                            <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2 md:col-span-2">
+                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Description</label>
+                                    <textarea
+                                        name="description"
+                                        rows={3}
+                                        value={formData.description || ''}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-gray-600 resize-none"
+                                        placeholder="Brief description of the item..."
+                                    />
+                                </div>
+
+                                <div className="space-y-2 md:col-span-2">
+                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Product Image</label>
+                                    <div className="relative border-2 border-dashed border-white/10 rounded-2xl hover:border-primary/50 transition-colors bg-white/5 overflow-hidden group">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageChange}
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                        />
+                                        {imagePreview ? (
+                                            <div className="relative w-full h-48 flex items-center justify-center bg-black/50">
+                                                <img src={imagePreview} alt="Preview" className="max-h-full max-w-full object-contain" />
+                                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                                    <div className="flex flex-col items-center text-white">
+                                                        <Upload className="w-8 h-8 mb-2" />
+                                                        <span className="text-sm font-bold">Change Image</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center py-10 text-gray-500 group-hover:text-primary transition-colors">
+                                                <ImageIcon className="w-10 h-10 mb-3" />
+                                                <p className="text-sm font-bold text-white mb-1">Click or drag image to upload</p>
+                                                <p className="text-xs">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-6 border-t border-white/10 flex gap-4 shrink-0">
+                                <button
+                                    type="button"
+                                    onClick={onClose}
+                                    className="flex-1 px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold transition-all"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold transition-all shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <Save className="w-5 h-5" />
+                                    <span>{isSubmitting ? 'Saving...' : 'Save Item'}</span>
+                                </button>
+                            </div>
+                        </form>
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
+    );
+
+    return createPortal(modalContent, document.body);
+};

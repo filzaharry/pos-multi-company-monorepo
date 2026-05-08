@@ -1,40 +1,31 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { apiRouter } from '@/lib/api/router';
+import { useLogin } from '@/lib/modules/login/store/useLogin';
+import { CategoriesListResponse, ItemsListResponse, PosCategory, PosItem } from '@/lib/modules/pos/types';
+import { ApiResponse } from '@/lib/types/api';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import {
-    Search,
-    Plus,
-    Edit2,
-    Trash2,
-    Package,
-    LayoutGrid,
-    LayoutList,
-    MoreHorizontal,
+    AlertTriangle,
     Box,
     CheckCircle2,
-    XCircle,
-    Building2,
-    AlertTriangle,
-    Tag,
+    Edit2,
     Layers,
-    ChevronLeft,
-    ChevronRight,
-    ArrowUpDown,
+    Package,
+    Plus,
+    Search,
     ShoppingCart,
-    Filter
+    Tag,
+    Trash2,
+    XCircle
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useLogin } from '@/lib/modules/login/store/useLogin';
-import { apiRouter } from '@/lib/api/router';
-import { PosProduct, PosCategory } from '@/lib/modules/pos/types';
-import { useToast } from '@/components/ui/Toast';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function InventoryManagementPage() {
     const { activeCompanyId } = useLogin();
-    const { showToast } = useToast();
-    const [products, setProducts] = useState<PosProduct[]>([]);
+    const [products, setProducts] = useState<PosItem[]>([]);
     const [categories, setCategories] = useState<PosCategory[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'products' | 'categories'>('products');
@@ -48,11 +39,11 @@ export default function InventoryManagementPage() {
         setIsLoading(true);
         try {
             const [prodRes, catRes] = await Promise.all([
-                apiRouter.get<any>('/pos/products'),
-                apiRouter.get<any>('/pos/categories')
+                apiRouter.get<ApiResponse<ItemsListResponse>>('/pos/products'),
+                apiRouter.get<ApiResponse<CategoriesListResponse>>('/pos/categories')
             ]);
-            setProducts(prodRes.data);
-            setCategories(catRes.data);
+            setProducts(prodRes.data.result.items);
+            setCategories(catRes.data.result.items);
         } catch (error) {
             console.error('Failed to fetch inventory:', error);
         } finally {

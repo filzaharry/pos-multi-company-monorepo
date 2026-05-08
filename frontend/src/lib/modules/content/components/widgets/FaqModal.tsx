@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { HelpCircle, Type, Loader2, List } from 'lucide-react';
 import { BaseModal } from '@/components/ui/modal';
-import { Input } from '@/components/ui/Input';
+import { CustomInput } from '@/components/ui/CustomInput';
 import { LandingFaq } from '../../types';
 
 interface FaqModalProps {
@@ -75,7 +75,7 @@ export const FaqModal = ({ isOpen, onClose, onSubmit, item }: FaqModalProps) => 
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-300">Question</label>
-                        <Input
+                        <CustomInput
                             name="title"
                             icon={HelpCircle}
                             placeholder="e.g. How to get started?"

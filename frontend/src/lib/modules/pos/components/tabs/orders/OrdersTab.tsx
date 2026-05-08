@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DataTable, Column } from '@/components/ui/DataTable';
-import { PosOrder } from '../../types';
-import { posService } from '../../services/pos.service';
+import { PosOrder } from '../../../types';
+import { posService } from '../../../services/pos.service';
 import { PaginationData } from '@/lib/modules/users/types';
 import moment from 'moment';
 
@@ -21,8 +21,8 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ companyId }) => {
         try {
             const response = await posService.getOrders(companyId, { page, limit: 10 });
             if (response.status === 'success' || response.status === 'Success') {
-                setOrders(response.data.orders);
-                setPagination(response.data.pagination);
+                setOrders(response.data.result.items);
+                setPagination(response.data.result.pagination);
             }
         } catch (error) {
             console.error('Failed to fetch orders:', error);
@@ -49,14 +49,14 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ companyId }) => {
         },
         { 
             header: 'Status', 
-            accessorKey: 'status',
+            accessorKey: 'payment_status',
             cell: (ord) => (
                 <span className={ `px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-                    ord.status === 'paid' || ord.status === 'completed' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 
-                    ord.status === 'pending' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : 
+                    ord.payment_status === 'Paid' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 
+                    ord.payment_status === 'Pending' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : 
                     'bg-red-500/10 text-red-500 border border-red-500/20'
                 }` }>
-                    {ord.status}
+                    {ord.payment_status}
                 </span>
             )
         },

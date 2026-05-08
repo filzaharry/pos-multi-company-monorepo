@@ -31,11 +31,17 @@ func GetPosCategories(c *fiber.Ctx) error {
 		return utils.ErrorResponse(c, fiber.StatusForbidden, err.Error())
 	}
 
-	categories, err := posService().GetCategories(companyID)
+	page, _ := strconv.Atoi(c.Query("page", "1"))
+	limit, _ := strconv.Atoi(c.Query("limit", "10"))
+
+	categories, pagination, err := posService().GetCategories(companyID, page, limit)
 	if err != nil {
 		return utils.ErrorResponse(c, fiber.StatusInternalServerError, err.Error())
 	}
-	return utils.SuccessResponse(c, "Categories fetched successfully", categories)
+	return utils.SuccessResponse(c, "Categories fetched successfully", fiber.Map{
+		"items":      categories,
+		"pagination": pagination,
+	})
 }
 
 func GetPosCategoryDetail(c *fiber.Ctx) error {
@@ -112,11 +118,17 @@ func GetPosProducts(c *fiber.Ctx) error {
 	categoryID, _ := strconv.ParseUint(c.Query("category_id"), 10, 32)
 	search := c.Query("search")
 
-	products, err := posService().GetProducts(companyID, uint(categoryID), search)
+	page, _ := strconv.Atoi(c.Query("page", "1"))
+	limit, _ := strconv.Atoi(c.Query("limit", "10"))
+
+	products, pagination, err := posService().GetProducts(companyID, uint(categoryID), search, page, limit)
 	if err != nil {
 		return utils.ErrorResponse(c, fiber.StatusInternalServerError, err.Error())
 	}
-	return utils.SuccessResponse(c, "Products fetched successfully", products)
+	return utils.SuccessResponse(c, "Products fetched successfully", fiber.Map{
+		"items":      products,
+		"pagination": pagination,
+	})
 }
 
 func GetPosProductDetail(c *fiber.Ctx) error {
@@ -141,7 +153,13 @@ func CreatePosProduct(c *fiber.Ctx) error {
 
 	req := new(dto.PosProductRequest)
 	if err := c.BodyParser(req); err != nil {
-		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid input: "+err.Error())
+	}
+
+	// Handle Image Upload if exists
+	imagePath, err := utils.SaveUploadedFile(c, "image", "products")
+	if err == nil && imagePath != "" {
+		req.ImageURL = imagePath
 	}
 
 	product, err := posService().CreateProduct(companyID, req)
@@ -160,7 +178,13 @@ func UpdatePosProduct(c *fiber.Ctx) error {
 	id, _ := strconv.ParseUint(c.Params("id"), 10, 32)
 	req := new(dto.PosProductRequest)
 	if err := c.BodyParser(req); err != nil {
-		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid input: "+err.Error())
+	}
+
+	// Handle Image Upload if exists
+	imagePath, err := utils.SaveUploadedFile(c, "image", "products")
+	if err == nil && imagePath != "" {
+		req.ImageURL = imagePath
 	}
 
 	product, err := posService().UpdateProduct(companyID, uint(id), req)
@@ -190,11 +214,17 @@ func GetPosOrders(c *fiber.Ctx) error {
 		return utils.ErrorResponse(c, fiber.StatusForbidden, err.Error())
 	}
 
-	orders, err := posService().GetOrders(companyID)
+	page, _ := strconv.Atoi(c.Query("page", "1"))
+	limit, _ := strconv.Atoi(c.Query("limit", "10"))
+
+	orders, pagination, err := posService().GetOrders(companyID, page, limit)
 	if err != nil {
 		return utils.ErrorResponse(c, fiber.StatusInternalServerError, err.Error())
 	}
-	return utils.SuccessResponse(c, "Orders fetched successfully", orders)
+	return utils.SuccessResponse(c, "Orders fetched successfully", fiber.Map{
+		"items":      orders,
+		"pagination": pagination,
+	})
 }
 
 func GetPosOrderDetail(c *fiber.Ctx) error {

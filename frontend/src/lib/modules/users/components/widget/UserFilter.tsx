@@ -1,6 +1,7 @@
 import React from 'react';
 import { Shield, Building2, Calendar } from 'lucide-react';
 import { LookupOption } from '@/lib/modules/users/types';
+import { CustomDatePicker } from '@/components/ui/CustomDatePicker';
 
 interface UserFilterProps {
     roleId: string;
@@ -73,24 +74,20 @@ export const UserFilter: React.FC<UserFilterProps> = ({
                 <div className="space-y-2">
                     <label className="text-xs font-black text-primary uppercase tracking-widest">Joined After</label>
                     <div className="relative">
-                        <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                        <input
-                            type="date"
+                        <CustomDatePicker
                             value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                            className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            onChange={(val) => setStartDate(val)}
+                            placeholder="Select Start Date"
                         />
                     </div>
                 </div>
                 <div className="space-y-2">
                     <label className="text-xs font-black text-primary uppercase tracking-widest">Joined Before</label>
                     <div className="relative">
-                        <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                        <input
-                            type="date"
+                        <CustomDatePicker
                             value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                            className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            onChange={(val) => setEndDate(val)}
+                            placeholder="Select End Date"
                         />
                     </div>
                 </div>

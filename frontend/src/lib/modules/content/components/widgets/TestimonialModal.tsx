@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { User, Star, Quote, Loader2, Building2 } from 'lucide-react';
 import { BaseModal } from '@/components/ui/modal';
-import { Input } from '@/components/ui/Input';
+import { CustomInput } from '@/components/ui/CustomInput';
 import { LandingTestimonial } from '../../types';
 
 interface TestimonialModalProps {
@@ -78,7 +78,7 @@ export const TestimonialModal = ({ isOpen, onClose, onSubmit, item }: Testimonia
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-300">Author Name</label>
-                        <Input
+                        <CustomInput
                             name="name"
                             icon={User}
                             placeholder="e.g. John Doe"
@@ -92,7 +92,7 @@ export const TestimonialModal = ({ isOpen, onClose, onSubmit, item }: Testimonia
 
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-300">Rating (1-5)</label>
-                        <Input
+                        <CustomInput
                             name="rating"
                             type="number"
                             icon={Star}

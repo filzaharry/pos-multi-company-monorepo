@@ -71,7 +71,7 @@ api.interceptors.response.use(
                     const response = await axios.post(`${api.defaults.baseURL}/auth/refresh`, {
                         refresh_token: refreshToken
                     });
-
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const { access_token, refresh_token } = (response.data as any).data.result;
 
                     setCookie('accessToken', access_token, 30);
@@ -137,12 +137,24 @@ export const apiRouter = {
     },
     // For file uploads
     upload: async <T>(url: string, formData: FormData, config?: AxiosRequestConfig) => {
-        const response = await api.post<T>(url, formData, {
+        const token = typeof window !== 'undefined' ? getCookie('accessToken') : null;
+        const response = await axios.post<T>(`${process.env.NEXT_PUBLIC_API_URL || '/api/v1'}${url}`, formData, {
             ...config,
             headers: {
                 ...config?.headers,
-                'Content-Type': 'multipart/form-data',
-            },
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            }
+        });
+        return response.data;
+    },
+    uploadPut: async <T>(url: string, formData: FormData, config?: AxiosRequestConfig) => {
+        const token = typeof window !== 'undefined' ? getCookie('accessToken') : null;
+        const response = await axios.put<T>(`${process.env.NEXT_PUBLIC_API_URL || '/api/v1'}${url}`, formData, {
+            ...config,
+            headers: {
+                ...config?.headers,
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            }
         });
         return response.data;
     },

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DataTable, Column } from '@/components/ui/DataTable';
-import { PosDelivery } from '../../types';
-import { posService } from '../../services/pos.service';
+import { PosDelivery } from '../../../types';
+import { posService } from '../../../services/pos.service';
 import { PaginationData } from '@/lib/modules/users/types';
 
 interface DeliveriesTabProps {
@@ -20,8 +20,8 @@ export const DeliveriesTab: React.FC<DeliveriesTabProps> = ({ companyId }) => {
         try {
             const response = await posService.getDeliveries(companyId, { page, limit: 10 });
             if (response.status === 'success' || response.status === 'Success') {
-                setDeliveries(response.data.deliveries);
-                setPagination(response.data.pagination);
+                setDeliveries(response.data.result.items);
+                setPagination(response.data.result.pagination);
             }
         } catch (error) {
             console.error('Failed to fetch deliveries:', error);

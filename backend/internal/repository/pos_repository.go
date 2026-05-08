@@ -7,21 +7,21 @@ import (
 
 type PosRepository interface {
 	// Categories
-	GetAllCategories(companyID uint) ([]models.PosCategory, error)
+	GetAllCategories(companyID uint, page, limit int) ([]models.PosCategory, models.Pagination, error)
 	GetCategoryByID(companyID uint, id uint) (models.PosCategory, error)
 	CreateCategory(category *models.PosCategory) error
 	UpdateCategory(category *models.PosCategory) error
 	DeleteCategory(companyID uint, id uint) error
 
 	// Products
-	GetAllProducts(companyID uint, categoryID uint, search string) ([]models.PosProduct, error)
+	GetAllProducts(companyID uint, categoryID uint, search string, page, limit int) ([]models.PosProduct, models.Pagination, error)
 	GetProductByID(companyID uint, id uint) (models.PosProduct, error)
 	CreateProduct(product *models.PosProduct) error
 	UpdateProduct(product *models.PosProduct) error
 	DeleteProduct(companyID uint, id uint) error
 
 	// Orders
-	GetAllOrders(companyID uint) ([]models.PosOrder, error)
+	GetAllOrders(companyID uint, page, limit int) ([]models.PosOrder, models.Pagination, error)
 	GetOrderByID(companyID uint, id uint) (models.PosOrder, error)
 	CreateOrder(order *models.PosOrder) error
 	UpdateOrder(order *models.PosOrder) error
@@ -39,10 +39,12 @@ func NewPosRepository(db *gorm.DB) PosRepository {
 }
 
 // Categories Implementation
-func (r *posRepository) GetAllCategories(companyID uint) ([]models.PosCategory, error) {
+func (r *posRepository) GetAllCategories(companyID uint, page, limit int) ([]models.PosCategory, models.Pagination, error) {
 	var categories []models.PosCategory
-	err := r.db.Where("company_id = ?", companyID).Order("sort_order asc").Find(&categories).Error
-	return categories, err
+	query := r.db.Where("company_id = ?", companyID).Order("sort_order asc")
+	
+	pagination, err := models.Paginate(query, page, limit, &categories)
+	return categories, pagination, err
 }
 
 func (r *posRepository) GetCategoryByID(companyID uint, id uint) (models.PosCategory, error) {
@@ -64,7 +66,7 @@ func (r *posRepository) DeleteCategory(companyID uint, id uint) error {
 }
 
 // Products Implementation
-func (r *posRepository) GetAllProducts(companyID uint, categoryID uint, search string) ([]models.PosProduct, error) {
+func (r *posRepository) GetAllProducts(companyID uint, categoryID uint, search string, page, limit int) ([]models.PosProduct, models.Pagination, error) {
 	var products []models.PosProduct
 	query := r.db.Preload("Category").Where("company_id = ?", companyID)
 	
@@ -72,11 +74,11 @@ func (r *posRepository) GetAllProducts(companyID uint, categoryID uint, search s
 		query = query.Where("category_id = ?", categoryID)
 	}
 	if search != "" {
-		query = query.Where("name ILIKE ?", "%"+search+"%")
+		query = query.Where("name ILIKE ? OR sku ILIKE ?", "%"+search+"%", "%"+search+"%")
 	}
 	
-	err := query.Find(&products).Error
-	return products, err
+	pagination, err := models.Paginate(query, page, limit, &products)
+	return products, pagination, err
 }
 
 func (r *posRepository) GetProductByID(companyID uint, id uint) (models.PosProduct, error) {
@@ -98,10 +100,12 @@ func (r *posRepository) DeleteProduct(companyID uint, id uint) error {
 }
 
 // Orders Implementation
-func (r *posRepository) GetAllOrders(companyID uint) ([]models.PosOrder, error) {
+func (r *posRepository) GetAllOrders(companyID uint, page, limit int) ([]models.PosOrder, models.Pagination, error) {
 	var orders []models.PosOrder
-	err := r.db.Preload("OrderItems.Product").Where("company_id = ?", companyID).Order("created_at desc").Find(&orders).Error
-	return orders, err
+	query := r.db.Preload("OrderItems.Product").Where("company_id = ?", companyID).Order("created_at desc")
+	
+	pagination, err := models.Paginate(query, page, limit, &orders)
+	return orders, pagination, err
 }
 
 func (r *posRepository) GetOrderByID(companyID uint, id uint) (models.PosOrder, error) {

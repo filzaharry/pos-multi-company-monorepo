@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input } from '@/components/ui/Input';
+import { CustomInput } from '@/components/ui/CustomInput';
 import { motion } from 'framer-motion';
 import { Eye, Image as ImageIcon, Save, Type, Loader2 } from 'lucide-react';
 import { contentService } from '../../services/content.service';
@@ -93,7 +93,7 @@ export const HeroSectionEditor = () => {
             <div className="space-y-8">
                 <div className="space-y-3">
                     <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Main Headline</label>
-                    <Input
+                    <CustomInput
                         value={data.title}
                         onChange={(e) => setData({ ...data, title: e.target.value })}
                         placeholder="Enter main headline..."

@@ -8,21 +8,21 @@ import (
 
 type PosService interface {
 	// Categories
-	GetCategories(companyID uint) ([]models.PosCategory, error)
+	GetCategories(companyID uint, page, limit int) ([]models.PosCategory, models.Pagination, error)
 	GetCategory(companyID uint, id uint) (models.PosCategory, error)
 	CreateCategory(companyID uint, req *dto.PosCategoryRequest) (models.PosCategory, error)
 	UpdateCategory(companyID uint, id uint, req *dto.PosCategoryRequest) (models.PosCategory, error)
 	DeleteCategory(companyID uint, id uint) error
 
 	// Products
-	GetProducts(companyID uint, categoryID uint, search string) ([]models.PosProduct, error)
+	GetProducts(companyID uint, categoryID uint, search string, page, limit int) ([]models.PosProduct, models.Pagination, error)
 	GetProduct(companyID uint, id uint) (models.PosProduct, error)
 	CreateProduct(companyID uint, req *dto.PosProductRequest) (models.PosProduct, error)
 	UpdateProduct(companyID uint, id uint, req *dto.PosProductRequest) (models.PosProduct, error)
 	DeleteProduct(companyID uint, id uint) error
 
 	// Orders
-	GetOrders(companyID uint) ([]models.PosOrder, error)
+	GetOrders(companyID uint, page, limit int) ([]models.PosOrder, models.Pagination, error)
 	GetOrder(companyID uint, id uint) (models.PosOrder, error)
 	CreateOrder(companyID uint, userID uint, req *dto.PosOrderRequest) (models.PosOrder, error)
 	UpdateOrder(companyID uint, id uint, req *dto.PosUpdateOrderStatusRequest) (models.PosOrder, error)
@@ -40,8 +40,8 @@ func NewPosService(repo repository.PosRepository) PosService {
 }
 
 // Categories
-func (s *posService) GetCategories(companyID uint) ([]models.PosCategory, error) {
-	return s.repo.GetAllCategories(companyID)
+func (s *posService) GetCategories(companyID uint, page, limit int) ([]models.PosCategory, models.Pagination, error) {
+	return s.repo.GetAllCategories(companyID, page, limit)
 }
 
 func (s *posService) GetCategory(companyID uint, id uint) (models.PosCategory, error) {
@@ -76,8 +76,8 @@ func (s *posService) DeleteCategory(companyID uint, id uint) error {
 }
 
 // Products
-func (s *posService) GetProducts(companyID uint, categoryID uint, search string) ([]models.PosProduct, error) {
-	return s.repo.GetAllProducts(companyID, categoryID, search)
+func (s *posService) GetProducts(companyID uint, categoryID uint, search string, page, limit int) ([]models.PosProduct, models.Pagination, error) {
+	return s.repo.GetAllProducts(companyID, categoryID, search, page, limit)
 }
 
 func (s *posService) GetProduct(companyID uint, id uint) (models.PosProduct, error) {
@@ -128,8 +128,8 @@ func (s *posService) DeleteProduct(companyID uint, id uint) error {
 }
 
 // Orders
-func (s *posService) GetOrders(companyID uint) ([]models.PosOrder, error) {
-	return s.repo.GetAllOrders(companyID)
+func (s *posService) GetOrders(companyID uint, page, limit int) ([]models.PosOrder, models.Pagination, error) {
+	return s.repo.GetAllOrders(companyID, page, limit)
 }
 
 func (s *posService) GetOrder(companyID uint, id uint) (models.PosOrder, error) {

@@ -60,3 +60,28 @@ func GetCompanyOptions(c *fiber.Ctx) error {
 
 	return utils.SuccessResponse(c, "Companies fetched successfully", options)
 }
+
+// GetPosCategoryOptions returns POS categories as label-value pairs for dropdowns
+func GetPosCategoryOptions(c *fiber.Ctx) error {
+	companyID := GetContextCompanyID(c)
+	if companyID == nil {
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Company ID is required")
+	}
+
+	posRepo := repository.NewPosRepository(database.DB)
+	// We pass 1 and 1000 for page and limit to get virtually all categories for the dropdown
+	categories, _, err := posRepo.GetAllCategories(*companyID, 1, 1000)
+	if err != nil {
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to fetch POS categories")
+	}
+
+	options := make([]dto.LookupOption, len(categories))
+	for i, cat := range categories {
+		options[i] = dto.LookupOption{
+			Label: cat.Name,
+			Value: cat.ID,
+		}
+	}
+
+	return utils.SuccessResponse(c, "POS Categories fetched successfully", options)
+}

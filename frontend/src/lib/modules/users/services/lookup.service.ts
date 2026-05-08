@@ -27,5 +27,17 @@ export const lookupService = {
                 cache: 'no-store'
             })
         );
+    },
+    getPosCategoryOptions: (token: string, companyId: number) => {
+        return apiHandler<ApiResponse<LookupOption[]>>((baseUrl) =>
+            fetch(`${baseUrl}/lookups/pos-categories`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'X-Company-ID': companyId.toString()
+                },
+                cache: 'no-store'
+            })
+        );
     }
 };

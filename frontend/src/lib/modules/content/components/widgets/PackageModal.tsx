@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Box, DollarSign, Type, FileText, Loader2 } from 'lucide-react';
 import { BaseModal } from '@/components/ui/modal';
-import { Input } from '@/components/ui/Input';
+import { CustomInput } from '@/components/ui/CustomInput';
 import { LandingPackage } from '../../types';
 
 interface PackageModalProps {
@@ -78,7 +78,7 @@ export const PackageModal = ({ isOpen, onClose, onSubmit, item }: PackageModalPr
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-300">Package Name</label>
-                        <Input
+                        <CustomInput
                             name="name"
                             icon={Box}
                             placeholder="e.g. Basic Plan"
@@ -92,7 +92,7 @@ export const PackageModal = ({ isOpen, onClose, onSubmit, item }: PackageModalPr
 
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-300">Pricing (IDR)</label>
-                        <Input
+                        <CustomInput
                             name="pricing"
                             type="number"
                             icon={DollarSign}
