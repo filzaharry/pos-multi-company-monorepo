@@ -10,6 +10,7 @@ type PosOrder struct {
 	ID             uint           `gorm:"primaryKey" json:"id"`
 	CompanyID      uint           `gorm:"not null" json:"company_id"`
 	UserID         uint           `gorm:"not null" json:"user_id"` // Cashier
+	Code           string         `gorm:"size:50;uniqueIndex:idx_company_code" json:"code"`
 	CustomerName   string         `gorm:"size:255" json:"customer_name"`
 	PhoneNumber    string         `gorm:"size:20" json:"phone_number"`
 	TotalAmount    float64        `gorm:"type:decimal(16,2);not null" json:"total_amount"`
@@ -36,6 +37,8 @@ type PosOrderItem struct {
 	Quantity  int            `gorm:"not null" json:"quantity"`
 	UnitPrice float64        `gorm:"type:decimal(16,2);not null" json:"unit_price"`
 	Subtotal  float64        `gorm:"type:decimal(16,2);not null" json:"subtotal"`
+	LevelIDs  string         `gorm:"type:text" json:"level_ids"` // Comma-separated PosLevel IDs
+	ExtraIDs  string         `gorm:"type:text" json:"extra_ids"` // Comma-separated PosExtra IDs
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`

@@ -19,6 +19,8 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
     const { showToast } = useToast();
     const [items, setItems] = useState<PosItem[]>([]);
     const [categories, setCategories] = useState<LookupOption[]>([]);
+    const [levels, setLevels] = useState<LookupOption[]>([]);
+    const [extras, setExtras] = useState<LookupOption[]>([]);
     const [pagination, setPagination] = useState<PaginationData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -59,11 +61,45 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
             console.error('Failed to fetch categories lookup:', error);
         }
     }, [companyId]);
+    
+    const fetchLevels = useCallback(async () => {
+        if (!companyId) return;
+        try {
+            const response = await posService.getLevels(companyId, { page: 1, limit: 100 });
+            if (response.status === 'success' || response.status === 'Success') {
+                const options = response.data.result.items.map(lvl => ({
+                    label: lvl.name,
+                    value: lvl.id.toString()
+                }));
+                setLevels(options);
+            }
+        } catch (error) {
+            console.error('Failed to fetch levels:', error);
+        }
+    }, [companyId]);
+
+    const fetchExtras = useCallback(async () => {
+        if (!companyId) return;
+        try {
+            const response = await posService.getExtras(companyId, { page: 1, limit: 100 });
+            if (response.status === 'success' || response.status === 'Success') {
+                const options = response.data.result.items.map(ext => ({
+                    label: ext.name,
+                    value: ext.id.toString()
+                }));
+                setExtras(options);
+            }
+        } catch (error) {
+            console.error('Failed to fetch extras:', error);
+        }
+    }, [companyId]);
 
     useEffect(() => {
         fetchItems();
         fetchCategories();
-    }, [fetchItems, fetchCategories]);
+        fetchLevels();
+        fetchExtras();
+    }, [fetchItems, fetchCategories, fetchLevels, fetchExtras]);
 
     const handleAdd = () => {
         setSelectedItem(null);
@@ -178,6 +214,8 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
                 onSubmit={handleSubmit}
                 item={selectedItem}
                 categories={categories}
+                levels={levels}
+                extras={extras}
                 companyId={companyId}
             />
             <DeleteConfirmationModal

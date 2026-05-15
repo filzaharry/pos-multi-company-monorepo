@@ -32,6 +32,8 @@ type PosProduct struct {
 	ImageURL      string         `gorm:"size:255" json:"image_url"`
 	TrackStock    bool           `gorm:"default:true" json:"track_stock"`          // Jika true, stok berkurang otomatis saat terjual
 	IsAvailable   bool           `gorm:"default:true" json:"is_available"`
+	LevelIDs      string         `gorm:"type:text" json:"level_ids"` // Comma-separated PosLevel IDs
+	ExtraIDs      string         `gorm:"type:text" json:"extra_ids"` // Comma-separated PosExtra IDs
 	CreatedAt     time.Time      `json:"created_at"`
 	UpdatedAt     time.Time      `json:"updated_at"`
 	DeletedAt     gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`

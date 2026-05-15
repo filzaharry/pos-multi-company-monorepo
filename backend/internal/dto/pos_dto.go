@@ -18,6 +18,8 @@ type PosProductRequest struct {
 	ImageURL      string  `json:"image_url" form:"image_url"`
 	TrackStock    bool    `json:"track_stock" form:"track_stock"`
 	IsAvailable   bool    `json:"is_available" form:"is_available"`
+	LevelIDs      []uint  `json:"level_ids" form:"level_ids"`
+	ExtraIDs      []uint  `json:"extra_ids" form:"extra_ids"`
 }
 
 type PosOrderRequest struct {
@@ -40,6 +42,8 @@ type PosOrderItemRequest struct {
 	Quantity  int     `json:"quantity" validate:"required,gt=0"`
 	UnitPrice float64 `json:"unit_price" validate:"required,gt=0"`
 	Subtotal  float64 `json:"subtotal" validate:"required,gt=0"`
+	LevelIDs  []uint  `json:"level_ids"`
+	ExtraIDs  []uint  `json:"extra_ids"`
 }
 
 type PosLevelRequest struct {
@@ -54,6 +58,7 @@ type PosExtraRequest struct {
 
 type PosUpdateOrderStatusRequest struct {
 	PaymentStatus string `json:"payment_status" validate:"required"`
+	Status        int    `json:"status"`
 	Notes         string `json:"notes"`
 }
 

@@ -279,6 +279,19 @@ func UpdatePosOrder(c *fiber.Ctx) error {
 	return utils.SuccessResponse(c, "Order updated successfully", order)
 }
 
+func DeletePosOrder(c *fiber.Ctx) error {
+	companyID, err := getCompanyID(c)
+	if err != nil {
+		return utils.ErrorResponse(c, fiber.StatusForbidden, err.Error())
+	}
+
+	id, _ := strconv.ParseUint(c.Params("id"), 10, 32)
+	if err := posService().DeleteOrder(companyID, uint(id)); err != nil {
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, err.Error())
+	}
+	return utils.SuccessResponse(c, "Order deleted successfully", nil)
+}
+
 // Deliveries
 func GetPosDeliveries(c *fiber.Ctx) error {
 	companyID, err := getCompanyID(c)

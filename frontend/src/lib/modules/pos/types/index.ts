@@ -14,6 +14,8 @@ export interface PosItem {
     track_stock: boolean;
     is_available: boolean;
     image_url?: string;
+    level_ids?: string;
+    extra_ids?: string;
     created_at?: string;
     updated_at?: string;
     category?: PosCategory;
@@ -61,6 +63,7 @@ export interface PosOrder {
     id: number;
     company_id: number;
     user_id: number;
+    code: string;
     customer_name: string;
     phone_number?: string;
     total_amount: number;
@@ -77,12 +80,14 @@ export interface PosOrder {
 }
 
 export interface PosOrderItem {
-    id: number;
-    order_id: number;
+    id?: number;
+    order_id?: number;
     product_id: number;
     quantity: number;
     unit_price: number;
     subtotal: number;
+    level_ids?: number[];
+    extra_ids?: number[];
     product?: PosItem;
 }
 

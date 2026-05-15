@@ -6,6 +6,7 @@ import { PosItem } from '../../../../types';
 import { CustomInput } from '@/components/ui/CustomInput';
 import { CustomSelect } from '@/components/ui/CustomSelect';
 import { LookupOption } from '@/lib/modules/users/types';
+import { MultiSelect } from '@/components/ui/MultiSelect';
 
 interface ItemModalProps {
     isOpen: boolean;
@@ -13,10 +14,12 @@ interface ItemModalProps {
     onSubmit: (data: FormData) => Promise<void>;
     item?: PosItem | null;
     categories: LookupOption[];
+    levels: LookupOption[];
+    extras: LookupOption[];
     companyId: number;
 }
 
-export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit, item, categories, companyId }) => {
+export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit, item, categories, levels, extras, companyId }) => {
     const [formData, setFormData] = useState<Partial<PosItem>>({
         name: '',
         sku: '',
@@ -28,7 +31,11 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
         track_stock: true,
         is_available: true,
         description: '',
+        level_ids: '',
+        extra_ids: '',
     });
+    const [selectedLevels, setSelectedLevels] = useState<number[]>([]);
+    const [selectedExtras, setSelectedExtras] = useState<number[]>([]);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,6 +57,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
             setFormData({
                 ...item,
             });
+            setSelectedLevels(item.level_ids ? item.level_ids.split(',').filter(Boolean).map(Number) : []);
+            setSelectedExtras(item.extra_ids ? item.extra_ids.split(',').filter(Boolean).map(Number) : []);
             setImageFile(null);
             if (item.image_url) {
                 const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || '';
@@ -71,6 +80,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                 is_available: true,
                 description: '',
             });
+            setSelectedLevels([]);
+            setSelectedExtras([]);
             setImageFile(null);
             setImagePreview(null);
         }
@@ -86,7 +97,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
             finalValue = Number(value);
         }
 
-        setFormData((prev: Partial<PosItem>) => ({ ...prev, [name]: finalValue }));
+        setFormData((prev: Partial<PosItem>) => {
+            const nextData = { ...prev, [name]: finalValue };
+            if (name === 'product_type' && finalValue === 1) {
+                nextData.stock_quantity = 0;
+            }
+            return nextData;
+        });
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,11 +123,11 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
         setIsSubmitting(true);
         try {
             const submitData = new FormData();
-            
+
             // Explicitly add only the fields expected by the backend DTO
             const fields = [
-                'name', 'sku', 'category_id', 'product_type', 
-                'price', 'cost_price', 'stock_quantity', 
+                'name', 'sku', 'category_id', 'product_type',
+                'price', 'cost_price', 'stock_quantity',
                 'track_stock', 'is_available', 'description',
                 'image_url'
             ];
@@ -122,10 +139,14 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                 }
             });
 
+            // Append levels and extras as multiple values for the same key
+            selectedLevels.forEach(id => submitData.append('level_ids', id.toString()));
+            selectedExtras.forEach(id => submitData.append('extra_ids', id.toString()));
+
             if (imageFile) {
                 submitData.append('image', imageFile);
             }
-            
+
             await onSubmit(submitData);
             onClose();
         } catch (error) {
@@ -255,13 +276,38 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                         />
                                     </div>
                                 </div>
+                                {formData.product_type === 0 && (
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Stock Quantity *</label>
+                                        <CustomInput
+                                            type="number"
+                                            name="stock_quantity"
+                                            required
+                                            min="0"
+                                            value={formData.stock_quantity || ''}
+                                            onChange={handleChange}
+                                            placeholder="Enter initial stock"
+                                        />
+                                    </div>
+                                )}
+
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Stock Quantity</label>
-                                    <CustomInput
-                                        type="number"
-                                        name="stock_quantity"
-                                        value={formData.stock_quantity || ''}
-                                        onChange={handleChange}
+                                    <MultiSelect
+                                        label="item levels"
+                                        options={levels.map(l => ({ label: l.label, value: Number(l.value) }))}
+                                        value={selectedLevels}
+                                        onChange={setSelectedLevels}
+                                        placeholder="No levels selected"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <MultiSelect
+                                        label="item extras"
+                                        options={extras.map(e => ({ label: e.label, value: Number(e.value) }))}
+                                        value={selectedExtras}
+                                        onChange={setSelectedExtras}
+                                        placeholder="No extras selected"
                                     />
                                 </div>
 

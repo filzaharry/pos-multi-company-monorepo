@@ -1,7 +1,11 @@
 package repository
 
 import (
+	"fmt"
+	"math/rand"
 	"pos-backend/internal/models"
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -25,6 +29,7 @@ type PosRepository interface {
 	GetOrderByID(companyID uint, id uint) (models.PosOrder, error)
 	CreateOrder(order *models.PosOrder) error
 	UpdateOrder(order *models.PosOrder) error
+	DeleteOrder(companyID uint, id uint) error
 
 	// Deliveries
 	GetAllDeliveries(companyID uint, page, limit int) ([]models.PosDelivery, models.Pagination, error)
@@ -63,7 +68,7 @@ func NewPosRepository(db *gorm.DB) PosRepository {
 func (r *posRepository) GetAllCategories(companyID uint, page, limit int) ([]models.PosCategory, models.Pagination, error) {
 	var categories []models.PosCategory
 	query := r.db.Where("company_id = ?", companyID).Order("sort_order asc")
-	
+
 	pagination, err := models.Paginate(query, page, limit, &categories)
 	return categories, pagination, err
 }
@@ -90,14 +95,14 @@ func (r *posRepository) DeleteCategory(companyID uint, id uint) error {
 func (r *posRepository) GetAllProducts(companyID uint, categoryID uint, search string, page, limit int) ([]models.PosProduct, models.Pagination, error) {
 	var products []models.PosProduct
 	query := r.db.Preload("Category").Where("company_id = ?", companyID)
-	
+
 	if categoryID > 0 {
 		query = query.Where("category_id = ?", categoryID)
 	}
 	if search != "" {
 		query = query.Where("name ILIKE ? OR sku ILIKE ?", "%"+search+"%", "%"+search+"%")
 	}
-	
+
 	pagination, err := models.Paginate(query, page, limit, &products)
 	return products, pagination, err
 }
@@ -124,7 +129,7 @@ func (r *posRepository) DeleteProduct(companyID uint, id uint) error {
 func (r *posRepository) GetAllOrders(companyID uint, page, limit int) ([]models.PosOrder, models.Pagination, error) {
 	var orders []models.PosOrder
 	query := r.db.Preload("OrderItems.Product").Where("company_id = ?", companyID).Order("created_at desc")
-	
+
 	pagination, err := models.Paginate(query, page, limit, &orders)
 	return orders, pagination, err
 }
@@ -136,11 +141,21 @@ func (r *posRepository) GetOrderByID(companyID uint, id uint) (models.PosOrder, 
 }
 
 func (r *posRepository) CreateOrder(order *models.PosOrder) error {
+	// Generate unique code: ORD-YYYYMMDD-XXXX
+	const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	source := rand.NewSource(time.Now().UnixNano())
+	rng := rand.New(source)
+	randomPart := make([]byte, 4)
+	for i := range randomPart {
+		randomPart[i] = chars[rng.Intn(len(chars))]
+	}
+	order.Code = fmt.Sprintf("ORD-%s-%s", time.Now().Format("20060102"), string(randomPart))
+
 	return r.db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(order).Error; err != nil {
 			return err
 		}
-		
+
 		for _, item := range order.OrderItems {
 			// Get product to check if we should track stock
 			var product models.PosProduct
@@ -164,11 +179,15 @@ func (r *posRepository) UpdateOrder(order *models.PosOrder) error {
 	return r.db.Save(order).Error
 }
 
+func (r *posRepository) DeleteOrder(companyID uint, id uint) error {
+	return r.db.Where("company_id = ? AND id = ?", companyID, id).Delete(&models.PosOrder{}).Error
+}
+
 // Deliveries Implementation
 func (r *posRepository) GetAllDeliveries(companyID uint, page, limit int) ([]models.PosDelivery, models.Pagination, error) {
 	var deliveries []models.PosDelivery
 	query := r.db.Where("company_id = ?", companyID).Order("created_at desc")
-	
+
 	pagination, err := models.Paginate(query, page, limit, &deliveries)
 	return deliveries, pagination, err
 }
@@ -246,19 +265,19 @@ func (r *posRepository) DeleteExtra(companyID uint, id uint) error {
 // Stats Implementation
 func (r *posRepository) GetDashboardStats(companyID uint) (map[string]interface{}, error) {
 	var stats = make(map[string]interface{})
-	
+
 	var totalRevenue float64
 	r.db.Model(&models.PosOrder{}).Where("company_id = ? AND payment_status = ?", companyID, "Paid").Select("COALESCE(SUM(total_amount), 0)").Scan(&totalRevenue)
-	
+
 	var totalOrders int64
 	r.db.Model(&models.PosOrder{}).Where("company_id = ?", companyID).Count(&totalOrders)
-	
+
 	var lowStock int64
 	r.db.Model(&models.PosProduct{}).Where("company_id = ? AND stock_quantity < 10", companyID).Count(&lowStock)
-	
+
 	stats["total_revenue"] = totalRevenue
 	stats["total_orders"] = totalOrders
 	stats["low_stock"] = lowStock
-	
+
 	return stats, nil
 }

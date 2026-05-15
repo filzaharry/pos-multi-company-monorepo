@@ -115,8 +115,14 @@ export const posService = {
         });
     },
 
-    updateOrder: async (companyId: number, id: number, data: { payment_status: string, notes?: string }): Promise<ApiResponse<PosOrder>> => {
+    updateOrder: async (companyId: number, id: number, data: { status: number, payment_status: string, notes?: string }): Promise<ApiResponse<PosOrder>> => {
         return apiRouter.put<ApiResponse<PosOrder>>(`/pos/orders/${id}`, data, {
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    deleteOrder: async (companyId: number, id: number): Promise<ApiResponse<void>> => {
+        return apiRouter.delete<ApiResponse<void>>(`/pos/orders/${id}`, {
             headers: { 'X-Company-ID': companyId.toString() }
         });
     },

@@ -4,6 +4,8 @@ import (
 	"pos-backend/internal/dto"
 	"pos-backend/internal/models"
 	"pos-backend/internal/repository"
+	"strconv"
+	"strings"
 )
 
 type PosService interface {
@@ -26,6 +28,7 @@ type PosService interface {
 	GetOrder(companyID uint, id uint) (models.PosOrder, error)
 	CreateOrder(companyID uint, userID uint, req *dto.PosOrderRequest) (models.PosOrder, error)
 	UpdateOrder(companyID uint, id uint, req *dto.PosUpdateOrderStatusRequest) (models.PosOrder, error)
+	DeleteOrder(companyID uint, id uint) error
 
 	// Deliveries
 	GetDeliveries(companyID uint, page, limit int) ([]models.PosDelivery, models.Pagination, error)
@@ -119,6 +122,8 @@ func (s *posService) CreateProduct(companyID uint, req *dto.PosProductRequest) (
 		ImageURL:      req.ImageURL,
 		TrackStock:    req.TrackStock,
 		IsAvailable:   req.IsAvailable,
+		LevelIDs:      uintsToString(req.LevelIDs),
+		ExtraIDs:      uintsToString(req.ExtraIDs),
 	}
 	err := s.repo.CreateProduct(&product)
 	return product, err
@@ -142,8 +147,22 @@ func (s *posService) UpdateProduct(companyID uint, id uint, req *dto.PosProductR
 	}
 	product.TrackStock = req.TrackStock
 	product.IsAvailable = req.IsAvailable
+	product.LevelIDs = uintsToString(req.LevelIDs)
+	product.ExtraIDs = uintsToString(req.ExtraIDs)
+
 	err = s.repo.UpdateProduct(&product)
 	return product, err
+}
+
+func uintsToString(ids []uint) string {
+	if len(ids) == 0 {
+		return ""
+	}
+	var strIDs []string
+	for _, id := range ids {
+		strIDs = append(strIDs, strconv.FormatUint(uint64(id), 10))
+	}
+	return strings.Join(strIDs, ",")
 }
 
 func (s *posService) DeleteProduct(companyID uint, id uint) error {
@@ -181,6 +200,8 @@ func (s *posService) CreateOrder(companyID uint, userID uint, req *dto.PosOrderR
 			Quantity:  item.Quantity,
 			UnitPrice: item.UnitPrice,
 			Subtotal:  item.Subtotal,
+			LevelIDs:  uintsToString(item.LevelIDs),
+			ExtraIDs:  uintsToString(item.ExtraIDs),
 		})
 	}
 
@@ -194,9 +215,14 @@ func (s *posService) UpdateOrder(companyID uint, id uint, req *dto.PosUpdateOrde
 		return order, err
 	}
 	order.PaymentStatus = req.PaymentStatus
+	order.Status = req.Status
 	order.Notes = req.Notes
 	err = s.repo.UpdateOrder(&order)
 	return order, err
+}
+
+func (s *posService) DeleteOrder(companyID uint, id uint) error {
+	return s.repo.DeleteOrder(companyID, id)
 }
 
 // Deliveries

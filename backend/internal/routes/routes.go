@@ -133,6 +133,7 @@ func SetupRoutes(app *fiber.App) {
 	pos.Get("/orders/:id", handlers.GetPosOrderDetail)
 	pos.Post("/orders", handlers.CreatePosOrder)
 	pos.Put("/orders/:id", handlers.UpdatePosOrder)
+	pos.Delete("/orders/:id", handlers.DeletePosOrder)
 
 	// Deliveries
 	pos.Get("/deliveries", handlers.GetPosDeliveries)
