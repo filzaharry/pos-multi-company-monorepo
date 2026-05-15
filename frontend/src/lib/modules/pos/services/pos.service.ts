@@ -1,20 +1,25 @@
 import { apiRouter } from '@/lib/api/router';
 import { ApiResponse } from '@/lib/types/api';
-import { 
-    ItemsListResponse, 
-    CategoriesListResponse, 
-    DeliveriesListResponse, 
+import {
+    ItemsListResponse,
+    CategoriesListResponse,
+    DeliveriesListResponse,
     OrdersListResponse,
     PosQueryParams,
     PosItem,
     PosCategory,
-    PosOrder
+    PosOrder,
+    PosDelivery,
+    PosStats,
+    PosLevel,
+    PosExtra
 } from '../types';
+import { PaginationData } from '../../users/types';
 
 export const posService = {
     // Items (Products in backend)
     getItems: async (companyId: number, params: PosQueryParams): Promise<ApiResponse<ItemsListResponse>> => {
-        return apiRouter.get<ApiResponse<ItemsListResponse>>('/pos/products', { 
+        return apiRouter.get<ApiResponse<ItemsListResponse>>('/pos/products', {
             params,
             headers: { 'X-Company-ID': companyId.toString() }
         });
@@ -46,7 +51,7 @@ export const posService = {
 
     // Categories
     getCategories: async (companyId: number, params: PosQueryParams): Promise<ApiResponse<CategoriesListResponse>> => {
-        return apiRouter.get<ApiResponse<CategoriesListResponse>>('/pos/categories', { 
+        return apiRouter.get<ApiResponse<CategoriesListResponse>>('/pos/categories', {
             params,
             headers: { 'X-Company-ID': companyId.toString() }
         });
@@ -70,18 +75,35 @@ export const posService = {
         });
     },
 
-    // Deliveries (Shared with categories or separate? Backend doesn't have deliveries yet, using products for now or mocking)
+    // Deliveries
     getDeliveries: async (companyId: number, params: PosQueryParams): Promise<ApiResponse<DeliveriesListResponse>> => {
-        // Mocking deliveries as products for now since backend doesn't have it
-        return apiRouter.get<ApiResponse<DeliveriesListResponse>>('/pos/products', { 
+        return apiRouter.get<ApiResponse<DeliveriesListResponse>>('/pos/deliveries', {
             params,
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    createDelivery: async (companyId: number, data: Partial<PosDelivery>): Promise<ApiResponse<PosDelivery>> => {
+        return apiRouter.post<ApiResponse<PosDelivery>>('/pos/deliveries', data, {
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    updateDelivery: async (companyId: number, id: number, data: Partial<PosDelivery>): Promise<ApiResponse<PosDelivery>> => {
+        return apiRouter.put<ApiResponse<PosDelivery>>(`/pos/deliveries/${id}`, data, {
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    deleteDelivery: async (companyId: number, id: number): Promise<ApiResponse<void>> => {
+        return apiRouter.delete<ApiResponse<void>>(`/pos/deliveries/${id}`, {
             headers: { 'X-Company-ID': companyId.toString() }
         });
     },
 
     // Orders
     getOrders: async (companyId: number, params: PosQueryParams): Promise<ApiResponse<OrdersListResponse>> => {
-        return apiRouter.get<ApiResponse<OrdersListResponse>>('/pos/orders', { 
+        return apiRouter.get<ApiResponse<OrdersListResponse>>('/pos/orders', {
             params,
             headers: { 'X-Company-ID': companyId.toString() }
         });
@@ -99,9 +121,61 @@ export const posService = {
         });
     },
 
+    // Levels
+    getLevels: async (companyId: number, params: PosQueryParams): Promise<ApiResponse<{ items: PosLevel[], pagination: PaginationData }>> => {
+        return apiRouter.get<ApiResponse<{ items: PosLevel[], pagination: PaginationData }>>('/pos/levels', {
+            params,
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    createLevel: async (companyId: number, data: Partial<PosLevel>): Promise<ApiResponse<PosLevel>> => {
+        return apiRouter.post<ApiResponse<PosLevel>>('/pos/levels', data, {
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    updateLevel: async (companyId: number, id: number, data: Partial<PosLevel>): Promise<ApiResponse<PosLevel>> => {
+        return apiRouter.put<ApiResponse<PosLevel>>(`/pos/levels/${id}`, data, {
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    deleteLevel: async (companyId: number, id: number): Promise<ApiResponse<void>> => {
+        return apiRouter.delete<ApiResponse<void>>(`/pos/levels/${id}`, {
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    // Extras
+    getExtras: async (companyId: number, params: PosQueryParams): Promise<ApiResponse<{ items: PosExtra[], pagination: PaginationData }>> => {
+        return apiRouter.get<ApiResponse<{ items: PosExtra[], pagination: PaginationData }>>('/pos/extras', {
+            params,
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    createExtra: async (companyId: number, data: Partial<PosExtra>): Promise<ApiResponse<PosExtra>> => {
+        return apiRouter.post<ApiResponse<PosExtra>>('/pos/extras', data, {
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    updateExtra: async (companyId: number, id: number, data: Partial<PosExtra>): Promise<ApiResponse<PosExtra>> => {
+        return apiRouter.put<ApiResponse<PosExtra>>(`/pos/extras/${id}`, data, {
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
+    deleteExtra: async (companyId: number, id: number): Promise<ApiResponse<void>> => {
+        return apiRouter.delete<ApiResponse<void>>(`/pos/extras/${id}`, {
+            headers: { 'X-Company-ID': companyId.toString() }
+        });
+    },
+
     // Stats
-    getStats: async (companyId: number): Promise<ApiResponse<any>> => {
-        return apiRouter.get<ApiResponse<any>>('/pos/stats', {
+    getStats: async (companyId: number): Promise<ApiResponse<PosStats>> => {
+        return apiRouter.get<ApiResponse<PosStats>>('/pos/stats', {
             headers: { 'X-Company-ID': companyId.toString() }
         });
     }

@@ -27,6 +27,27 @@ type PosService interface {
 	CreateOrder(companyID uint, userID uint, req *dto.PosOrderRequest) (models.PosOrder, error)
 	UpdateOrder(companyID uint, id uint, req *dto.PosUpdateOrderStatusRequest) (models.PosOrder, error)
 
+	// Deliveries
+	GetDeliveries(companyID uint, page, limit int) ([]models.PosDelivery, models.Pagination, error)
+	GetDelivery(companyID uint, id uint) (models.PosDelivery, error)
+	CreateDelivery(companyID uint, req *dto.PosDeliveryRequest) (models.PosDelivery, error)
+	UpdateDelivery(companyID uint, id uint, req *dto.PosDeliveryRequest) (models.PosDelivery, error)
+	DeleteDelivery(companyID uint, id uint) error
+
+	// Levels
+	GetLevels(companyID uint, page, limit int) ([]models.PosLevel, models.Pagination, error)
+	GetLevel(companyID uint, id uint) (models.PosLevel, error)
+	CreateLevel(companyID uint, req *dto.PosLevelRequest) (models.PosLevel, error)
+	UpdateLevel(companyID uint, id uint, req *dto.PosLevelRequest) (models.PosLevel, error)
+	DeleteLevel(companyID uint, id uint) error
+
+	// Extras
+	GetExtras(companyID uint, page, limit int) ([]models.PosExtra, models.Pagination, error)
+	GetExtra(companyID uint, id uint) (models.PosExtra, error)
+	CreateExtra(companyID uint, req *dto.PosExtraRequest) (models.PosExtra, error)
+	UpdateExtra(companyID uint, id uint, req *dto.PosExtraRequest) (models.PosExtra, error)
+	DeleteExtra(companyID uint, id uint) error
+
 	// Stats
 	GetStats(companyID uint) (map[string]interface{}, error)
 }
@@ -116,7 +137,9 @@ func (s *posService) UpdateProduct(companyID uint, id uint, req *dto.PosProductR
 	product.Price = req.Price
 	product.CostPrice = req.CostPrice
 	product.StockQuantity = req.StockQuantity
-	product.ImageURL = req.ImageURL
+	if req.ImageURL != "" {
+		product.ImageURL = req.ImageURL
+	}
 	product.TrackStock = req.TrackStock
 	product.IsAvailable = req.IsAvailable
 	err = s.repo.UpdateProduct(&product)
@@ -141,26 +164,25 @@ func (s *posService) CreateOrder(companyID uint, userID uint, req *dto.PosOrderR
 		CompanyID:      companyID,
 		UserID:         userID,
 		CustomerName:   req.CustomerName,
-		TotalAmount:    0, // Will calculate
+		PhoneNumber:    req.PhoneNumber,
+		TotalAmount:    req.TotalAmount,
 		TaxAmount:      req.TaxAmount,
 		DiscountAmount: req.DiscountAmount,
+		DeliveryID:     req.DeliveryID,
 		PaymentMethod:  req.PaymentMethod,
 		PaymentStatus:  req.PaymentStatus,
+		Status:         req.Status,
 		Notes:          req.Notes,
 	}
 
-	var totalAmount float64
-	for _, itemReq := range req.OrderItems {
-		item := models.PosOrderItem{
-			ProductID: itemReq.ProductID,
-			Quantity:  itemReq.Quantity,
-			UnitPrice: itemReq.UnitPrice,
-			Subtotal:  itemReq.Subtotal,
-		}
-		order.OrderItems = append(order.OrderItems, item)
-		totalAmount += item.Subtotal
+	for _, item := range req.OrderItems {
+		order.OrderItems = append(order.OrderItems, models.PosOrderItem{
+			ProductID: item.ProductID,
+			Quantity:  item.Quantity,
+			UnitPrice: item.UnitPrice,
+			Subtotal:  item.Subtotal,
+		})
 	}
-	order.TotalAmount = (totalAmount + req.TaxAmount) - req.DiscountAmount
 
 	err := s.repo.CreateOrder(&order)
 	return order, err
@@ -175,6 +197,111 @@ func (s *posService) UpdateOrder(companyID uint, id uint, req *dto.PosUpdateOrde
 	order.Notes = req.Notes
 	err = s.repo.UpdateOrder(&order)
 	return order, err
+}
+
+// Deliveries
+func (s *posService) GetDeliveries(companyID uint, page, limit int) ([]models.PosDelivery, models.Pagination, error) {
+	return s.repo.GetAllDeliveries(companyID, page, limit)
+}
+
+func (s *posService) GetDelivery(companyID uint, id uint) (models.PosDelivery, error) {
+	return s.repo.GetDeliveryByID(companyID, id)
+}
+
+func (s *posService) CreateDelivery(companyID uint, req *dto.PosDeliveryRequest) (models.PosDelivery, error) {
+	delivery := models.PosDelivery{
+		CompanyID:   companyID,
+		Name:        req.Name,
+		Description: req.Description,
+		Price:       req.Price,
+	}
+	err := s.repo.CreateDelivery(&delivery)
+	return delivery, err
+}
+
+func (s *posService) UpdateDelivery(companyID uint, id uint, req *dto.PosDeliveryRequest) (models.PosDelivery, error) {
+	delivery, err := s.repo.GetDeliveryByID(companyID, id)
+	if err != nil {
+		return delivery, err
+	}
+	delivery.Name = req.Name
+	delivery.Description = req.Description
+	delivery.Price = req.Price
+	
+	err = s.repo.UpdateDelivery(&delivery)
+	return delivery, err
+}
+
+func (s *posService) DeleteDelivery(companyID uint, id uint) error {
+	return s.repo.DeleteDelivery(companyID, id)
+}
+
+// Levels
+func (s *posService) GetLevels(companyID uint, page, limit int) ([]models.PosLevel, models.Pagination, error) {
+	return s.repo.GetAllLevels(companyID, page, limit)
+}
+
+func (s *posService) GetLevel(companyID uint, id uint) (models.PosLevel, error) {
+	return s.repo.GetLevelByID(companyID, id)
+}
+
+func (s *posService) CreateLevel(companyID uint, req *dto.PosLevelRequest) (models.PosLevel, error) {
+	level := models.PosLevel{
+		CompanyID:   companyID,
+		Name:        req.Name,
+		Description: req.Description,
+	}
+	err := s.repo.CreateLevel(&level)
+	return level, err
+}
+
+func (s *posService) UpdateLevel(companyID uint, id uint, req *dto.PosLevelRequest) (models.PosLevel, error) {
+	level, err := s.repo.GetLevelByID(companyID, id)
+	if err != nil {
+		return level, err
+	}
+	level.Name = req.Name
+	level.Description = req.Description
+	err = s.repo.UpdateLevel(&level)
+	return level, err
+}
+
+func (s *posService) DeleteLevel(companyID uint, id uint) error {
+	return s.repo.DeleteLevel(companyID, id)
+}
+
+// Extras
+func (s *posService) GetExtras(companyID uint, page, limit int) ([]models.PosExtra, models.Pagination, error) {
+	return s.repo.GetAllExtras(companyID, page, limit)
+}
+
+func (s *posService) GetExtra(companyID uint, id uint) (models.PosExtra, error) {
+	return s.repo.GetExtraByID(companyID, id)
+}
+
+func (s *posService) CreateExtra(companyID uint, req *dto.PosExtraRequest) (models.PosExtra, error) {
+	extra := models.PosExtra{
+		CompanyID: companyID,
+		Name:      req.Name,
+		Price:     req.Price,
+	}
+	err := s.repo.CreateExtra(&extra)
+	return extra, err
+}
+
+func (s *posService) UpdateExtra(companyID uint, id uint, req *dto.PosExtraRequest) (models.PosExtra, error) {
+	extra, err := s.repo.GetExtraByID(companyID, id)
+	if err != nil {
+		return extra, err
+	}
+	extra.Name = req.Name
+	extra.Price = req.Price
+	err = s.repo.UpdateExtra(&extra)
+	return extra, err
+}
+
+func (s *posService) DeleteExtra(companyID uint, id uint) error {
+	return s.repo.DeleteExtra(companyID, id)
 }
 
 func (s *posService) GetStats(companyID uint) (map[string]interface{}, error) {

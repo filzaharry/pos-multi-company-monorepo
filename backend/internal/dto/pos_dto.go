@@ -21,11 +21,16 @@ type PosProductRequest struct {
 }
 
 type PosOrderRequest struct {
+	CompanyID      uint                  `json:"company_id"`
 	CustomerName   string                `json:"customer_name"`
+	PhoneNumber    string                `json:"phone_number"`
+	TotalAmount    float64               `json:"total_amount"`
 	TaxAmount      float64               `json:"tax_amount"`
 	DiscountAmount float64               `json:"discount_amount"`
-	PaymentMethod  string                `json:"payment_method" validate:"required"`
-	PaymentStatus  string                `json:"payment_status" validate:"required"`
+	DeliveryID     uint                  `json:"delivery_id"`
+	PaymentMethod  int                   `json:"payment_method"` // 0->cash, 1->qris
+	PaymentStatus  string                `json:"payment_status"`
+	Status         int                   `json:"status"`
 	Notes          string                `json:"notes"`
 	OrderItems     []PosOrderItemRequest `json:"order_items" validate:"required,min=1"`
 }
@@ -37,7 +42,23 @@ type PosOrderItemRequest struct {
 	Subtotal  float64 `json:"subtotal" validate:"required,gt=0"`
 }
 
+type PosLevelRequest struct {
+	Name        string `json:"name" validate:"required"`
+	Description string `json:"description"`
+}
+
+type PosExtraRequest struct {
+	Name  string `json:"name" validate:"required"`
+	Price string `json:"price" validate:"required"`
+}
+
 type PosUpdateOrderStatusRequest struct {
 	PaymentStatus string `json:"payment_status" validate:"required"`
 	Notes         string `json:"notes"`
+}
+
+type PosDeliveryRequest struct {
+	Name        string `json:"name" validate:"required"`
+	Description string `json:"description"`
+	Price       string `json:"price" validate:"required"`
 }

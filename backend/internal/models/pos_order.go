@@ -11,11 +11,14 @@ type PosOrder struct {
 	CompanyID      uint           `gorm:"not null" json:"company_id"`
 	UserID         uint           `gorm:"not null" json:"user_id"` // Cashier
 	CustomerName   string         `gorm:"size:255" json:"customer_name"`
+	PhoneNumber    string         `gorm:"size:20" json:"phone_number"`
 	TotalAmount    float64        `gorm:"type:decimal(16,2);not null" json:"total_amount"`
 	TaxAmount      float64        `gorm:"type:decimal(16,2);default:0" json:"tax_amount"`
 	DiscountAmount float64        `gorm:"type:decimal(16,2);default:0" json:"discount_amount"`
-	PaymentMethod  string         `gorm:"size:50" json:"payment_method"`                   // Cash, Card, QR, etc.
+	DeliveryID     uint           `json:"delivery_id"`
+	PaymentMethod  int            `json:"payment_method"`                   // 0->cash, 1->qris
 	PaymentStatus  string         `gorm:"size:50;default:'pending'" json:"payment_status"` // Paid, Pending, Refunded
+	Status         int            `gorm:"default:0" json:"status"`                         // 0: order masuk, 1: order terbayar, etc.
 	Notes          string         `gorm:"type:text" json:"notes"`
 	OrderItems     []PosOrderItem `gorm:"foreignKey:OrderID" json:"order_items"`
 	CreatedAt      time.Time      `json:"created_at"`
@@ -23,6 +26,7 @@ type PosOrder struct {
 	DeletedAt      gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
 	Company        Company        `gorm:"foreignKey:CompanyID" json:"-"`
 	User           User           `gorm:"foreignKey:UserID" json:"-"`
+	Delivery       PosDelivery    `gorm:"foreignKey:DeliveryID" json:"delivery"`
 }
 
 type PosOrderItem struct {

@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { DataTable, Column } from '@/components/ui/DataTable';
-import { PosItem, PosCategory } from '../../../types';
-import { posService } from '../../../services/pos.service';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Edit2, Trash2, AlertCircle } from 'lucide-react';
 import { PaginationData, LookupOption } from '@/lib/modules/users/types';
 import { ItemModal } from './components/ItemModal';
 import { useToast } from '@/components/ui/Toast';
 import { lookupService } from '@/lib/modules/users/services/lookup.service';
 import { getCookie } from '@/lib/utils';
+import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
+import { useCallback, useEffect, useState } from 'react';
+import { PosItem } from '../../../types';
+import { posService } from '../../../services/pos.service';
+import { Column, DataTable } from '@/components/ui/DataTable';
 
 interface ItemsTabProps {
     companyId: number;
@@ -24,6 +26,8 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<PosItem | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState<PosItem | null>(null);
 
     const fetchItems = useCallback(async () => {
         if (!companyId) return;
@@ -71,16 +75,22 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
         setIsModalOpen(true);
     };
 
-    const handleDelete = async (item: PosItem) => {
-        if (window.confirm(`Are you sure you want to delete ${item.name}?`)) {
-            try {
-                await posService.deleteItem(companyId, item.id);
-                showToast('Item deleted successfully', 'success');
-                fetchItems();
-            } catch (error) {
-                console.error('Failed to delete item:', error);
-                showToast('Failed to delete item', 'error');
-            }
+    const handleDelete = (item: PosItem) => {
+        setItemToDelete(item);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!itemToDelete || !companyId) return;
+        try {
+            await posService.deleteItem(companyId, itemToDelete.id);
+            showToast('Item deleted successfully', 'success');
+            fetchItems();
+            setIsDeleteModalOpen(false);
+            setItemToDelete(null);
+        } catch (error) {
+            console.error('Failed to delete item:', error);
+            showToast('Failed to delete item', 'error');
         }
     };
 
@@ -169,6 +179,13 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
                 item={selectedItem}
                 categories={categories}
                 companyId={companyId}
+            />
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDelete}
+                title="Delete Item?"
+                description={`Are you sure you want to delete ${itemToDelete?.name}?`}
             />
         </div>
     );

@@ -1,106 +1,104 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { DataTable, Column } from '@/components/ui/DataTable';
-import { PosDelivery } from '../../../types';
-import { posService } from '../../../services/pos.service';
-import { PaginationData } from '@/lib/modules/users/types';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { useToast } from '@/components/ui/Toast';
-import { DeliveryModal } from './components/DeliveryModal';
+import { Column, DataTable } from '@/components/ui/DataTable';
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
+import { useToast } from '@/components/ui/Toast';
+import { PaginationData } from '@/lib/modules/users/types';
+import { Edit2, Plus, Trash2 } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { posService } from '../../../services/pos.service';
+import { PosExtra } from '../../../types';
+import { ExtraModal } from './components/ExtraModal';
 
-interface DeliveriesTabProps {
+interface ExtrasTabProps {
     companyId: number;
 }
 
-export const DeliveriesTab: React.FC<DeliveriesTabProps> = ({ companyId }) => {
+export const ExtrasTab: React.FC<ExtrasTabProps> = ({ companyId }) => {
     const { showToast } = useToast();
-    const [deliveries, setDeliveries] = useState<PosDelivery[]>([]);
+    const [extras, setExtras] = useState<PosExtra[]>([]);
     const [pagination, setPagination] = useState<PaginationData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
 
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedDelivery, setSelectedDelivery] = useState<PosDelivery | null>(null);
+    const [selectedExtra, setSelectedExtra] = useState<PosExtra | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [deliveryToDelete, setDeliveryToDelete] = useState<PosDelivery | null>(null);
+    const [extraToDelete, setExtraToDelete] = useState<PosExtra | null>(null);
 
-    const fetchDeliveries = useCallback(async () => {
+    const fetchExtras = useCallback(async () => {
         if (!companyId) return;
         setIsLoading(true);
         try {
-            const response = await posService.getDeliveries(companyId, { page, limit: 10 });
+            const response = await posService.getExtras(companyId, { page, limit: 10 });
             if (response.status === 'success' || response.status === 'Success') {
-                setDeliveries(response.data.result.items);
+                setExtras(response.data.result.items);
                 setPagination(response.data.result.pagination);
             }
         } catch (error) {
-            console.error('Failed to fetch deliveries:', error);
-            showToast('Failed to load deliveries', 'error');
+            console.error('Failed to fetch extras:', error);
         } finally {
             setIsLoading(false);
         }
-    }, [companyId, page, showToast]);
+    }, [companyId, page]);
 
     useEffect(() => {
-        fetchDeliveries();
-    }, [fetchDeliveries]);
+        fetchExtras();
+    }, [fetchExtras]);
 
     const handleAdd = () => {
-        setSelectedDelivery(null);
+        setSelectedExtra(null);
         setIsModalOpen(true);
     };
 
-    const handleEdit = (delivery: PosDelivery) => {
-        setSelectedDelivery(delivery);
+    const handleEdit = (extra: PosExtra) => {
+        setSelectedExtra(extra);
         setIsModalOpen(true);
     };
 
-    const handleDelete = (delivery: PosDelivery) => {
-        setDeliveryToDelete(delivery);
+    const handleDelete = (extra: PosExtra) => {
+        setExtraToDelete(extra);
         setIsDeleteModalOpen(true);
     };
 
     const confirmDelete = async () => {
-        if (!deliveryToDelete || !companyId) return;
+        if (!extraToDelete || !companyId) return;
         try {
-            await posService.deleteDelivery(companyId, deliveryToDelete.id);
-            showToast('Delivery deleted successfully', 'success');
-            fetchDeliveries();
+            await posService.deleteExtra(companyId, extraToDelete.id);
+            showToast('Extra deleted successfully', 'success');
+            fetchExtras();
             setIsDeleteModalOpen(false);
-            setDeliveryToDelete(null);
+            setExtraToDelete(null);
         } catch (error) {
-            console.error('Failed to delete delivery:', error);
-            showToast('Failed to delete delivery', 'error');
+            console.error('Failed to delete extra:', error);
+            showToast('Failed to delete extra', 'error');
         }
     };
 
-    const handleSubmit = async (data: Partial<PosDelivery>) => {
+    const handleSubmit = async (data: Partial<PosExtra>) => {
         try {
-            if (selectedDelivery) {
-                await posService.updateDelivery(companyId, selectedDelivery.id, data);
-                showToast('Delivery updated successfully', 'success');
+            if (selectedExtra) {
+                await posService.updateExtra(companyId, selectedExtra.id, data);
+                showToast('Extra updated successfully', 'success');
             } else {
-                await posService.createDelivery(companyId, data);
-                showToast('Delivery created successfully', 'success');
+                await posService.createExtra(companyId, data);
+                showToast('Extra created successfully', 'success');
             }
-            fetchDeliveries();
+            fetchExtras();
         } catch (error) {
             console.error('Submit error:', error);
-            showToast('Failed to save delivery', 'error');
+            showToast('Failed to save extra', 'error');
             throw error;
         }
     };
 
-    const columns: Column<PosDelivery>[] = [
-        { header: 'Delivery Name', accessorKey: 'name' },
-        { header: 'Description', accessorKey: 'description' },
+    const columns: Column<PosExtra>[] = [
+        { header: 'Extra Name', accessorKey: 'name', sortable: true },
         { 
             header: 'Price', 
             accessorKey: 'price',
-            cell: (del) => (
+            cell: (item) => (
                 <span className="text-white font-bold">
-                    {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(del.price))}
+                    {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(item.price))}
                 </span>
             )
         },
@@ -130,40 +128,40 @@ export const DeliveriesTab: React.FC<DeliveriesTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-white uppercase italic tracking-wider">Delivery Methods</h3>
-                    <p className="text-xs text-gray-500">Manage delivery services and shipping rates.</p>
+                    <h3 className="text-xl font-bold text-white uppercase italic tracking-wider">Extras / Add-ons</h3>
+                    <p className="text-xs text-gray-500">Manage extra toppings, sauces, or add-ons.</p>
                 </div>
                 <button
                     onClick={handleAdd}
                     className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold transition-all shadow-lg shadow-primary/20"
                 >
                     <Plus className="w-4 h-4" />
-                    <span>Add Delivery Method</span>
+                    <span>Add New Extra</span>
                 </button>
             </div>
 
             <DataTable
                 columns={columns}
-                data={deliveries}
+                data={extras}
                 isLoading={isLoading}
                 pagination={pagination}
                 page={page}
                 onPageChange={setPage}
             />
 
-            <DeliveryModal
+            <ExtraModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={handleSubmit}
-                delivery={selectedDelivery}
+                extra={selectedExtra}
             />
 
             <DeleteConfirmationModal
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={confirmDelete}
-                title="Delete Delivery Method?"
-                description={`Are you sure you want to delete ${deliveryToDelete?.name}?`}
+                title="Delete Extra?"
+                description={`Are you sure you want to delete ${extraToDelete?.name}?`}
             />
         </div>
     );

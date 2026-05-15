@@ -138,10 +138,19 @@ export const apiRouter = {
     // For file uploads
     upload: async <T>(url: string, formData: FormData, config?: AxiosRequestConfig) => {
         const token = typeof window !== 'undefined' ? getCookie('accessToken') : null;
+
+        // Ensure Content-Type is not set to application/json for FormData
+        // This allows Axios to automatically set multipart/form-data with the correct boundary
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const headers: Record<string, any> = { ...config?.headers };
+        if (headers['Content-Type']) {
+            delete headers['Content-Type'];
+        }
+
         const response = await axios.post<T>(`${process.env.NEXT_PUBLIC_API_URL || '/api/v1'}${url}`, formData, {
             ...config,
             headers: {
-                ...config?.headers,
+                ...headers,
                 ...(token ? { 'Authorization': `Bearer ${token}` } : {})
             }
         });
@@ -149,10 +158,18 @@ export const apiRouter = {
     },
     uploadPut: async <T>(url: string, formData: FormData, config?: AxiosRequestConfig) => {
         const token = typeof window !== 'undefined' ? getCookie('accessToken') : null;
+
+        // Ensure Content-Type is not set to application/json for FormData
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const headers: Record<string, any> = { ...config?.headers };
+        if (headers['Content-Type']) {
+            delete headers['Content-Type'];
+        }
+
         const response = await axios.put<T>(`${process.env.NEXT_PUBLIC_API_URL || '/api/v1'}${url}`, formData, {
             ...config,
             headers: {
-                ...config?.headers,
+                ...headers,
                 ...(token ? { 'Authorization': `Bearer ${token}` } : {})
             }
         });

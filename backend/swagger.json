@@ -6828,6 +6828,88 @@
           }
         }
       }
+    },
+    "/api/v1/apps/pos/{company_id}/categories": {
+      "get": {
+        "summary": "Get POS categories (Public)",
+        "tags": ["App POS"],
+        "parameters": [
+          { "name": "company_id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Success", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StandardResponse" } } } }
+        }
+      }
+    },
+    "/api/v1/apps/pos/{company_id}/products": {
+      "get": {
+        "summary": "Get POS products (Public)",
+        "tags": ["App POS"],
+        "parameters": [
+          { "name": "company_id", "in": "path", "required": true, "schema": { "type": "integer" } },
+          { "name": "category_id", "in": "query", "schema": { "type": "integer" } },
+          { "name": "search", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Success", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StandardResponse" } } } }
+        }
+      }
+    },
+    "/api/v1/apps/pos/{company_id}/deliveries": {
+      "get": {
+        "summary": "Get POS deliveries (Public)",
+        "tags": ["App POS"],
+        "parameters": [
+          { "name": "company_id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Success", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StandardResponse" } } } }
+        }
+      }
+    },
+    "/api/v1/apps/pos/{company_id}/levels": {
+      "get": {
+        "summary": "Get POS levels (Public)",
+        "tags": ["App POS"],
+        "parameters": [
+          { "name": "company_id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Success", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StandardResponse" } } } }
+        }
+      }
+    },
+    "/api/v1/apps/pos/{company_id}/extras": {
+      "get": {
+        "summary": "Get POS extras (Public)",
+        "tags": ["App POS"],
+        "parameters": [
+          { "name": "company_id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Success", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StandardResponse" } } } }
+        }
+      }
+    },
+    "/api/v1/apps/pos/{company_id}/orders": {
+      "post": {
+        "summary": "Create POS order from app (Public)",
+        "tags": ["App POS"],
+        "parameters": [
+          { "name": "company_id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PosOrder" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Order created", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StandardResponse" } } } }
+        }
+      }
     }
   },
   "components": {
@@ -7125,7 +7207,59 @@
           }
         }
       },
-      "StandardResponse": {
+      "PosCategory": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "PosProduct": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "image_url": { "type": "string" }
+      }
+    },
+    "PosDelivery": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "price": { "type": "string" }
+      }
+    },
+    "PosLevel": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "PosExtra": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "price": { "type": "string" }
+      }
+    },
+    "PosOrder": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "customer_name": { "type": "string" },
+        "phone_number": { "type": "string" },
+        "total_amount": { "type": "number" },
+        "payment_method": { "type": "integer", "description": "0: Cash, 1: QRIS" },
+        "status": { "type": "integer", "description": "0: Masuk, 1: Terbayar, 2: Dapur, 3: Stok Habis, 4: Batal, 5: Refund" }
+      }
+    },
+    "StandardResponse": {
         "type": "object",
         "properties": {
           "status_code": {

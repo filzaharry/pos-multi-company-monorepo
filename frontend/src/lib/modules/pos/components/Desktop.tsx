@@ -7,6 +7,8 @@ import React from 'react';
 import { CategoriesTab } from './tabs/categories/CategoriesTab';
 import { DeliveriesTab } from './tabs/deliveries/DeliveriesTab';
 import { ItemsTab } from './tabs/items/ItemsTab';
+import { LevelsTab } from './tabs/levels/LevelsTab';
+import { ExtrasTab } from './tabs/extras/ExtrasTab';
 import { OrdersTab } from './tabs/orders/OrdersTab';
 import { PosHeader } from './widgets/PosHeader';
 import { ContentSection } from '../../content/types';
@@ -38,6 +40,8 @@ export const Desktop: React.FC<DesktopProps> = ({
         switch (activeTab) {
             case 'items': return <ItemsTab companyId={activeCompanyId} />;
             case 'categories': return <CategoriesTab companyId={activeCompanyId} />;
+            case 'levels': return <LevelsTab companyId={activeCompanyId} />;
+            case 'extras': return <ExtrasTab companyId={activeCompanyId} />;
             case 'deliveries': return <DeliveriesTab companyId={activeCompanyId} />;
             case 'orders': return <OrdersTab companyId={activeCompanyId} />;
             default: return null;

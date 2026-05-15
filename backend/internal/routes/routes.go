@@ -134,6 +134,36 @@ func SetupRoutes(app *fiber.App) {
 	pos.Post("/orders", handlers.CreatePosOrder)
 	pos.Put("/orders/:id", handlers.UpdatePosOrder)
 
+	// Deliveries
+	pos.Get("/deliveries", handlers.GetPosDeliveries)
+	pos.Get("/deliveries/:id", handlers.GetPosDeliveryDetail)
+	pos.Post("/deliveries", handlers.CreatePosDelivery)
+	pos.Put("/deliveries/:id", handlers.UpdatePosDelivery)
+	pos.Delete("/deliveries/:id", handlers.DeletePosDelivery)
+
+	// Levels
+	pos.Get("/levels", handlers.GetPosLevels)
+	pos.Get("/levels/:id", handlers.GetPosLevelDetail)
+	pos.Post("/levels", handlers.CreatePosLevel)
+	pos.Put("/levels/:id", handlers.UpdatePosLevel)
+	pos.Delete("/levels/:id", handlers.DeletePosLevel)
+
+	// Extras
+	pos.Get("/extras", handlers.GetPosExtras)
+	pos.Get("/extras/:id", handlers.GetPosExtraDetail)
+	pos.Post("/extras", handlers.CreatePosExtra)
+	pos.Put("/extras/:id", handlers.UpdatePosExtra)
+	pos.Delete("/extras/:id", handlers.DeletePosExtra)
+
+	// App Routes (Public for Mobile)
+	appPos := api.Group("/apps/pos")
+	appPos.Get("/:company_id/categories", handlers.GetAppPosCategories)
+	appPos.Get("/:company_id/products", handlers.GetAppPosProducts)
+	appPos.Get("/:company_id/deliveries", handlers.GetAppPosDeliveries)
+	appPos.Get("/:company_id/levels", handlers.GetAppPosLevels)
+	appPos.Get("/:company_id/extras", handlers.GetAppPosExtras)
+	appPos.Post("/:company_id/orders", handlers.CreateAppPosOrder)
+
 	pos.Get("/stats", handlers.GetPosDashboardStats)
 
 	// Lookup routes

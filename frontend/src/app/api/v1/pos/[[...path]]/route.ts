@@ -16,9 +16,7 @@ const proxyRequest = async (request: Request, { params }: { params: Promise<{ pa
 
         // Forward Headers (especially Authorization and X-Company-ID)
         const headersList = await headers();
-        const proxyHeaders: HeadersInit = {
-            'Content-Type': 'application/json',
-        };
+        const proxyHeaders: HeadersInit = {};
 
         const authHeader = headersList.get('authorization');
         if (authHeader) {
@@ -30,6 +28,11 @@ const proxyRequest = async (request: Request, { params }: { params: Promise<{ pa
             proxyHeaders['X-Company-ID'] = companyIdHeader;
         }
 
+        const contentTypeHeader = headersList.get('content-type');
+        if (contentTypeHeader) {
+            proxyHeaders['Content-Type'] = contentTypeHeader;
+        }
+
         // Prepare the fetch options
         const fetchOptions: RequestInit = {
             method: request.method,
@@ -39,9 +42,15 @@ const proxyRequest = async (request: Request, { params }: { params: Promise<{ pa
 
         // Forward the body if it's not a GET or HEAD request
         if (request.method !== 'GET' && request.method !== 'HEAD') {
-            const body = await request.text();
-            if (body) {
-                fetchOptions.body = body;
+            const contentType = headersList.get('content-type');
+            if (contentType?.includes('multipart/form-data')) {
+                const arrayBuffer = await request.arrayBuffer();
+                fetchOptions.body = arrayBuffer;
+            } else {
+                const body = await request.text();
+                if (body) {
+                    fetchOptions.body = body;
+                }
             }
         }
 

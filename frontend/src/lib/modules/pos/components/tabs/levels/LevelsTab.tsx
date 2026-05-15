@@ -5,94 +5,94 @@ import { PaginationData } from '@/lib/modules/users/types';
 import { Edit2, Plus, Trash2 } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { posService } from '../../../services/pos.service';
-import { PosCategory } from '../../../types';
-import { CategoryModal } from './components/CategoryModal';
+import { PosLevel } from '../../../types';
+import { LevelModal } from './components/LevelModal';
 
-interface CategoriesTabProps {
+interface LevelsTabProps {
     companyId: number;
 }
 
-export const CategoriesTab: React.FC<CategoriesTabProps> = ({ companyId }) => {
+export const LevelsTab: React.FC<LevelsTabProps> = ({ companyId }) => {
     const { showToast } = useToast();
-    const [categories, setCategories] = useState<PosCategory[]>([]);
+    const [levels, setLevels] = useState<PosLevel[]>([]);
     const [pagination, setPagination] = useState<PaginationData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
 
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<PosCategory | null>(null);
+    const [selectedLevel, setSelectedLevel] = useState<PosLevel | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [categoryToDelete, setCategoryToDelete] = useState<PosCategory | null>(null);
+    const [levelToDelete, setLevelToDelete] = useState<PosLevel | null>(null);
 
-    const fetchCategories = useCallback(async () => {
+    const fetchLevels = useCallback(async () => {
         if (!companyId) return;
         setIsLoading(true);
         try {
-            const response = await posService.getCategories(companyId, { page, limit: 10 });
+            const response = await posService.getLevels(companyId, { page, limit: 10 });
             if (response.status === 'success' || response.status === 'Success') {
-                setCategories(response.data.result.items);
+                setLevels(response.data.result.items);
                 setPagination(response.data.result.pagination);
             }
         } catch (error) {
-            console.error('Failed to fetch categories:', error);
+            console.error('Failed to fetch levels:', error);
         } finally {
             setIsLoading(false);
         }
     }, [companyId, page]);
 
     useEffect(() => {
-        fetchCategories();
-    }, [fetchCategories]);
+        fetchLevels();
+    }, [fetchLevels]);
 
     const handleAdd = () => {
-        setSelectedCategory(null);
+        setSelectedLevel(null);
         setIsModalOpen(true);
     };
 
-    const handleEdit = (category: PosCategory) => {
-        setSelectedCategory(category);
+    const handleEdit = (level: PosLevel) => {
+        setSelectedLevel(level);
         setIsModalOpen(true);
     };
 
-    const handleDelete = (category: PosCategory) => {
-        setCategoryToDelete(category);
+    const handleDelete = (level: PosLevel) => {
+        setLevelToDelete(level);
         setIsDeleteModalOpen(true);
     };
 
     const confirmDelete = async () => {
-        if (!categoryToDelete || !companyId) return;
+        if (!levelToDelete || !companyId) return;
         try {
-            await posService.deleteCategory(companyId, categoryToDelete.id);
-            showToast('Category deleted successfully', 'success');
-            fetchCategories();
+            await posService.deleteLevel(companyId, levelToDelete.id);
+            showToast('Level deleted successfully', 'success');
+            fetchLevels();
             setIsDeleteModalOpen(false);
-            setCategoryToDelete(null);
+            setLevelToDelete(null);
         } catch (error) {
-            console.error('Failed to delete category:', error);
-            showToast('Failed to delete category', 'error');
+            console.error('Failed to delete level:', error);
+            showToast('Failed to delete level', 'error');
         }
     };
 
-    const handleSubmit = async (data: Partial<PosCategory>) => {
+    const handleSubmit = async (data: Partial<PosLevel>) => {
         try {
-            if (selectedCategory) {
-                await posService.updateCategory(companyId, selectedCategory.id, data);
-                showToast('Category updated successfully', 'success');
+            if (selectedLevel) {
+                await posService.updateLevel(companyId, selectedLevel.id, data);
+                showToast('Level updated successfully', 'success');
             } else {
-                await posService.createCategory(companyId, data);
-                showToast('Category created successfully', 'success');
+                await posService.createLevel(companyId, data);
+                showToast('Level created successfully', 'success');
             }
-            fetchCategories();
+            fetchLevels();
         } catch (error) {
             console.error('Submit error:', error);
-            showToast('Failed to save category', 'error');
+            showToast('Failed to save level', 'error');
             throw error;
         }
     };
 
-    const columns: Column<PosCategory>[] = [
-        { header: 'Category Name', accessorKey: 'name', sortable: true },
+    const columns: Column<PosLevel>[] = [
+        { header: 'Level Name', accessorKey: 'name', sortable: true },
         { header: 'Description', accessorKey: 'description' },
         {
             header: 'Actions',
@@ -120,40 +120,40 @@ export const CategoriesTab: React.FC<CategoriesTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-white uppercase italic tracking-wider">Categories</h3>
-                    <p className="text-xs text-gray-500">Organize your products into logical groups.</p>
+                    <h3 className="text-xl font-bold text-white uppercase italic tracking-wider">Levels</h3>
+                    <p className="text-xs text-gray-500">Manage spicy levels or product variations.</p>
                 </div>
                 <button
                     onClick={handleAdd}
                     className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold transition-all shadow-lg shadow-primary/20"
                 >
                     <Plus className="w-4 h-4" />
-                    <span>Add New Category</span>
+                    <span>Add New Level</span>
                 </button>
             </div>
 
             <DataTable
                 columns={columns}
-                data={categories}
+                data={levels}
                 isLoading={isLoading}
                 pagination={pagination}
                 page={page}
                 onPageChange={setPage}
             />
 
-            <CategoryModal
+            <LevelModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={handleSubmit}
-                category={selectedCategory}
+                level={selectedLevel}
             />
 
             <DeleteConfirmationModal
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={confirmDelete}
-                title="Delete Category?"
-                description={`Are you sure you want to delete ${categoryToDelete?.name}?`}
+                title="Delete Level?"
+                description={`Are you sure you want to delete ${levelToDelete?.name}?`}
             />
         </div>
     );

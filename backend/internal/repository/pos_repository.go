@@ -26,6 +26,27 @@ type PosRepository interface {
 	CreateOrder(order *models.PosOrder) error
 	UpdateOrder(order *models.PosOrder) error
 
+	// Deliveries
+	GetAllDeliveries(companyID uint, page, limit int) ([]models.PosDelivery, models.Pagination, error)
+	GetDeliveryByID(companyID uint, id uint) (models.PosDelivery, error)
+	CreateDelivery(delivery *models.PosDelivery) error
+	UpdateDelivery(delivery *models.PosDelivery) error
+	DeleteDelivery(companyID uint, id uint) error
+
+	// Levels
+	GetAllLevels(companyID uint, page, limit int) ([]models.PosLevel, models.Pagination, error)
+	GetLevelByID(companyID uint, id uint) (models.PosLevel, error)
+	CreateLevel(level *models.PosLevel) error
+	UpdateLevel(level *models.PosLevel) error
+	DeleteLevel(companyID uint, id uint) error
+
+	// Extras
+	GetAllExtras(companyID uint, page, limit int) ([]models.PosExtra, models.Pagination, error)
+	GetExtraByID(companyID uint, id uint) (models.PosExtra, error)
+	CreateExtra(extra *models.PosExtra) error
+	UpdateExtra(extra *models.PosExtra) error
+	DeleteExtra(companyID uint, id uint) error
+
 	// Stats
 	GetDashboardStats(companyID uint) (map[string]interface{}, error)
 }
@@ -141,6 +162,85 @@ func (r *posRepository) CreateOrder(order *models.PosOrder) error {
 
 func (r *posRepository) UpdateOrder(order *models.PosOrder) error {
 	return r.db.Save(order).Error
+}
+
+// Deliveries Implementation
+func (r *posRepository) GetAllDeliveries(companyID uint, page, limit int) ([]models.PosDelivery, models.Pagination, error) {
+	var deliveries []models.PosDelivery
+	query := r.db.Where("company_id = ?", companyID).Order("created_at desc")
+	
+	pagination, err := models.Paginate(query, page, limit, &deliveries)
+	return deliveries, pagination, err
+}
+
+func (r *posRepository) GetDeliveryByID(companyID uint, id uint) (models.PosDelivery, error) {
+	var delivery models.PosDelivery
+	err := r.db.Where("company_id = ? AND id = ?", companyID, id).First(&delivery).Error
+	return delivery, err
+}
+
+func (r *posRepository) CreateDelivery(delivery *models.PosDelivery) error {
+	return r.db.Create(delivery).Error
+}
+
+func (r *posRepository) UpdateDelivery(delivery *models.PosDelivery) error {
+	return r.db.Save(delivery).Error
+}
+
+func (r *posRepository) DeleteDelivery(companyID uint, id uint) error {
+	return r.db.Where("company_id = ? AND id = ?", companyID, id).Delete(&models.PosDelivery{}).Error
+}
+
+// Levels Implementation
+func (r *posRepository) GetAllLevels(companyID uint, page, limit int) ([]models.PosLevel, models.Pagination, error) {
+	var levels []models.PosLevel
+	query := r.db.Where("company_id = ?", companyID).Order("created_at desc")
+	pagination, err := models.Paginate(query, page, limit, &levels)
+	return levels, pagination, err
+}
+
+func (r *posRepository) GetLevelByID(companyID uint, id uint) (models.PosLevel, error) {
+	var level models.PosLevel
+	err := r.db.Where("company_id = ? AND id = ?", companyID, id).First(&level).Error
+	return level, err
+}
+
+func (r *posRepository) CreateLevel(level *models.PosLevel) error {
+	return r.db.Create(level).Error
+}
+
+func (r *posRepository) UpdateLevel(level *models.PosLevel) error {
+	return r.db.Save(level).Error
+}
+
+func (r *posRepository) DeleteLevel(companyID uint, id uint) error {
+	return r.db.Where("company_id = ? AND id = ?", companyID, id).Delete(&models.PosLevel{}).Error
+}
+
+// Extras Implementation
+func (r *posRepository) GetAllExtras(companyID uint, page, limit int) ([]models.PosExtra, models.Pagination, error) {
+	var extras []models.PosExtra
+	query := r.db.Where("company_id = ?", companyID).Order("created_at desc")
+	pagination, err := models.Paginate(query, page, limit, &extras)
+	return extras, pagination, err
+}
+
+func (r *posRepository) GetExtraByID(companyID uint, id uint) (models.PosExtra, error) {
+	var extra models.PosExtra
+	err := r.db.Where("company_id = ? AND id = ?", companyID, id).First(&extra).Error
+	return extra, err
+}
+
+func (r *posRepository) CreateExtra(extra *models.PosExtra) error {
+	return r.db.Create(extra).Error
+}
+
+func (r *posRepository) UpdateExtra(extra *models.PosExtra) error {
+	return r.db.Save(extra).Error
+}
+
+func (r *posRepository) DeleteExtra(companyID uint, id uint) error {
+	return r.db.Where("company_id = ? AND id = ?", companyID, id).Delete(&models.PosExtra{}).Error
 }
 
 // Stats Implementation

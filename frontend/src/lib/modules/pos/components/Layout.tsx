@@ -4,7 +4,7 @@ import { Desktop } from './Desktop';
 import { useLogin } from '@/lib/modules/login/store/useLogin';
 import { userService } from '@/lib/modules/users/services/user.service';
 import { LookupOption } from '@/lib/modules/users/types';
-import { Package, Tags, Truck, ShoppingCart } from 'lucide-react';
+import { Package, Tags, Truck, ShoppingCart, Layers, PlusCircle } from 'lucide-react';
 
 export const Layout = () => {
     // Use selectors for better performance and to avoid unnecessary re-renders
@@ -47,6 +47,8 @@ export const Layout = () => {
     const tabs = [
         { id: 'items', label: 'Items', icon: Package },
         { id: 'categories', label: 'Categories', icon: Tags },
+        { id: 'levels', label: 'Levels', icon: Layers },
+        { id: 'extras', label: 'Extras', icon: PlusCircle },
         { id: 'deliveries', label: 'Deliveries', icon: Truck },
         { id: 'orders', label: 'Orders', icon: ShoppingCart },
     ];

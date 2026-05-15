@@ -38,3 +38,37 @@ type PosProduct struct {
 	Company       Company        `gorm:"foreignKey:CompanyID" json:"-"`
 	Category      PosCategory    `gorm:"foreignKey:CategoryID" json:"category"`
 }
+
+type PosDelivery struct {
+	ID          uint           `gorm:"primaryKey" json:"id"`
+	CompanyID   uint           `gorm:"not null" json:"company_id"`
+	Name        string         `gorm:"size:255;not null" json:"name"`
+	Description string         `gorm:"type:text" json:"description"`
+	Price       string         `gorm:"size:255;not null" json:"price"`
+	CreatedAt   time.Time      `json:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+	Company     Company        `gorm:"foreignKey:CompanyID" json:"-"`
+}
+
+type PosLevel struct {
+	ID          uint           `gorm:"primaryKey" json:"id"`
+	CompanyID   uint           `gorm:"not null" json:"company_id"`
+	Name        string         `gorm:"size:255;not null" json:"name"`
+	Description string         `gorm:"type:text" json:"description"`
+	CreatedAt   time.Time      `json:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+	Company     Company        `gorm:"foreignKey:CompanyID" json:"-"`
+}
+
+type PosExtra struct {
+	ID          uint           `gorm:"primaryKey" json:"id"`
+	CompanyID   uint           `gorm:"not null" json:"company_id"`
+	Name        string         `gorm:"size:255;not null" json:"name"`
+	Price       string         `gorm:"size:255;not null" json:"price"`
+	CreatedAt   time.Time      `json:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at"`
+	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+	Company     Company        `gorm:"foreignKey:CompanyID" json:"-"`
+}

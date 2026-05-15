@@ -44,6 +44,9 @@ func main() {
 		&models.News{},
 		&models.FAQ{},
 		&models.TNC{},
+		&models.PosDelivery{},
+		&models.PosLevel{},
+		&models.PosExtra{},
 	)
 	if err != nil {
 		log.Fatalf("Migration failed: %v", err)

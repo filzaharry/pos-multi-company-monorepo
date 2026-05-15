@@ -32,13 +32,29 @@ export interface PosCategory {
 export interface PosDelivery {
     id: number;
     company_id: number;
-    order_id: number;
-    courier_name: string;
-    tracking_number?: string;
-    status: 'pending' | 'shipped' | 'delivered' | 'cancelled';
-    shipped_at?: string;
-    delivered_at?: string;
+    name: string;
+    description?: string;
+    price: string;
     created_at?: string;
+    updated_at?: string;
+}
+
+export interface PosLevel {
+    id: number;
+    company_id: number;
+    name: string;
+    description?: string;
+    created_at?: string;
+    updated_at?: string;
+}
+
+export interface PosExtra {
+    id: number;
+    company_id: number;
+    name: string;
+    price: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface PosOrder {
@@ -46,15 +62,18 @@ export interface PosOrder {
     company_id: number;
     user_id: number;
     customer_name: string;
+    phone_number?: string;
     total_amount: number;
     tax_amount: number;
     discount_amount: number;
-    payment_method: string;
-    payment_status: string; // 'Pending', 'Paid', 'Cancelled'
+    delivery_id?: number;
+    payment_method: number; // 0->cash, 1->qris
+    payment_status: string;
+    status: number;
     notes?: string;
+    order_items: PosOrderItem[];
     created_at?: string;
     updated_at?: string;
-    order_items?: PosOrderItem[];
 }
 
 export interface PosOrderItem {
@@ -85,6 +104,12 @@ export interface DeliveriesListResponse {
 export interface OrdersListResponse {
     items: PosOrder[];
     pagination: PaginationData;
+}
+
+export interface PosStats {
+    total_revenue: number;
+    total_orders: number;
+    low_stock: number;
 }
 
 export interface PosQueryParams {

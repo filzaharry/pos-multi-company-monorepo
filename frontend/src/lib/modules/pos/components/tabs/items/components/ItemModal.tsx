@@ -51,7 +51,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                 ...item,
             });
             setImageFile(null);
-            setImagePreview(item.image_url ? `${process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || ''}/${item.image_url}` : null);
+            if (item.image_url) {
+                const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || '';
+                const cleanPath = item.image_url.startsWith('/') ? item.image_url : `/${item.image_url}`;
+                setImagePreview(`${baseUrl}${cleanPath}`);
+            } else {
+                setImagePreview(null);
+            }
         } else {
             setFormData({
                 name: '',
@@ -100,14 +106,26 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
         setIsSubmitting(true);
         try {
             const submitData = new FormData();
-            Object.entries(formData).forEach(([key, value]) => {
+            
+            // Explicitly add only the fields expected by the backend DTO
+            const fields = [
+                'name', 'sku', 'category_id', 'product_type', 
+                'price', 'cost_price', 'stock_quantity', 
+                'track_stock', 'is_available', 'description',
+                'image_url'
+            ];
+
+            fields.forEach(field => {
+                const value = formData[field as keyof PosItem];
                 if (value !== undefined && value !== null) {
-                    submitData.append(key, value.toString());
+                    submitData.append(field, value.toString());
                 }
             });
+
             if (imageFile) {
                 submitData.append('image', imageFile);
             }
+            
             await onSubmit(submitData);
             onClose();
         } catch (error) {
