@@ -60,7 +60,7 @@ export const UpdateOrderModal: React.FC<UpdateOrderModalProps> = ({ isOpen, onCl
                     initial={{ scale: 0.95, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                    className="relative w-full max-w-lg bg-background-dark border border-white/10 rounded-3xl p-6 lg:p-8 shadow-2xl flex flex-col"
+                    className="relative w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-6 lg:p-8 shadow-2xl flex flex-col"
                 >
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-4">
@@ -68,18 +68,18 @@ export const UpdateOrderModal: React.FC<UpdateOrderModalProps> = ({ isOpen, onCl
                                 <ClipboardList className="w-6 h-6" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-black text-white italic uppercase tracking-wider">Update Order {order.code}</h2>
-                                <p className="text-sm text-gray-500">Modify order status and payment information</p>
+                                <h2 className="text-xl font-black text-slate-800 italic uppercase tracking-wider">Update Order {order.code}</h2>
+                                <p className="text-sm text-slate-800">Modify order status and payment information</p>
                             </div>
                         </div>
-                        <button onClick={onClose} className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all">
+                        <button onClick={onClose} className="p-2 text-slate-800 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all">
                             <X className="w-6 h-6" />
                         </button>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Order Status</label>
+                            <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Order Status</label>
                             <div className="grid grid-cols-2 gap-2">
                                 {ORDER_STATUS_LIST.map((s) => {
                                     const Icon = s.icon;
@@ -90,8 +90,8 @@ export const UpdateOrderModal: React.FC<UpdateOrderModalProps> = ({ isOpen, onCl
                                             type="button"
                                             onClick={() => setStatus(s.value)}
                                             className={`flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${isActive
-                                                ? 'bg-primary/20 border-primary text-white font-bold'
-                                                : 'bg-white/5 border-white/10 text-gray-500 hover:border-white/20'
+                                                ? 'bg-primary/10 border-primary text-slate-800 font-bold'
+                                                : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100 hover:border-slate-300'
                                                 }`}
                                         >
                                             <Icon className={`w-4 h-4 ${isActive ? 'text-primary' : ''}`} />
@@ -103,24 +103,25 @@ export const UpdateOrderModal: React.FC<UpdateOrderModalProps> = ({ isOpen, onCl
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Payment Status</label>
+                            <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Payment Status</label>
                             <CustomSelect
                                 value={paymentStatus}
                                 onChange={(e) => setPaymentStatus(e.target.value)}
+                                variant="light"
                             >
-                                <option value="Pending" className="bg-background-dark">Pending</option>
-                                <option value="Paid" className="bg-background-dark">Paid</option>
-                                <option value="Refunded" className="bg-background-dark">Refunded</option>
-                                <option value="Cancelled" className="bg-background-dark">Cancelled</option>
+                                <option value="Pending" className="bg-white text-slate-800">Pending</option>
+                                <option value="Paid" className="bg-white text-slate-800">Paid</option>
+                                <option value="Refunded" className="bg-white text-slate-800">Refunded</option>
+                                <option value="Cancelled" className="bg-white text-slate-800">Cancelled</option>
                             </CustomSelect>
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Internal Notes</label>
+                            <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Internal Notes</label>
                             <textarea
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
-                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-gray-600 resize-none"
+                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400 resize-none"
                                 rows={3}
                                 placeholder="Add any internal notes here..."
                             />
@@ -130,7 +131,7 @@ export const UpdateOrderModal: React.FC<UpdateOrderModalProps> = ({ isOpen, onCl
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex-1 px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold transition-all"
+                                className="flex-1 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-bold transition-all"
                             >
                                 Cancel
                             </button>

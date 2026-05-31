@@ -82,7 +82,7 @@ export const Desktop: React.FC<DesktopProps> = ({
             {/* Header Area */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-1">
-                    <h1 className="text-3xl font-black text-white tracking-tight uppercase italic">User <span className="text-primary">Directory</span></h1>
+                    <h1 className="text-3xl font-black text-slate-800 tracking-tight uppercase italic">User <span className="text-primary">Directory</span></h1>
                     <p className="text-gray-500 text-sm font-medium tracking-wide">Manage organizational members and their access levels.</p>
                 </div>
 
@@ -104,8 +104,8 @@ export const Desktop: React.FC<DesktopProps> = ({
                         onClick={onOpenFilter}
                         className={cn(
                             "flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all border",
-                            activeFiltersCount > 0 
-                                ? "bg-primary/10 border-primary text-primary shadow-lg shadow-primary/10" 
+                            activeFiltersCount > 0
+                                ? "bg-primary/10 border-primary text-primary shadow-lg shadow-primary/10"
                                 : "bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20"
                         )}
                     >

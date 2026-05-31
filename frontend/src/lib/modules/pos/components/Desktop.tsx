@@ -73,12 +73,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                             onChange={setActiveTab}
                         />
 
-                        <div className="bg-background-dark/30 rounded-[2.5rem] border border-white/5 p-8 backdrop-blur-md shadow-2xl relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] -z-10" />
-                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 blur-[100px] -z-10" />
-
-                            {renderTabContent()}
-                        </div>
+                        {renderTabContent()}
                     </motion.div>
                 ) : (
                     <motion.div
@@ -87,11 +82,11 @@ export const Desktop: React.FC<DesktopProps> = ({
                         animate={{ opacity: 1 }}
                         className="py-32 flex flex-col items-center justify-center text-center space-y-4"
                     >
-                        <div className="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-gray-500 mb-4">
-                            <AlertCircle className="w-10 h-10 opacity-20" />
+                        <div className="w-20 h-20 bg-slate-100 border border-slate-200 rounded-full flex items-center justify-center text-slate-800 mb-4">
+                            <AlertCircle className="w-10 h-10 opacity-40 text-slate-800" />
                         </div>
-                        <h2 className="text-xl font-bold text-white uppercase italic tracking-wider">No Company Selected</h2>
-                        <p className="text-gray-500 max-w-xs text-sm">Please select a company from the dropdown above to manage items, categories, and orders.</p>
+                        <h2 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">No Company Selected</h2>
+                        <p className="text-slate-500 max-w-xs text-sm">Please select a company from the dropdown above to manage items, categories, and orders.</p>
                     </motion.div>
                 )}
             </AnimatePresence>

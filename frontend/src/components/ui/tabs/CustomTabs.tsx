@@ -29,7 +29,7 @@ export const CustomTabs = ({ tabs, activeTab, onChange, className }: CustomTabsP
                             onClick={() => onChange(tab.id)}
                             className={cn(
                                 "group relative min-w-[160px] py-4 transition-all duration-300 focus:outline-none",
-                                isActive ? "text-white" : "text-gray-400 hover:text-white"
+                                isActive ? "text-slate-800" : "text-slate-600 hover:text-slate-900"
                             )}
                         >
                             {/* The Trapezoid Shape */}
@@ -37,8 +37,8 @@ export const CustomTabs = ({ tabs, activeTab, onChange, className }: CustomTabsP
                                 className={cn(
                                     "absolute inset-0 transition-all duration-300",
                                     isActive
-                                        ? "bg-primary shadow-[0_-4px_20px_rgba(var(--primary-rgb),0.3)]"
-                                        : "bg-white/5 group-hover:bg-white/10"
+                                        ? "bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.03)]"
+                                        : "bg-slate-100/70 group-hover:bg-slate-100"
                                 )}
                                 style={{
                                     clipPath: "polygon(15px 0%, calc(100% - 15px) 0%, 100% 100%, 0% 100%)"
@@ -49,7 +49,7 @@ export const CustomTabs = ({ tabs, activeTab, onChange, className }: CustomTabsP
                             {isActive && (
                                 <motion.div
                                     layoutId="tab-accent"
-                                    className="absolute top-0 left-0 right-0 h-1 bg-white"
+                                    className="absolute top-0 left-0 right-0 h-1 bg-primary"
                                     style={{
                                         clipPath: "polygon(15px 0%, calc(100% - 15px) 0%, calc(100% - 13px) 100%, 13px 100%)"
                                     }}
@@ -66,7 +66,7 @@ export const CustomTabs = ({ tabs, activeTab, onChange, className }: CustomTabsP
             </div>
 
             {/* Bottom line covering the whole width */}
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10 z-0" />
+            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-slate-200 z-0" />
         </div>
     );
 };

@@ -3,15 +3,15 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useLogin } from '../store/useLogin';
-import { VerifyOTPMobile } from './VerifyOTPMobile';
-import { VerifyOTPDesktop } from './VerifyOTPDesktop';
+import { ResetPasswordMobile } from './ResetPasswordMobile';
+import { ResetPasswordDesktop } from './ResetPasswordDesktop';
 
-export const VerifyOTPLayout = () => {
+export const ResetPasswordLayout = () => {
     const [isMobile, setIsMobile] = useState(false);
     const searchParams = useSearchParams();
     const email = searchParams.get('email') || '';
-    const type = searchParams.get('type') || '';
-    const { isLoading, error, verifyOTP, verifyResetOTP } = useLogin();
+    const otp = searchParams.get('otp') || '';
+    const { isLoading, error, resetPassword } = useLogin();
 
     useEffect(() => {
         const checkMobile = () => {
@@ -24,16 +24,15 @@ export const VerifyOTPLayout = () => {
 
     const props = {
         email,
-        type,
+        otp,
         isLoading,
         error,
-        verifyOTP,
-        verifyResetOTP
+        resetPassword
     };
 
     if (isMobile) {
-        return <VerifyOTPMobile {...props} />;
+        return <ResetPasswordMobile {...props} />;
     }
 
-    return <VerifyOTPDesktop {...props} />;
+    return <ResetPasswordDesktop {...props} />;
 };

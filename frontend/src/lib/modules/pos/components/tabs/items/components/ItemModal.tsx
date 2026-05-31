@@ -173,7 +173,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                         initial={{ scale: 0.95, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                        className="relative w-full max-w-2xl bg-background-dark border border-white/10 rounded-3xl p-6 lg:p-8 shadow-2xl flex flex-col max-h-[90vh]"
+                        className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl p-6 lg:p-8 shadow-2xl flex flex-col max-h-[90vh]"
                     >
                         <div className="flex items-center justify-between mb-8 shrink-0">
                             <div className="flex items-center gap-4">
@@ -181,17 +181,17 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                     <Package className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-white italic uppercase tracking-wider">
+                                    <h2 className="text-xl font-black text-slate-800 italic uppercase tracking-wider">
                                         {item ? 'Edit Item' : 'New Item'}
                                     </h2>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-sm text-slate-800">
                                         {item ? 'Update item details and inventory' : 'Add a new product to your inventory'}
                                     </p>
                                 </div>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                                className="p-2 text-slate-800 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
                             >
                                 <X className="w-6 h-6" />
                             </button>
@@ -200,7 +200,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Item Name *</label>
+                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Item Name *</label>
                                     <CustomInput
                                         type="text"
                                         name="name"
@@ -208,10 +208,11 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                         value={formData.name || ''}
                                         onChange={handleChange}
                                         placeholder="e.g. Classic Burger"
+                                        variant="light"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">SKU / Barcode</label>
+                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">SKU / Barcode</label>
                                     <CustomInput
                                         type="text"
                                         name="sku"
@@ -220,37 +221,40 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                         placeholder="Auto-generated"
                                         disabled={true}
                                         className="opacity-50 cursor-not-allowed"
+                                        variant="light"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Category *</label>
+                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Category *</label>
                                     <CustomSelect
                                         name="category_id"
                                         required
                                         value={formData.category_id || ''}
                                         onChange={handleChange}
+                                        variant="light"
                                     >
                                         <option value="" disabled>Select Category</option>
                                         {categories.map(cat => (
-                                            <option key={cat.value} value={cat.value} className="bg-background-dark">{cat.label}</option>
+                                            <option key={cat.value} value={cat.value} className="bg-white text-slate-800">{cat.label}</option>
                                         ))}
                                     </CustomSelect>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Product Type</label>
+                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Product Type</label>
                                     <CustomSelect
                                         name="product_type"
                                         value={formData.product_type?.toString()}
                                         onChange={handleChange}
+                                        variant="light"
                                     >
-                                        <option value="0" className="bg-background-dark">Retail (Barang Jadi)</option>
-                                        <option value="1" className="bg-background-dark">Food/Drink (Olahan)</option>
+                                        <option value="0" className="bg-white text-slate-800">Retail (Barang Jadi)</option>
+                                        <option value="1" className="bg-white text-slate-800">Food/Drink (Olahan)</option>
                                     </CustomSelect>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Selling Price *</label>
+                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Selling Price *</label>
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-bold z-10">Rp</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm font-bold z-10">Rp</span>
                                         <CustomInput
                                             type="number"
                                             name="price"
@@ -259,13 +263,14 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                             value={formData.price || ''}
                                             onChange={handleChange}
                                             className="pl-12"
+                                            variant="light"
                                         />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Cost Price</label>
+                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Cost Price</label>
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-bold z-10">Rp</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm font-bold z-10">Rp</span>
                                         <CustomInput
                                             type="number"
                                             name="cost_price"
@@ -273,12 +278,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                             value={formData.cost_price || ''}
                                             onChange={handleChange}
                                             className="pl-12"
+                                            variant="light"
                                         />
                                     </div>
                                 </div>
                                 {formData.product_type === 0 && (
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Stock Quantity *</label>
+                                        <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Stock Quantity *</label>
                                         <CustomInput
                                             type="number"
                                             name="stock_quantity"
@@ -287,6 +293,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                             value={formData.stock_quantity || ''}
                                             onChange={handleChange}
                                             placeholder="Enter initial stock"
+                                            variant="light"
                                         />
                                     </div>
                                 )}
@@ -298,6 +305,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                         value={selectedLevels}
                                         onChange={setSelectedLevels}
                                         placeholder="No levels selected"
+                                        variant="light"
                                     />
                                 </div>
 
@@ -308,48 +316,49 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                         value={selectedExtras}
                                         onChange={setSelectedExtras}
                                         placeholder="No extras selected"
+                                        variant="light"
                                     />
                                 </div>
 
-                                <div className="space-y-4 md:col-span-2 bg-white/5 p-4 rounded-xl border border-white/10 mt-2">
+                                <div className="space-y-4 md:col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-200 mt-2">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <h4 className="text-sm font-bold text-white">Track Stock</h4>
-                                            <p className="text-xs text-gray-500">Automatically reduce stock upon sale</p>
+                                            <h4 className="text-sm font-bold text-slate-800">Track Stock</h4>
+                                            <p className="text-xs text-slate-800 opacity-70">Automatically reduce stock upon sale</p>
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" name="track_stock" checked={formData.track_stock} onChange={handleChange} className="sr-only peer" />
-                                            <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                         </label>
                                     </div>
-                                    <hr className="border-white/10" />
+                                    <hr className="border-slate-200" />
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <h4 className="text-sm font-bold text-white">Available for Sale</h4>
-                                            <p className="text-xs text-gray-500">Show this item in the POS system</p>
+                                            <h4 className="text-sm font-bold text-slate-800">Available for Sale</h4>
+                                            <p className="text-xs text-slate-800 opacity-70">Show this item in the POS system</p>
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" name="is_available" checked={formData.is_available} onChange={handleChange} className="sr-only peer" />
-                                            <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                         </label>
                                     </div>
                                 </div>
 
                                 <div className="space-y-2 md:col-span-2">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Description</label>
+                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Description</label>
                                     <textarea
                                         name="description"
                                         rows={3}
                                         value={formData.description || ''}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-gray-600 resize-none"
+                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400 resize-none"
                                         placeholder="Brief description of the item..."
                                     />
                                 </div>
 
                                 <div className="space-y-2 md:col-span-2">
-                                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">Product Image</label>
-                                    <div className="relative border-2 border-dashed border-white/10 rounded-2xl hover:border-primary/50 transition-colors bg-white/5 overflow-hidden group">
+                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Product Image</label>
+                                    <div className="relative border-2 border-dashed border-slate-200 rounded-2xl hover:border-primary transition-colors bg-slate-50 overflow-hidden group">
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -367,21 +376,21 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div className="flex flex-col items-center justify-center py-10 text-gray-500 group-hover:text-primary transition-colors">
+                                            <div className="flex flex-col items-center justify-center py-10 text-slate-800 group-hover:text-primary transition-colors">
                                                 <ImageIcon className="w-10 h-10 mb-3" />
-                                                <p className="text-sm font-bold text-white mb-1">Click or drag image to upload</p>
-                                                <p className="text-xs">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                                                <p className="text-sm font-bold text-slate-800 mb-1">Click or drag image to upload</p>
+                                                <p className="text-xs text-slate-800 opacity-70">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                                             </div>
                                         )}
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="pt-6 border-t border-white/10 flex gap-4 shrink-0">
+                            <div className="pt-6 border-t border-slate-200 flex gap-4 shrink-0">
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="flex-1 px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold transition-all"
+                                    className="flex-1 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-bold transition-all"
                                 >
                                     Cancel
                                 </button>

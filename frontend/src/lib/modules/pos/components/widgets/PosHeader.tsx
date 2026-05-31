@@ -23,8 +23,8 @@ export const PosHeader: React.FC<PosHeaderProps> = ({
             <div className="space-y-1">
                 <div className="flex items-center gap-3">
                     <div>
-                        <h1 className="text-3xl font-black text-white italic tracking-tighter uppercase leading-none">Point of Sale</h1>
-                        <p className="text-xs text-gray-500 font-bold uppercase tracking-[0.2em] mt-1">Management Console</p>
+                        <h1 className="text-3xl font-black text-slate-900 italic tracking-tighter uppercase leading-none">Point of Sale</h1>
+                        <p className="text-xs text-slate-800 font-bold uppercase tracking-[0.2em] mt-1">Management Console</p>
                     </div>
                 </div>
             </div>
@@ -33,25 +33,25 @@ export const PosHeader: React.FC<PosHeaderProps> = ({
             <div className="w-full md:w-80">
                 <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2 block px-1">Selected Company</label>
                 <div className="relative group">
-                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-primary transition-colors" />
+                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-800 group-focus-within:text-primary transition-colors" />
                     <select
                         value={activeCompanyId || ''}
                         onChange={(e) => setActiveCompanyId(e.target.value ? Number(e.target.value) : null)}
                         disabled={!isSuperAdmin}
-                        className="w-full pl-11 pr-10 py-3 bg-background-dark/50 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all appearance-none disabled:opacity-60 disabled:cursor-not-allowed shadow-xl"
+                        className="w-full pl-11 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:bg-white focus:border-primary transition-all appearance-none disabled:opacity-60 disabled:cursor-not-allowed shadow-md"
                     >
-                        {!activeCompanyId && <option value="">Select a company to manage</option>}
+                        {!activeCompanyId && <option value="" className="text-slate-800">Select a company to manage</option>}
                         {isSuperAdmin ? (
                             companies.map(c => (
-                                <option key={c.value} value={c.value}>{c.label}</option>
+                                <option key={c.value} value={c.value} className="text-slate-800">{c.label}</option>
                             ))
                         ) : (
                             currentUser?.company && (
-                                <option value={currentUser.company_id}>{currentUser.company.name}</option>
+                                <option value={currentUser.company_id} className="text-slate-800">{currentUser.company.name}</option>
                             )
                         )}
                     </select>
-                    {isSuperAdmin && <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />}
+                    {isSuperAdmin && <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-800 pointer-events-none" />}
                 </div>
             </div>
         </div>

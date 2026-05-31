@@ -225,7 +225,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                     initial={{ scale: 0.98, opacity: 0, y: 10 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0.98, opacity: 0, y: 10 }}
-                    className="relative w-full max-w-[95vw] h-screen bg-[#0c0c0e] border border-white/5 rounded-[2.5rem] p-6 lg:p-10 shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] flex flex-col max-h-[92vh] overflow-hidden"
+                    className="relative w-full max-w-[95vw] h-screen bg-white border border-slate-200 rounded-[2.5rem] p-6 lg:p-10 shadow-2xl flex flex-col max-h-[92vh] overflow-hidden"
                 >
                     {/* Header */}
                     <div className="flex items-center justify-between mb-10 shrink-0">
@@ -234,23 +234,23 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                 <ShoppingBag className="w-8 h-8" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-white italic uppercase tracking-widest">Create Transaction</h2>
-                                <p className="text-xs text-gray-500 font-medium tracking-wider uppercase opacity-60">System Point of Sale v2.0</p>
+                                <h2 className="text-2xl font-black text-slate-800 italic uppercase tracking-widest">Create Transaction</h2>
+                                <p className="text-xs text-slate-800 font-medium tracking-wider uppercase opacity-60">System Point of Sale v2.0</p>
                             </div>
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <div className="hidden lg:flex items-center gap-2 bg-white/5 px-4 py-2 rounded-2xl border border-white/10">
-                                <Search className="w-4 h-4 text-gray-500" />
+                            <div className="hidden lg:flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-2xl border border-slate-200">
+                                <Search className="w-4 h-4 text-slate-500" />
                                 <input
                                     type="text"
                                     placeholder="Search products..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="bg-transparent border-none focus:outline-none text-xs text-white w-48 font-medium"
+                                    className="bg-transparent border-none focus:outline-none text-xs text-slate-800 w-48 font-medium placeholder:text-slate-400"
                                 />
                             </div>
-                            <button onClick={onClose} className="w-12 h-12 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 rounded-2xl transition-all border border-transparent hover:border-white/10">
+                            <button onClick={onClose} className="w-12 h-12 flex items-center justify-center text-slate-800 hover:text-slate-900 hover:bg-slate-100 rounded-2xl transition-all border border-transparent hover:border-slate-200">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
@@ -266,7 +266,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                         onClick={() => setSelectedCategoryId(null)}
                                         className={`shrink-0 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${selectedCategoryId === null
                                             ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
-                                            : 'bg-white/5 border-white/10 text-gray-500 hover:border-white/20'
+                                            : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100'
                                             }`}
                                     >
                                         All Items
@@ -277,7 +277,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                             onClick={() => setSelectedCategoryId(cat.id)}
                                             className={`shrink-0 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${selectedCategoryId === cat.id
                                                 ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
-                                                : 'bg-white/5 border-white/10 text-gray-500 hover:border-white/20'
+                                                : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100'
                                                 }`}
                                         >
                                             {cat.name}
@@ -296,9 +296,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: idx * 0.05 }}
                                             onClick={() => addProductToOrder(product)}
-                                            className="group relative bg-white/[0.03] border border-white/5 hover:border-primary/50 p-4 rounded-[2rem] transition-all text-left flex flex-col items-center text-center"
+                                            className="group relative bg-slate-50 border border-slate-200 hover:border-primary p-4 rounded-[2rem] transition-all text-left flex flex-col items-center text-center"
                                         >
-                                            <div className="relative w-full aspect-square bg-black/40 rounded-[1.5rem] mb-4 overflow-hidden border border-white/5">
+                                            <div className="relative w-full aspect-square bg-slate-100 rounded-[1.5rem] mb-4 overflow-hidden border border-slate-200">
                                                 {getImageUrl(product.image_url ?? '') ? (
                                                     <img
                                                         src={getImageUrl(product.image_url ?? '')!}
@@ -306,17 +306,17 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                                     />
                                                 ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-gray-800">
+                                                    <div className="w-full h-full flex items-center justify-center text-slate-800">
                                                         <ShoppingBag className="w-10 h-10 opacity-20" />
                                                     </div>
                                                 )}
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
                                                     <div className="bg-primary text-white p-2 rounded-xl shadow-lg">
                                                         <Plus className="w-5 h-5" />
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p className="text-xs font-black text-white uppercase tracking-wider line-clamp-1 mb-1">{product.name}</p>
+                                            <p className="text-xs font-black text-slate-800 uppercase tracking-wider line-clamp-1 mb-1">{product.name}</p>
                                             <p className="text-[10px] text-primary font-black italic">Rp {product.price.toLocaleString()}</p>
                                         </motion.button>
                                     ))}
@@ -330,7 +330,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                             </div>
                                         )}
                                         {!hasMore && products.length > 0 && (
-                                            <span className="text-[10px] text-gray-600 font-black uppercase tracking-[0.2em]">End of Menu</span>
+                                            <span className="text-[10px] text-slate-800 font-black uppercase tracking-[0.2em]">End of Menu</span>
                                         )}
                                     </div>
                                 </div>
@@ -339,9 +339,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
 
                         {/* Right Side: Order Summary */}
                         <div className="w-full lg:w-[28rem] shrink-0 flex flex-col overflow-hidden">
-                            <div className="flex-1 flex flex-col bg-white/[0.02] border border-white/5 rounded-[2.5rem] overflow-hidden">
+                            <div className="flex-1 flex flex-col bg-slate-50 border border-slate-200 rounded-[2.5rem] overflow-hidden">
                                 {/* Header Summary */}
-                                <div className="p-8 border-b border-white/5">
+                                <div className="p-8 border-b border-slate-200">
                                     <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-6 flex items-center gap-3">
                                         <div className="w-1 h-3 bg-primary rounded-full" />
                                         Cart Summary
@@ -349,7 +349,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
 
                                     <div className="grid grid-cols-1 gap-6">
                                         <div className="space-y-2">
-                                            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                                            <label className="text-[9px] font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
                                                 <User className="w-3 h-3" /> Customer
                                             </label>
                                             <input
@@ -357,11 +357,11 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                                 value={customerName}
                                                 onChange={(e) => setCustomerName(e.target.value)}
                                                 placeholder="Name"
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-medium"
+                                                className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-medium placeholder:text-slate-400"
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                                            <label className="text-[9px] font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
                                                 <Phone className="w-3 h-3" /> Phone
                                             </label>
                                             <input
@@ -369,7 +369,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                                 value={phoneNumber}
                                                 onChange={(e) => setPhoneNumber(e.target.value)}
                                                 placeholder="Phone"
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-medium"
+                                                className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-medium placeholder:text-slate-400"
                                             />
                                         </div>
                                     </div>
@@ -378,7 +378,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                 {/* Items List */}
                                 <div className="flex-1 overflow-y-auto p-8 custom-scrollbar space-y-4">
                                     {orderItems.length === 0 ? (
-                                        <div className="h-full flex flex-col items-center justify-center text-gray-700 opacity-40">
+                                        <div className="h-full flex flex-col items-center justify-center text-slate-800 opacity-40">
                                             <ShoppingBag className="w-16 h-16 mb-4" />
                                             <p className="text-[10px] font-black uppercase tracking-widest">Cart Empty</p>
                                         </div>
@@ -388,26 +388,26 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                                 key={index}
                                                 initial={{ opacity: 0, x: 20 }}
                                                 animate={{ opacity: 1, x: 0 }}
-                                                className="bg-white/[0.03] border border-white/5 rounded-3xl p-5 space-y-4 relative group"
+                                                className="bg-white border border-slate-100 rounded-3xl p-5 space-y-4 relative group"
                                             >
                                                 <button
                                                     onClick={() => removeItem(index)}
-                                                    className="absolute top-4 right-4 p-2 text-gray-600 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all opacity-0 group-hover:opacity-100"
+                                                    className="absolute top-4 right-4 p-2 text-slate-800 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all opacity-0 group-hover:opacity-100"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
 
                                                 <div className="flex justify-between items-start pr-10">
                                                     <div>
-                                                        <p className="text-xs font-black text-white uppercase tracking-wider">{item.name}</p>
+                                                        <p className="text-xs font-black text-slate-800 uppercase tracking-wider">{item.name}</p>
                                                         <p className="text-[10px] text-primary font-black mt-1">Rp {item.unit_price.toLocaleString()}</p>
                                                     </div>
-                                                    <div className="flex items-center gap-4 bg-black/40 rounded-2xl px-3 py-1.5 border border-white/5">
-                                                        <button onClick={() => updateItem(index, { quantity: Math.max(1, item.quantity - 1) })} className="text-gray-500 hover:text-white transition-colors">
+                                                    <div className="flex items-center gap-4 bg-slate-100 rounded-2xl px-3 py-1.5 border border-slate-200">
+                                                        <button onClick={() => updateItem(index, { quantity: Math.max(1, item.quantity - 1) })} className="text-slate-800 hover:text-slate-900 transition-colors">
                                                             <Minus className="w-3 h-3" />
                                                         </button>
-                                                        <span className="text-xs font-black text-white w-4 text-center">{item.quantity}</span>
-                                                        <button onClick={() => updateItem(index, { quantity: item.quantity + 1 })} className="text-gray-500 hover:text-white transition-colors">
+                                                        <span className="text-xs font-black text-slate-800 w-4 text-center">{item.quantity}</span>
+                                                        <button onClick={() => updateItem(index, { quantity: item.quantity + 1 })} className="text-slate-800 hover:text-slate-900 transition-colors">
                                                             <Plus className="w-3 h-3" />
                                                         </button>
                                                     </div>
@@ -416,23 +416,25 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                                 <div className="grid grid-cols-2 gap-3">
                                                     {item.available_levels.length > 0 && (
                                                         <div className="space-y-1.5">
-                                                            <label className="text-[8px] font-black text-gray-500 uppercase tracking-widest ml-1">Level</label>
+                                                            <label className="text-[8px] font-black text-slate-800 uppercase tracking-widest ml-1">Level</label>
                                                             <MultiSelect
                                                                 options={item.available_levels}
                                                                 value={item.level_ids}
                                                                 onChange={(vals) => updateItem(index, { level_ids: vals })}
                                                                 placeholder="None"
+                                                                variant="light"
                                                             />
                                                         </div>
                                                     )}
                                                     {item.available_extras.length > 0 && (
                                                         <div className="space-y-1.5">
-                                                            <label className="text-[8px] font-black text-gray-500 uppercase tracking-widest ml-1">Extra</label>
+                                                            <label className="text-[8px] font-black text-slate-800 uppercase tracking-widest ml-1">Extra</label>
                                                             <MultiSelect
                                                                 options={item.available_extras}
                                                                 value={item.extra_ids}
                                                                 onChange={(vals) => updateItem(index, { extra_ids: vals })}
                                                                 placeholder="None"
+                                                                variant="light"
                                                             />
                                                         </div>
                                                     )}
@@ -443,42 +445,44 @@ export const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, onSubmi
                                 </div>
 
                                 {/* Footer Summary */}
-                                <div className="p-8 bg-white/[0.03] border-t border-white/5 space-y-6">
+                                <div className="p-8 bg-slate-100 border-t border-slate-200 space-y-6">
                                     <div className="grid grid-cols-1 gap-4">
                                         <div className="space-y-2">
-                                            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-2 ml-1">
+                                            <label className="text-[9px] font-black text-slate-800 uppercase tracking-widest flex items-center gap-2 ml-1">
                                                 <Truck className="w-3 h-3" /> Delivery
                                             </label>
                                             <CustomSelect
                                                 value={deliveryId.toString()}
                                                 onChange={(e) => setDeliveryId(Number(e.target.value))}
                                                 className="h-10 text-[10px] font-bold"
+                                                variant="light"
                                             >
-                                                <option value="0" className="bg-[#0c0c0e]">Pickup / No Delivery</option>
+                                                <option value="0" className="bg-white text-slate-800">Pickup / No Delivery</option>
                                                 {deliveries.map(del => (
-                                                    <option key={del.id} value={del.id} className="bg-[#0c0c0e]">{del.name}</option>
+                                                    <option key={del.id} value={del.id} className="bg-white text-slate-800">{del.name}</option>
                                                 ))}
                                             </CustomSelect>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-2 ml-1">
+                                            <label className="text-[9px] font-black text-slate-800 uppercase tracking-widest flex items-center gap-2 ml-1">
                                                 <CreditCard className="w-3 h-3" /> Payment
                                             </label>
                                             <CustomSelect
                                                 value={paymentMethod.toString()}
                                                 onChange={(e) => setPaymentMethod(Number(e.target.value))}
                                                 className="h-10 text-[10px] font-bold"
+                                                variant="light"
                                             >
-                                                <option value="0" className="bg-[#0c0c0e]">Cash</option>
-                                                <option value="1" className="bg-[#0c0c0e]">QRIS / Digital</option>
+                                                <option value="0" className="bg-white text-slate-800">Cash</option>
+                                                <option value="1" className="bg-white text-slate-800">QRIS / Digital</option>
                                             </CustomSelect>
                                         </div>
                                     </div>
 
                                     <div className="flex justify-between items-end pt-2">
                                         <div>
-                                            <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-1">Total Bill</p>
-                                            <h3 className="text-3xl font-black text-white italic tracking-tighter">
+                                            <p className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] mb-1">Total Bill</p>
+                                            <h3 className="text-3xl font-black text-slate-800 italic tracking-tighter">
                                                 <span className="text-primary text-sm not-italic mr-1.5 uppercase">Rp</span>
                                                 {totalAmount.toLocaleString()}
                                             </h3>

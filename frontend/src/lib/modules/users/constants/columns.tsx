@@ -23,8 +23,8 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
                     {u.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                    <div className="text-sm font-bold text-white group-hover:text-primary transition-colors">{u.name}</div>
-                    <div className="text-[11px] text-gray-500">{u.email}</div>
+                    <div className="text-sm font-bold group-hover:text-primary transition-colors">{u.name}</div>
+                    <div className="text-[11px] text-slate-500">{u.email}</div>
                 </div>
             </div>
         )
@@ -33,7 +33,7 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
         header: 'Phone',
         accessorKey: 'phone',
         sortable: true,
-        cell: (u) => <span className="text-gray-400 font-medium">{u.phone || '-'}</span>
+        cell: (u) => <span className="font-medium">{u.phone || '-'}</span>
     },
     {
         header: 'Role',
@@ -42,9 +42,9 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
         cell: (u) => (
             <span className={cn(
                 "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border",
-                u.role?.name === 'Super Admin' ? "bg-red-500/10 text-red-400 border-red-500/20" :
-                    u.role?.name === 'Admin' ? "bg-blue-500/10 text-blue-400 border-blue-500/20" :
-                        "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                u.role?.name === 'Super Admin' ? "bg-red-50 text-red-700 border-red-100" :
+                    u.role?.name === 'Admin' ? "bg-blue-50 text-blue-700 border-blue-100" :
+                        "bg-emerald-50 text-emerald-700 border-emerald-100"
             )}>
                 {u.role?.name}
             </span>
@@ -56,8 +56,8 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
         sortable: true,
         cell: (u) => (
             <div className="flex flex-col">
-                <span className="text-sm text-gray-300 font-medium">{u.company?.name || '-'}</span>
-                {u.company?.email && <span className="text-[10px] text-gray-600 italic">{u.company.email}</span>}
+                <span className="text-sm font-medium">{u.company?.name || '-'}</span>
+                {u.company?.email && <span className="text-[10px] text-slate-500 italic">{u.company.email}</span>}
             </div>
         )
     },
@@ -69,7 +69,7 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
                 <Can permission="user.edit">
                     <button
                         onClick={() => onEdit(u)}
-                        className="p-2 text-white bg-white/5 rounded-lg transition-all"
+                        className="p-2 text-slate-800 hover:bg-slate-100 rounded-lg transition-all"
                         title="Edit User"
                     >
                         <Edit2 className="w-4 h-4" />
@@ -78,7 +78,7 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
                 <Can permission="user.delete">
                     <button
                         onClick={() => onDelete(u)}
-                        className="p-2 text-red-500 bg-red-500/10 rounded-lg transition-all"
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
                         title="Delete User"
                     >
                         <Trash2 className="w-4 h-4" />

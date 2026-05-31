@@ -13,7 +13,7 @@ export const getPackageColumns = (
             accessorKey: 'pricing',
             sortable: true,
             cell: (item) => (
-                <span className="font-bold text-white">
+                <span className="font-bold">
                     {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.pricing)}
                 </span>
             )
@@ -22,7 +22,7 @@ export const getPackageColumns = (
             header: 'Status',
             accessorKey: 'status',
             cell: (item) => (
-                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20">
+                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-700 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20">
                     {item.status || 'Active'}
                 </span>
             )
@@ -34,7 +34,7 @@ export const getPackageColumns = (
                 <div className="flex justify-end gap-2">
                     <button
                         onClick={() => onEdit(item)}
-                        className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-all text-gray-400 hover:text-white"
+                        className="p-2 bg-slate-50 hover:bg-slate-100 rounded-lg transition-all text-slate-800 hover:text-slate-900"
                     >
                         <Edit3 className="w-4 h-4" />
                     </button>
@@ -54,8 +54,8 @@ export const getTestimonialColumns = (
             sortable: true,
             cell: (item) => (
                 <div className="flex items-center gap-1">
-                    <span className="text-yellow-500 font-bold">{item.rating}</span>
-                    <span className="text-yellow-500/50">★</span>
+                    <span className="text-yellow-600 font-bold">{item.rating}</span>
+                    <span className="text-yellow-500/70">★</span>
                 </div>
             )
         },
@@ -67,13 +67,13 @@ export const getTestimonialColumns = (
                 <div className="flex justify-end gap-2">
                     <button
                         onClick={() => onEdit(item)}
-                        className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-all text-gray-400 hover:text-white"
+                        className="p-2 bg-slate-50 hover:bg-slate-100 rounded-lg transition-all text-slate-800 hover:text-slate-900"
                     >
                         <Edit3 className="w-4 h-4" />
                     </button>
                     <button
                         onClick={() => onDelete(item)}
-                        className="p-2 bg-red-500/5 hover:bg-red-500/20 rounded-lg transition-all text-red-500"
+                        className="p-2 bg-red-50 hover:bg-red-100 rounded-lg transition-all text-red-600"
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>
@@ -92,7 +92,7 @@ export const getFaqColumns = (
             header: 'Status',
             accessorKey: 'status',
             cell: (item) => (
-                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20">
+                <span className="px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100">
                     {item.status || 'Active'}
                 </span>
             )
@@ -104,13 +104,13 @@ export const getFaqColumns = (
                 <div className="flex justify-end gap-2">
                     <button
                         onClick={() => onEdit(item)}
-                        className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-all text-gray-400 hover:text-white"
+                        className="p-2 bg-slate-50 hover:bg-slate-100 rounded-lg transition-all text-slate-800 hover:text-slate-900"
                     >
                         <Edit3 className="w-4 h-4" />
                     </button>
                     <button
                         onClick={() => onDelete(item)}
-                        className="p-2 bg-red-500/5 hover:bg-red-500/20 rounded-lg transition-all text-red-500"
+                        className="p-2 bg-red-50 hover:bg-red-100 rounded-lg transition-all text-red-600"
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>

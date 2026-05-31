@@ -22,6 +22,7 @@ func SetupRoutes(app *fiber.App) {
 	auth.Post("/logout", handlers.Logout)
 	auth.Post("/forgot-password", handlers.ForgotPassword)
 	auth.Post("/reset-password", handlers.ResetPassword)
+	auth.Post("/verify-reset-otp", handlers.VerifyResetOTP)
 
 	// Landing routes (Public)
 	landing := api.Group("/landing")

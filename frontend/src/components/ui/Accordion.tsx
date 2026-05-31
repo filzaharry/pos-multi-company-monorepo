@@ -22,37 +22,48 @@ export const Accordion: React.FC<AccordionProps> = ({ items, className }) => {
     };
 
     return (
-        <div className={twMerge("flex flex-col gap-4", className)}>
+        <div className={twMerge("flex flex-col gap-3", className)}>
             {items.map((item) => {
                 const isOpen = openId === item.id;
                 return (
-                    <div 
-                        key={item.id} 
-                        className="border border-gray-200 dark:border-white/10 rounded-xl overflow-hidden bg-white dark:bg-white/5 transition-all duration-300"
+                    <div
+                        key={item.id}
+                        className="rounded-xl overflow-hidden transition-all duration-200"
+                        style={{
+                            border: isOpen ? '1px solid rgba(34,197,94,0.3)' : '1px solid #e2e8f0',
+                            background: '#ffffff',
+                            boxShadow: isOpen ? '0 2px 20px rgba(34,197,94,0.06)' : 'none',
+                        }}
                     >
                         <button
                             type="button"
                             onClick={() => toggle(item.id)}
-                            className="w-full flex justify-between items-center p-5 text-left focus:outline-hidden"
+                            className="w-full flex justify-between items-center px-5 py-4 text-left focus:outline-none"
                         >
-                            <span className="text-lg font-bold text-gray-900 dark:text-white">
+                            <span className="text-base font-semibold text-slate-900">
                                 {item.title}
                             </span>
-                            <span className={twMerge(
-                                "material-symbols-outlined text-gray-400 transition-transform duration-300",
-                                isOpen ? "rotate-180 text-primary" : ""
-                            )}>
+                            <span
+                                className={twMerge(
+                                    "material-symbols-outlined text-slate-400 transition-transform duration-300 flex-shrink-0",
+                                    isOpen ? "rotate-180" : ""
+                                )}
+                                style={{ color: isOpen ? '#22c55e' : undefined }}
+                            >
                                 expand_more
                             </span>
                         </button>
-                        <div 
+                        <div
                             className={twMerge(
                                 "overflow-hidden transition-all duration-300 ease-in-out",
-                                isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+                                isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
                             )}
                         >
-                            <div className="p-5 pt-0 text-gray-600 dark:text-gray-300 leading-relaxed">
-                                {item.content}
+                            <div
+                                className="px-5 pb-4 text-slate-500 text-sm leading-relaxed"
+                                style={{ borderTop: '1px solid #f1f5f9' }}
+                            >
+                                <div className="pt-3">{item.content}</div>
                             </div>
                         </div>
                     </div>

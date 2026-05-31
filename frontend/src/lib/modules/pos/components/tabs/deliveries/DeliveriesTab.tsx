@@ -99,7 +99,7 @@ export const DeliveriesTab: React.FC<DeliveriesTabProps> = ({ companyId }) => {
             header: 'Price', 
             accessorKey: 'price',
             cell: (del) => (
-                <span className="text-white font-bold">
+                <span className="text-slate-800 font-bold">
                     {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(del.price))}
                 </span>
             )
@@ -111,13 +111,13 @@ export const DeliveriesTab: React.FC<DeliveriesTabProps> = ({ companyId }) => {
                 <div className="flex justify-end gap-2">
                     <button
                         onClick={() => handleEdit(item)}
-                        className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                        className="p-2 text-slate-800 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all"
                     >
                         <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                         onClick={() => handleDelete(item)}
-                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                        className="p-2 text-slate-800 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>
@@ -130,8 +130,8 @@ export const DeliveriesTab: React.FC<DeliveriesTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-white uppercase italic tracking-wider">Delivery Methods</h3>
-                    <p className="text-xs text-gray-500">Manage delivery services and shipping rates.</p>
+                    <h3 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">Delivery Methods</h3>
+                    <p className="text-xs text-slate-800">Manage delivery services and shipping rates.</p>
                 </div>
                 <button
                     onClick={handleAdd}

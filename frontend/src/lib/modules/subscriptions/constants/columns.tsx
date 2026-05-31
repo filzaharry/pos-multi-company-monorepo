@@ -25,8 +25,8 @@ export const getSubscriptionColumns = ({ onEdit, onDelete, onApprove }: Subscrip
                     <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                    <div className="text-sm font-bold text-white group-hover:text-primary transition-colors">{sub.company_name}</div>
-                    <div className="text-[10px] text-gray-500 uppercase tracking-widest">{sub.full_name}</div>
+                    <div className="text-sm font-bold group-hover:text-primary transition-colors">{sub.company_name}</div>
+                    <div className="text-[10px] text-slate-500 uppercase tracking-widest">{sub.full_name}</div>
                 </div>
             </div>
         )
@@ -37,8 +37,8 @@ export const getSubscriptionColumns = ({ onEdit, onDelete, onApprove }: Subscrip
         sortable: true,
         cell: (sub) => (
             <div className="flex flex-col">
-                <span className="text-sm text-gray-200 font-bold">{sub.package.name}</span>
-                <span className="text-[11px] text-primary">Rp {sub.package.pricing.toLocaleString()}</span>
+                <span className="text-sm font-bold">{sub.package.name}</span>
+                <span className="text-[11px] text-primary font-bold">Rp {sub.package.pricing.toLocaleString()}</span>
             </div>
         )
     },
@@ -51,9 +51,9 @@ export const getSubscriptionColumns = ({ onEdit, onDelete, onApprove }: Subscrip
             return (
                 <span className={cn(
                     "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border flex items-center gap-1.5 w-fit",
-                    status === 1 ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
-                        status === 2 ? "bg-red-500/10 text-red-400 border-red-500/20" :
-                            "bg-orange-500/10 text-orange-400 border-orange-500/20"
+                    status === 1 ? "bg-emerald-50 text-emerald-700 border-emerald-100" :
+                        status === 2 ? "bg-red-50 text-red-700 border-red-100" :
+                            "bg-orange-50 text-orange-700 border-orange-100"
                 )}>
                     {status === 1 ? <CheckCircle className="w-3 h-3" /> :
                         status === 2 ? <AlertCircle className="w-3 h-3" /> :
@@ -68,7 +68,7 @@ export const getSubscriptionColumns = ({ onEdit, onDelete, onApprove }: Subscrip
         accessorKey: 'created_at',
         sortable: true,
         cell: (sub) => (
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-slate-500">
                 {moment(sub.created_at).format('DD MMM YYYY')}
             </div>
         )
@@ -81,7 +81,7 @@ export const getSubscriptionColumns = ({ onEdit, onDelete, onApprove }: Subscrip
                 <Can permission="user.edit">
                     <button
                         onClick={() => onEdit(u)}
-                        className="p-2 text-white bg-white/5 rounded-lg transition-all"
+                        className="p-2 text-slate-800 hover:bg-slate-100 rounded-lg transition-all"
                         title="Edit User"
                     >
                         <Edit2 className="w-4 h-4" />
@@ -90,7 +90,7 @@ export const getSubscriptionColumns = ({ onEdit, onDelete, onApprove }: Subscrip
                 <Can permission="user.delete">
                     <button
                         onClick={() => onDelete(u)}
-                        className="p-2 text-red-500 bg-red-500/10 rounded-lg transition-all"
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all"
                         title="Delete User"
                     >
                         <Trash2 className="w-4 h-4" />

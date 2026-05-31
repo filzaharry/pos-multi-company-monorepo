@@ -55,7 +55,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
                 />
 
                 {/* Page Content */}
-                <main className="flex-1 overflow-y-auto p-8 prose-invert max-w-none scroll-smooth">
+                <main className="flex-1 overflow-y-auto p-8 bg-white text-slate-900 max-w-none scroll-smooth">
                     {children}
                 </main>
             </div>

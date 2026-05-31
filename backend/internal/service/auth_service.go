@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"pos-backend/internal/models"
 	"pos-backend/internal/repository"
 	"pos-backend/pkg/utils"
@@ -26,6 +25,7 @@ type AuthService interface {
 	UpdateProfile(userID uint, req *dto.UpdateProfileRequest) error
 	ApproveSubscription(subscriptionID uint) error
 	RenewSubscription(companyID uint, packageID uint, receiptPath string) error
+	VerifyResetOTP(email, code string) error
 }
 
 type authService struct {
@@ -58,9 +58,22 @@ func (s *authService) SubmitSubscription(input *dto.RegisterSubscriptionRequest,
 		return err
 	}
 
+	// Fetch package name
+	var pkg models.CompanySubsPackage
+	var packageName = "Paket Premium Enterprise"
+	if err := database.DB.First(&pkg, input.PackageID).Error; err == nil {
+		packageName = pkg.Name
+	}
+
+	paymentMethodStr := "Transfer Bank"
+	if input.PaymentMethod == 1 {
+		paymentMethodStr = "E-Wallet / Online Payment"
+	}
+
 	// Send Email
-	subject := "Registrasi Langganan POS"
-	body := "terimakasih sudah submit, mohon tunggu, kami akan proses, anda akan menerima informasi lebih lanjut melalui bisnis email anda"
+	subject := "Pengajuan Registrasi Langganan POS SaaS Cloud"
+	body := utils.GetSubscriptionEmailTemplate(input.FullName, input.CompanyName, packageName, input.PhoneNumber, paymentMethodStr)
+
 	go utils.SendEmail(input.BusinessEmail, subject, body)
 
 	return nil
@@ -88,7 +101,7 @@ func (s *authService) ForgotPassword(email string) error {
 
 	// Send email
 	subject := "Reset Password OTP"
-	body := fmt.Sprintf("Your OTP code for reset password is: <b>%s</b>. It will expire in 15 minutes.", otpCode)
+	body := utils.GetForgotPasswordEmailTemplate(otpCode)
 	go utils.SendEmail(email, subject, body)
 
 	return nil
@@ -119,6 +132,19 @@ func (s *authService) ResetPassword(email, code, newPassword string) error {
 	return s.authRepo.DeleteOTP(&otp)
 }
 
+func (s *authService) VerifyResetOTP(email, code string) error {
+	otp, err := s.authRepo.GetOTP(email, code)
+	if err != nil {
+		return errors.New("invalid OTP")
+	}
+
+	if time.Now().After(otp.ExpiredAt) {
+		return errors.New("OTP expired")
+	}
+
+	return nil
+}
+
 func (s *authService) RequestLoginOTP(email, password string) error {
 	user, err := s.userRepo.GetByEmail(email)
 	if err != nil {
@@ -143,7 +169,7 @@ func (s *authService) RequestLoginOTP(email, password string) error {
 
 	// Send email
 	subject := "Login OTP"
-	body := fmt.Sprintf("Your OTP code for login is: <b>%s</b>. It will expire in 10 minutes.", otpCode)
+	body := utils.GetLoginOTPEmailTemplate(otpCode)
 	go utils.SendEmail(email, subject, body)
 
 	return nil

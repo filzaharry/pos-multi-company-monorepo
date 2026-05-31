@@ -82,7 +82,7 @@ export const Desktop: React.FC<DesktopProps> = ({
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-1">
-                    <h1 className="text-3xl font-black text-white tracking-tight uppercase italic">Subscription <span className="text-primary">Console</span></h1>
+                    <h1 className="text-3xl font-black text-slate-800 tracking-tight uppercase italic">Subscription <span className="text-primary">Console</span></h1>
                     <p className="text-gray-500 text-sm font-medium tracking-wide">Monitor company billing and license life-cycles.</p>
                 </div>
 

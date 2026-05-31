@@ -8,12 +8,21 @@ import { useRouter } from 'next/navigation';
 
 interface VerifyOTPDesktopProps {
     email: string;
+    type?: string;
     isLoading: boolean;
     error: string | null;
     verifyOTP: (email: string, otp: string) => Promise<void>;
+    verifyResetOTP: (email: string, otp: string) => Promise<void>;
 }
 
-export const VerifyOTPDesktop: React.FC<VerifyOTPDesktopProps> = ({ email, isLoading, error, verifyOTP }) => {
+export const VerifyOTPDesktop: React.FC<VerifyOTPDesktopProps> = ({
+    email,
+    type,
+    isLoading,
+    error,
+    verifyOTP,
+    verifyResetOTP
+}) => {
     const router = useRouter();
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
 
@@ -35,8 +44,13 @@ export const VerifyOTPDesktop: React.FC<VerifyOTPDesktopProps> = ({ email, isLoa
         const code = otp.join('');
         if (code.length < 6) return;
         try {
-            await verifyOTP(email, code);
-            router.replace('/dashboard');
+            if (type === 'forgot') {
+                await verifyResetOTP(email, code);
+                router.replace(`/login/reset-password?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(code)}`);
+            } else {
+                await verifyOTP(email, code);
+                router.replace('/dashboard');
+            }
         } catch (err) {
             console.error('OTP Verification error:', err);
         }
@@ -44,8 +58,8 @@ export const VerifyOTPDesktop: React.FC<VerifyOTPDesktopProps> = ({ email, isLoa
 
     return (
         <AuthLayout
-            title="Verify Account"
-            subtitle={`We've sent a 6-digit code to ${email}`}
+            title="Verifikasi Akun"
+            subtitle={`Kami telah mengirimkan 6 digit kode OTP ke ${email}`}
             icon={<ShieldCheck className="w-10 h-10" />}
         >
             <div className="flex flex-col gap-8">
@@ -55,7 +69,7 @@ export const VerifyOTPDesktop: React.FC<VerifyOTPDesktopProps> = ({ email, isLoa
                             key={index}
                             type="text"
                             maxLength={1}
-                            className="w-full h-14 bg-white/5 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:border-primary focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                            className="w-full h-14 bg-slate-50 border border-slate-200 rounded-xl text-center text-2xl font-black text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                             value={data}
                             onChange={(e) => handleChange(e.target, index)}
                             onKeyDown={(e) => handleKeyDown(e, index)}
@@ -65,34 +79,34 @@ export const VerifyOTPDesktop: React.FC<VerifyOTPDesktopProps> = ({ email, isLoa
                 </div>
 
                 {error && (
-                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
-                        <p className="text-red-500 text-sm font-medium text-center">{error}</p>
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+                        <p className="text-red-600 text-sm font-medium text-center">{error}</p>
                     </div>
                 )}
 
                 <button
                     onClick={handleVerify}
                     disabled={otp.join('').length < 6 || isLoading}
-                    className="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-primary text-white text-lg font-bold shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all active:scale-[0.98] disabled:opacity-50"
+                    className="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 btn-green text-white text-lg font-bold shadow-lg transition-all active:scale-[0.98] disabled:opacity-50"
                 >
                     {isLoading ? (
                         <RefreshCw className="w-6 h-6 animate-spin" />
                     ) : (
-                        <span>Verify Code</span>
+                        <span>Verifikasi Kode</span>
                     )}
                 </button>
 
                 <div className="text-center">
-                    <p className="text-slate-400 text-sm mb-2">Didn&apos;t receive code?</p>
-                    <button className="text-primary font-bold text-sm hover:underline transition-all">
-                        Resend Code
+                    <p className="text-slate-500 text-sm mb-2">Tidak menerima kode?</p>
+                    <button className="text-primary font-bold text-sm hover:underline cursor-pointer transition-all">
+                        Kirim Ulang Kode
                     </button>
                 </div>
 
-                <div className="flex justify-center pt-8 border-t border-white/5">
-                    <Link href="/login" className="flex items-center gap-2 text-slate-400 hover:text-primary text-sm font-medium transition-colors group">
+                <div className="flex justify-center pt-8 border-t border-slate-100">
+                    <Link href="/login" className="flex items-center gap-2 text-slate-500 hover:text-primary text-sm font-medium transition-colors group">
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                        Change Email
+                        Ganti Email
                     </Link>
                 </div>
             </div>

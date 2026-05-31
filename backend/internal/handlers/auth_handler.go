@@ -180,6 +180,23 @@ func ResetPassword(c *fiber.Ctx) error {
 	return utils.SuccessResponse(c, "Password reset successful", nil)
 }
 
+func VerifyResetOTP(c *fiber.Ctx) error {
+	input := new(dto.VerifyOTPRequest)
+	if err := c.BodyParser(input); err != nil {
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
+	}
+
+	if validationErrors := utils.ValidateStruct(input); validationErrors != nil {
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Validation failed", validationErrors)
+	}
+
+	if err := authService().VerifyResetOTP(input.Email, input.OTP); err != nil {
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, err.Error())
+	}
+
+	return utils.SuccessResponse(c, "OTP is valid", nil)
+}
+
 func UpdateProfile(c *fiber.Ctx) error {
 	userID := c.Locals("user_id")
 	if userID == nil {

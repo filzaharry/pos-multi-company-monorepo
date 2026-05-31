@@ -42,6 +42,9 @@ export interface LoginState {
     activeCompanyId: number | null;
     requestOTP: (payload: LoginPayload) => Promise<void>;
     verifyOTP: (email: string, otp: string) => Promise<void>;
+    forgotPassword: (email: string) => Promise<void>;
+    verifyResetOTP: (email: string, otp: string) => Promise<void>;
+    resetPassword: (email: string, otp: string, newPassword: string) => Promise<void>;
     logout: () => void;
     getMe: () => Promise<void>;
     uploadAvatar: (file: File) => Promise<void>;

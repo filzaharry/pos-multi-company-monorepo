@@ -86,34 +86,33 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ companyId }) => {
 
     const columns: Column<PosOrder>[] = [
         { header: 'Order Code', accessorKey: 'code' },
-        { 
-            header: 'Date', 
+        {
+            header: 'Date',
             accessorKey: 'created_at',
             cell: (ord) => moment(ord.created_at).format('DD MMM YYYY HH:mm')
         },
-        { 
-            header: 'Total', 
+        {
+            header: 'Total',
             accessorKey: 'total_amount',
             cell: (ord) => `Rp ${ord.total_amount.toLocaleString()}`
         },
-        { 
-            header: 'Payment', 
+        {
+            header: 'Payment',
             accessorKey: 'payment_status',
             cell: (ord) => (
-                <span className={ `px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${
-                    ord.payment_status === 'Paid' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 
-                    ord.payment_status === 'Pending' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' : 
-                    'bg-red-500/10 text-red-500 border-red-500/20'
-                }` }>
+                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${ord.payment_status === 'Paid' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                        ord.payment_status === 'Pending' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
+                            'bg-red-500/10 text-red-500 border-red-500/20'
+                    }`}>
                     {ord.payment_status}
                 </span>
             )
         },
-        { 
-            header: 'Status', 
+        {
+            header: 'Status',
             accessorKey: 'status',
             cell: (ord) => (
-                <span className={ `px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getOrderStatusBadgeClass(ord.status)}` }>
+                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getOrderStatusBadgeClass(ord.status)}`}>
                     {getOrderStatusLabel(ord.status)}
                 </span>
             )
@@ -128,7 +127,7 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ companyId }) => {
                             setSelectedOrder(ord);
                             setIsUpdateModalOpen(true);
                         }}
-                        className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                        className="p-2 text-slate-800 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all"
                     >
                         <Edit2 className="w-4 h-4" />
                     </button>
@@ -137,7 +136,7 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ companyId }) => {
                             setOrderToDelete(ord);
                             setIsDeleteModalOpen(true);
                         }}
-                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                        className="p-2 text-slate-800 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>
@@ -150,8 +149,8 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-white uppercase italic tracking-wider">Transaction Orders</h3>
-                    <p className="text-xs text-gray-500">Monitor your sales and payment statuses.</p>
+                    <h3 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">Transaction Orders</h3>
+                    <p className="text-xs text-slate-800">Monitor your sales and payment statuses.</p>
                 </div>
                 <button
                     onClick={() => setIsModalOpen(true)}

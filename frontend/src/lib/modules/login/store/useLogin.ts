@@ -13,7 +13,7 @@ export const useLogin = create<LoginState>((set) => ({
     requestOTP: async (payload: LoginPayload) => {
         set({ isLoading: true, error: null });
         try {
-            const res = await apiRouter.post<ApiResponse<{ email: string }>>('/auth/login', payload);
+            const res = await apiRouter.post<ApiResponse<{ email: string }>>('/auth/login/otp', payload);
             if (res.status === 'success' || res.status === 'Success') {
                 set({ isLoading: false });
             } else {
@@ -29,7 +29,7 @@ export const useLogin = create<LoginState>((set) => ({
     verifyOTP: async (email: string, otp: string) => {
         set({ isLoading: true, error: null });
         try {
-            const res = await apiRouter.post<ApiResponse<LoginResponse>>('/auth/verify-otp', { email, otp });
+            const res = await apiRouter.post<ApiResponse<LoginResponse>>('/auth/login/verify', { email, otp });
             if (res.status === 'success' || res.status === 'Success') {
                 const { user, access_token, refresh_token } = res.data.result;
                 
@@ -47,6 +47,58 @@ export const useLogin = create<LoginState>((set) => ({
             }
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : 'Verification failed';
+            set({ error: message, isLoading: false });
+            throw error;
+        }
+    },
+
+    forgotPassword: async (email: string) => {
+        set({ isLoading: true, error: null });
+        try {
+            const res = await apiRouter.post<ApiResponse<{ email: string }>>('/auth/forgot-password', { email });
+            if (res.status === 'success' || res.status === 'Success') {
+                set({ isLoading: false });
+            } else {
+                set({ error: res.data.message || 'Gagal mengirim email verifikasi', isLoading: false });
+            }
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'Gagal mengirim email verifikasi';
+            set({ error: message, isLoading: false });
+            throw error;
+        }
+    },
+
+    verifyResetOTP: async (email: string, otp: string) => {
+        set({ isLoading: true, error: null });
+        try {
+            const res = await apiRouter.post<ApiResponse<null>>('/auth/verify-reset-otp', { email, otp });
+            if (res.status === 'success' || res.status === 'Success') {
+                set({ isLoading: false });
+            } else {
+                set({ error: res.data.message || 'Kode OTP tidak valid', isLoading: false });
+            }
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'Kode OTP tidak valid';
+            set({ error: message, isLoading: false });
+            throw error;
+        }
+    },
+
+    resetPassword: async (email: string, otp: string, newPassword: string) => {
+        set({ isLoading: true, error: null });
+        try {
+            const res = await apiRouter.post<ApiResponse<null>>('/auth/reset-password', { 
+                email, 
+                otp, 
+                new_password: newPassword 
+            });
+            if (res.status === 'success' || res.status === 'Success') {
+                set({ isLoading: false });
+            } else {
+                set({ error: res.data.message || 'Gagal mengatur ulang kata sandi', isLoading: false });
+            }
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'Gagal mengatur ulang kata sandi';
             set({ error: message, isLoading: false });
             throw error;
         }

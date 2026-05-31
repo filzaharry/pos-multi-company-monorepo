@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"pos-backend/internal/database"
+	"pos-backend/pkg/database"
 	"pos-backend/internal/repository"
 	"pos-backend/pkg/utils"
 	"github.com/joho/godotenv"
@@ -12,10 +12,7 @@ import (
 
 func main() {
 	godotenv.Load()
-	if err := database.Connect(); err != nil {
-		fmt.Println("DB Connect Error:", err)
-		os.Exit(1)
-	}
+	database.Connect()
 	repo := repository.NewUserRepository(database.DB)
 	params := &utils.FilterParams{Limit: 2, Page: 1}
 	users, _, err := repo.GetAll(params, nil, true)

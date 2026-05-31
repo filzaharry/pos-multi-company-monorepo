@@ -15,33 +15,59 @@ interface TestimonialCardProps {
 export const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, role, content, avatar, delay = 0 }) => {
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay }}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay }}
             viewport={{ once: true }}
-            className="flex flex-col gap-6 rounded-xl glass-effect p-8 border border-gray-200 dark:border-white/10 shadow-lg"
+            className="flex flex-col gap-5 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
+            style={{
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 2px 20px rgba(0,0,0,0.04)',
+            }}
         >
-            <div className="flex items-center gap-4">
-                {avatar ? (
-                    <img alt={name} className="w-14 h-14 rounded-full object-cover border-2 border-primary/20" src={avatar} />
-                ) : (
-                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
-                        <User className="text-primary w-6 h-6" />
-                    </div>
-                )}
-
-                <div>
-                    <h4 className="font-bold text-gray-900 dark:text-white">{name}</h4>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{role}</p>
-                </div>
+            {/* Stars */}
+            <div className="flex gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                    <span
+                        key={i}
+                        className="material-symbols-outlined text-base"
+                        style={{ color: '#22c55e', fontVariationSettings: "'FILL' 1", fontSize: 16 }}
+                    >
+                        star
+                    </span>
+                ))}
             </div>
-            <p className="text-gray-600 dark:text-gray-300 italic leading-relaxed">
+
+            {/* Quote */}
+            <p className="text-slate-600 text-sm leading-relaxed flex-1">
                 &ldquo;{content}&rdquo;
             </p>
-            <div className="flex text-primary gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                    <span key={i} className="material-symbols-outlined text-sm font-fill">star</span>
-                ))}
+
+            {/* Author */}
+            <div className="flex items-center gap-3 pt-4" style={{ borderTop: '1px solid #f1f5f9' }}>
+                {avatar ? (
+                    <img
+                        alt={name}
+                        className="w-10 h-10 rounded-full object-cover"
+                        src={avatar}
+                        style={{ border: '2px solid rgba(34,197,94,0.25)' }}
+                    />
+                ) : (
+                    <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center"
+                        style={{
+                            background: 'rgba(34,197,94,0.1)',
+                            border: '2px solid rgba(34,197,94,0.2)',
+                        }}
+                    >
+                        <User className="w-5 h-5" style={{ color: '#16a34a' }} />
+                    </div>
+                )}
+                <div>
+                    <h4 className="font-bold text-slate-900 text-sm">{name}</h4>
+                    <p className="text-xs text-slate-400 mt-0.5">{role}</p>
+                </div>
             </div>
         </motion.div>
     );

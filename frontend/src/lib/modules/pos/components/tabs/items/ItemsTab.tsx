@@ -61,7 +61,7 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
             console.error('Failed to fetch categories lookup:', error);
         }
     }, [companyId]);
-    
+
     const fetchLevels = useCallback(async () => {
         if (!companyId) return;
         try {
@@ -168,13 +168,13 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
                 <div className="flex justify-end gap-2">
                     <button
                         onClick={() => handleEdit(item)}
-                        className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                        className="p-2 text-slate-800 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all"
                     >
                         <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                         onClick={() => handleDelete(item)}
-                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                        className="p-2 text-slate-800 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>
@@ -187,8 +187,8 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-white uppercase italic tracking-wider">Product Items</h3>
-                    <p className="text-xs text-gray-500">Manage your company inventory and pricing.</p>
+                    <h3 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">Product Items</h3>
+                    <p className="text-xs text-slate-800">Manage your company inventory and pricing.</p>
                 </div>
                 <button
                     onClick={handleAdd}

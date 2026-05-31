@@ -5,57 +5,88 @@ import Link from 'next/link';
 
 export const LandingFooter = () => {
     return (
-        <footer className="bg-white dark:bg-background-dark border-r border-t border-gray-200 dark:border-white/5 py-16">
-            <div className="max-w-[1440px] mx-auto px-6 lg:px-20">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                    <div className="flex flex-col gap-6">
-                        <div className="flex items-center gap-3">
-                            <span className="material-symbols-outlined text-primary text-3xl">point_of_sale</span>
-                            <span className="font-black text-xl text-gray-900 dark:text-white">POS SaaS</span>
+        <footer
+            className="py-16"
+            style={{ background: '#0f172a', borderTop: '1px solid rgba(255,255,255,0.05)' }}
+        >
+            <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
+                <div className="grid grid-cols-4 gap-12 mb-12">
+                    {/* Brand */}
+                    <div className="flex flex-col gap-4 col-span-1">
+                        <div className="flex items-center gap-2.5">
+                            <div
+                                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                                style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}
+                            >
+                                <span className="material-symbols-outlined text-white text-base">point_of_sale</span>
+                            </div>
+                            <span className="font-black text-lg text-white">POS SaaS</span>
                         </div>
-                        <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                            The complete point-of-sale solution for modern businesses looking to grow without complexity.
+                        <p className="text-slate-400 text-sm leading-relaxed">
+                            Solusi POS lengkap untuk bisnis modern. Kelola semuanya dalam satu tempat.
                         </p>
-                    </div>
-                    <div>
-                        <h4 className="font-bold mb-6 text-gray-900 dark:text-white">Product</h4>
-                        <ul className="flex flex-col gap-4 text-sm text-gray-500 dark:text-gray-400">
-                            <li><Link className="hover:text-primary transition-colors" href="#">Features</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Pricing</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Integrations</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Updates</Link></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-bold mb-6 text-gray-900 dark:text-white">Company</h4>
-                        <ul className="flex flex-col gap-4 text-sm text-gray-500 dark:text-gray-400">
-                            <li><Link className="hover:text-primary transition-colors" href="#">About Us</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Careers</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Blog</Link></li>
-                            <li><Link className="hover:text-primary transition-colors" href="#">Security</Link></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-bold mb-6 text-gray-900 dark:text-white">Connect</h4>
-                        <div className="flex gap-4 mb-6">
-                            <a className="w-10 h-10 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-gray-600 dark:text-gray-400" href="#">
-                                <span className="material-symbols-outlined text-lg">public</span>
-                            </a>
-                            <a className="w-10 h-10 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-gray-600 dark:text-gray-400" href="#">
-                                <span className="material-symbols-outlined text-lg">alternate_email</span>
-                            </a>
-                            <a className="w-10 h-10 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-gray-600 dark:text-gray-400" href="#">
-                                <span className="material-symbols-outlined text-lg">share</span>
-                            </a>
+                        <div className="flex gap-3 mt-2">
+                            {['public', 'alternate_email', 'share'].map(icon => (
+                                <a
+                                    key={icon}
+                                    href="#"
+                                    className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-all duration-200"
+                                    style={{
+                                        background: 'rgba(255,255,255,0.05)',
+                                        border: '1px solid rgba(255,255,255,0.08)',
+                                    }}
+                                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(34,197,94,0.2)')}
+                                    onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
+                                >
+                                    <span className="material-symbols-outlined text-base">{icon}</span>
+                                </a>
+                            ))}
                         </div>
-                        <p className="text-xs text-gray-400">Subscribe to our newsletter for insights.</p>
                     </div>
+
+                    {/* Links */}
+                    {[
+                        {
+                            title: 'Produk',
+                            links: ['Fitur', 'Harga', 'Integrasi', 'Pembaruan', 'Changelog'],
+                        },
+                        {
+                            title: 'Perusahaan',
+                            links: ['Tentang Kami', 'Karir', 'Blog', 'Pers', 'Keamanan'],
+                        },
+                        {
+                            title: 'Dukungan',
+                            links: ['Dokumentasi', 'Pusat Bantuan', 'API Docs', 'Status', 'Kontak'],
+                        },
+                    ].map(col => (
+                        <div key={col.title}>
+                            <h4 className="text-white font-bold text-sm mb-5 uppercase tracking-widest">{col.title}</h4>
+                            <ul className="flex flex-col gap-3">
+                                {col.links.map(link => (
+                                    <li key={link}>
+                                        <Link
+                                            href="#"
+                                            className="text-slate-400 text-sm hover:text-white transition-colors"
+                                        >
+                                            {link}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
                 </div>
-                <div className="pt-8 border-t border-gray-200 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">© 2024 POS SaaS Inc. All rights reserved.</p>
-                    <div className="flex gap-6 text-sm text-gray-500 dark:text-gray-400">
-                        <Link className="hover:text-primary transition-colors" href="#">Privacy Policy</Link>
-                        <Link className="hover:text-primary transition-colors" href="#">Terms of Service</Link>
+
+                {/* Bottom */}
+                <div
+                    className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+                    style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
+                >
+                    <p className="text-slate-500 text-sm">© 2024 POS SaaS Inc. Seluruh hak cipta dilindungi.</p>
+                    <div className="flex gap-6 text-sm text-slate-500">
+                        <Link className="hover:text-white transition-colors" href="#">Kebijakan Privasi</Link>
+                        <Link className="hover:text-white transition-colors" href="#">Syarat & Ketentuan</Link>
+                        <Link className="hover:text-white transition-colors" href="#">Kebijakan Cookie</Link>
                     </div>
                 </div>
             </div>

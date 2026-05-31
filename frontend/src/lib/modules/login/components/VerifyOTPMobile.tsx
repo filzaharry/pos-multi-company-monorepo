@@ -8,12 +8,21 @@ import { useRouter } from 'next/navigation';
 
 interface VerifyOTPMobileProps {
     email: string;
+    type?: string;
     isLoading: boolean;
     error: string | null;
     verifyOTP: (email: string, otp: string) => Promise<void>;
+    verifyResetOTP: (email: string, otp: string) => Promise<void>;
 }
 
-export const VerifyOTPMobile: React.FC<VerifyOTPMobileProps> = ({ email, isLoading, error, verifyOTP }) => {
+export const VerifyOTPMobile: React.FC<VerifyOTPMobileProps> = ({
+    email,
+    type,
+    isLoading,
+    error,
+    verifyOTP,
+    verifyResetOTP
+}) => {
     const router = useRouter();
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
 
@@ -35,8 +44,13 @@ export const VerifyOTPMobile: React.FC<VerifyOTPMobileProps> = ({ email, isLoadi
         const code = otp.join('');
         if (code.length < 6) return;
         try {
-            await verifyOTP(email, code);
-            router.replace('/dashboard');
+            if (type === 'forgot') {
+                await verifyResetOTP(email, code);
+                router.replace(`/login/reset-password?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(code)}`);
+            } else {
+                await verifyOTP(email, code);
+                router.replace('/dashboard');
+            }
         } catch (err) {
             console.error('OTP Verification error:', err);
         }
@@ -44,8 +58,8 @@ export const VerifyOTPMobile: React.FC<VerifyOTPMobileProps> = ({ email, isLoadi
 
     return (
         <AuthLayout
-            title="Verify"
-            subtitle={`Enter code sent to ${email}`}
+            title="Verifikasi"
+            subtitle={`Masukkan kode yang dikirim ke ${email}`}
             icon={<ShieldCheck className="w-8 h-8" />}
         >
             <div className="flex flex-col gap-6 px-2">
@@ -55,7 +69,7 @@ export const VerifyOTPMobile: React.FC<VerifyOTPMobileProps> = ({ email, isLoadi
                             key={index}
                             type="text"
                             maxLength={1}
-                            className="w-full h-14 bg-white/5 border border-white/10 rounded-xl text-center text-xl font-bold text-white outline-none"
+                            className="w-full h-14 bg-slate-50 border border-slate-200 rounded-xl text-center text-xl font-bold text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                             value={data}
                             onChange={(e) => handleChange(e.target, index)}
                             onKeyDown={(e) => handleKeyDown(e, index)}
@@ -64,23 +78,23 @@ export const VerifyOTPMobile: React.FC<VerifyOTPMobileProps> = ({ email, isLoadi
                 </div>
 
                 {error && (
-                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
-                        <p className="text-red-500 text-sm font-medium text-center">{error}</p>
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+                        <p className="text-red-600 text-sm font-medium text-center">{error}</p>
                     </div>
                 )}
 
                 <button
                     onClick={handleVerify}
                     disabled={otp.join('').length < 6 || isLoading}
-                    className="flex w-full cursor-pointer items-center justify-center rounded-xl h-14 px-5 bg-primary text-white text-lg font-bold shadow-lg disabled:opacity-50"
+                    className="flex w-full cursor-pointer items-center justify-center rounded-xl h-14 px-5 btn-green text-white text-lg font-bold shadow-lg disabled:opacity-50"
                 >
-                    {isLoading ? <RefreshCw className="animate-spin" /> : 'Verify Code'}
+                    {isLoading ? <RefreshCw className="animate-spin" /> : 'Verifikasi Kode'}
                 </button>
 
                 <div className="flex justify-center pt-4">
-                    <Link href="/login" className="flex items-center gap-2 text-slate-400 text-sm">
+                    <Link href="/login" className="flex items-center gap-2 text-slate-500 hover:text-primary text-sm font-medium transition-colors">
                         <ArrowLeft className="w-4 h-4" />
-                        Back to Login
+                        Kembali ke Login
                     </Link>
                 </div>
             </div>

@@ -39,17 +39,17 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
     return (
         <div className="space-y-4">
-            <div className="overflow-hidden rounded-2xl border border-white/5 bg-background-dark/50 backdrop-blur-sm">
-                <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
                     <table className="w-full text-left border-collapse min-w-[800px]">
                         <thead>
-                            <tr className="border-b border-white/5 bg-white/2">
+                            <tr className="border-b border-slate-200 bg-slate-100/50">
                                 {columns.map((col, idx) => (
                                     <th
                                         key={idx}
                                         className={cn(
-                                            "px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider",
-                                            col.sortable && "cursor-pointer hover:text-white transition-colors",
+                                            "px-6 py-4 text-xs font-bold text-slate-800 uppercase tracking-wider",
+                                            col.sortable && "cursor-pointer hover:text-slate-900 transition-colors",
                                             col.align === 'center' && "text-center",
                                             col.align === 'right' && "text-right",
                                             col.className
@@ -63,7 +63,7 @@ export function DataTable<T>({
                                         )}>
                                             {col.header}
                                             {col.sortable && (
-                                                <div className="text-gray-600">
+                                                <div className="text-slate-800">
                                                     {sortKey === col.accessorKey ? (
                                                         sortOrder === 'asc' ? <ArrowUp className="w-3 h-3 text-primary" /> : <ArrowDown className="w-3 h-3 text-primary" />
                                                     ) : (
@@ -76,25 +76,25 @@ export function DataTable<T>({
                                 ))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5">
+                        <tbody className="divide-y divide-slate-200 bg-white">
                             {isLoading ? (
                                 [...Array(5)].map((_, i) => (
                                     <tr key={i} className="animate-pulse">
                                         {columns.map((_, j) => (
                                             <td key={j} className="px-6 py-4">
-                                                <div className="h-4 bg-white/5 rounded w-full" />
+                                                <div className="h-4 bg-slate-200/60 rounded w-full" />
                                             </td>
                                         ))}
                                     </tr>
                                 ))
                             ) : (data && data.length > 0) ? (
                                 data.map((item, idx) => (
-                                    <tr key={idx} className="hover:bg-white/2 transition-colors group">
+                                    <tr key={idx} className="hover:bg-slate-50/50 transition-colors group">
                                         {columns.map((col, j) => (
                                             <td
                                                 key={j}
                                                 className={cn(
-                                                    "px-6 py-4 text-sm text-gray-300",
+                                                    "px-6 py-4 text-sm text-slate-800",
                                                     col.align === 'center' && "text-center",
                                                     col.align === 'right' && "text-right",
                                                     col.className
@@ -112,14 +112,14 @@ export function DataTable<T>({
                                 <tr>
                                     <td colSpan={columns.length} className="px-6 py-20 text-center">
                                         <div className="flex flex-col items-center justify-center space-y-3">
-                                            <div className="p-4 rounded-full bg-white/5">
-                                                <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <div className="p-4 rounded-full bg-slate-100">
+                                                <svg className="w-8 h-8 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                                 </svg>
                                             </div>
                                             <div>
-                                                <p className="text-white font-bold italic uppercase tracking-widest text-sm">No Records Found</p>
-                                                <p className="text-gray-500 text-xs mt-1">Try adjusting your filters or adding new data.</p>
+                                                <p className="text-slate-800 font-bold italic uppercase tracking-widest text-sm">No Records Found</p>
+                                                <p className="text-slate-800 text-xs mt-1">Try adjusting your filters or adding new data.</p>
                                             </div>
                                         </div>
                                     </td>
@@ -133,14 +133,14 @@ export function DataTable<T>({
             {/* Pagination */}
             {pagination && pagination.last_page > 1 && (
                 <div className="flex items-center justify-between px-2">
-                    <p className="text-xs text-gray-500">
-                        Showing <span className="text-white font-bold">{data.length}</span> of <span className="text-white font-bold">{pagination.total}</span> entries
+                    <p className="text-xs text-slate-800">
+                        Showing <span className="text-slate-800 font-bold">{data.length}</span> of <span className="text-slate-800 font-bold">{pagination.total}</span> entries
                     </p>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => onPageChange(Math.max(1, page - 1))}
                             disabled={!pagination.has_previous}
-                            className="p-2 text-gray-400 hover:text-white disabled:opacity-20 transition-all bg-white/5 rounded-xl border border-white/5"
+                            className="p-2 text-slate-800 hover:text-slate-900 disabled:opacity-20 transition-all bg-slate-100 hover:bg-slate-200/50 rounded-xl border border-slate-200"
                         >
                             <ChevronLeft className="w-5 h-5" />
                         </button>
@@ -153,8 +153,8 @@ export function DataTable<T>({
                                     className={cn(
                                         "w-9 h-9 rounded-xl text-xs font-bold transition-all border",
                                         page === i + 1
-                                            ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
-                                            : "bg-white/5 border-white/5 text-gray-400 hover:border-white/20 hover:text-white"
+                                            ? "bg-primary border-primary text-slate-800 shadow-lg shadow-primary/20"
+                                            : "bg-slate-100 border-slate-200 text-slate-800 hover:border-slate-300 hover:bg-slate-200/50"
                                     )}
                                 >
                                     {i + 1}
@@ -165,7 +165,7 @@ export function DataTable<T>({
                         <button
                             onClick={() => onPageChange(Math.min(pagination.last_page, page + 1))}
                             disabled={!pagination.has_next}
-                            className="p-2 text-gray-400 hover:text-white disabled:opacity-20 transition-all bg-white/5 rounded-xl border border-white/5"
+                            className="p-2 text-slate-800 hover:text-slate-900 disabled:opacity-20 transition-all bg-slate-100 hover:bg-slate-200/50 rounded-xl border border-slate-200"
                         >
                             <ChevronRight className="w-5 h-5" />
                         </button>
