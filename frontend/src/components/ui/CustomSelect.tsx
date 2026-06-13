@@ -63,7 +63,7 @@ export const CustomSelect = ({ className, children, value, onChange, name, place
                 className={cn(
                     "w-full rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary/50 transition-all flex items-center cursor-text",
                     variant === 'light'
-                        ? "bg-slate-50 border border-slate-200 text-slate-800"
+                        ? "bg-white border border-slate-200 text-black"
                         : "bg-background-dark border border-white/10 text-white",
                     className,
                     props.disabled ? "opacity-50 cursor-not-allowed" : ""
@@ -74,7 +74,10 @@ export const CustomSelect = ({ className, children, value, onChange, name, place
             >
                 <input
                     type="text"
-                    className="w-full bg-transparent border-none focus:outline-none text-sm placeholder:text-gray-500 cursor-text"
+                    className={cn(
+                        "w-full bg-transparent border-none focus:outline-none text-sm cursor-text",
+                        variant === 'light' ? "text-black placeholder:text-slate-500" : "text-white placeholder:text-gray-500"
+                    )}
                     placeholder={selectedOption ? selectedOption.label : placeholder || 'Select...'}
                     value={isOpen ? searchTerm : (selectedOption ? selectedOption.label : '')}
                     onChange={(e) => {
@@ -103,7 +106,7 @@ export const CustomSelect = ({ className, children, value, onChange, name, place
                                     "px-4 py-2.5 text-sm flex items-center justify-between transition-colors",
                                     option.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
                                     variant === 'light'
-                                        ? "hover:bg-slate-50 text-slate-800"
+                                        ? "hover:bg-slate-50 text-black"
                                         : "hover:bg-white/5 text-white",
                                     option.value == value ? "text-primary font-bold" : ""
                                 )}

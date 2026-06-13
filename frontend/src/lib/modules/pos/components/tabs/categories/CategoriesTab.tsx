@@ -120,7 +120,7 @@ export const CategoriesTab: React.FC<CategoriesTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">Categories</h3>
+                    <h3 className="text-xl font-bold text-slate-800   italic    ">Categories</h3>
                     <p className="text-xs text-slate-800">Organize your products into logical groups.</p>
                 </div>
                 <button

@@ -41,7 +41,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         >
             {isPopular && (
                 <div
-                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full"
+                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-white text-[10px] font-bold  px-4 py-1.5 rounded-full"
                     style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}
                 >
                     Most Popular
@@ -51,14 +51,14 @@ export const PricingCard: React.FC<PricingCardProps> = ({
             {/* Plan name */}
             <div>
                 <h3
-                    className="text-xs font-bold uppercase tracking-widest mb-2"
+                    className="text-xs font-bold  mb-2"
                     style={{ color: isPopular ? '#4ade80' : '#22c55e' }}
                 >
                     {title}
                 </h3>
                 <div className="flex items-baseline gap-1">
                     {price !== 'Custom' && <span className={`text-sm font-medium ${isPopular ? 'text-slate-400' : 'text-slate-500'}`}>Rp</span>}
-                    <span className={`text-4xl font-black ${isPopular ? 'text-white' : 'text-slate-900'}`}>
+                    <span className={`text-4xl font-bold ${isPopular ? 'text-white' : 'text-slate-900'}`}>
                         {price}
                     </span>
                     {price !== 'Custom' && (

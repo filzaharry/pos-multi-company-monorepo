@@ -61,10 +61,10 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9, y: -20 }}
                             className={cn(
-                                "pointer-events-auto flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl border backdrop-blur-md w-full",
-                                toast.type === 'success' ? "bg-green-500/10 border-green-500/20 text-green-400" :
-                                    toast.type === 'error' ? "bg-red-500/10 border-red-500/20 text-red-400" :
-                                        "bg-primary/10 border-primary/20 text-primary-400"
+                                "pointer-events-auto flex items-center gap-3 px-6 py-4 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border bg-white w-full",
+                                toast.type === 'success' ? "border-green-100 text-green-600" :
+                                    toast.type === 'error' ? "border-red-100 text-red-600" :
+                                        "border-primary/20 text-primary"
                             )}
                         >
                             {toast.type === 'success' && <CheckCircle2 className="w-5 h-5 shrink-0" />}
@@ -75,7 +75,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
 
                             <button
                                 onClick={() => removeToast(toast.id)}
-                                className="p-1 hover:bg-white/10 rounded-lg transition-colors"
+                                className="p-1 hover:bg-slate-100 rounded-lg transition-colors"
                             >
                                 <X className="w-4 h-4" />
                             </button>

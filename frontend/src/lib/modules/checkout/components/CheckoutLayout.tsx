@@ -172,7 +172,7 @@ export const CheckoutLayout = () => {
                         <ChevronRight className="w-4 h-4 text-slate-400" />
                         <span className="text-slate-900 font-semibold">Checkout</span>
                     </div>
-                    <h1 className="text-4xl lg:text-5xl font-black tracking-tight mt-2 text-slate-900">Selesaikan Langganan Anda</h1>
+                    <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mt-2 text-slate-900">Selesaikan Langganan Anda</h1>
                     <p className="text-slate-500 text-lg max-w-2xl">
                         Tinjau paket Anda dan masukkan detail pembayaran untuk mengaktifkan seluruh kekuatan POS Cloud bagi bisnis Anda.
                     </p>
@@ -201,7 +201,7 @@ export const CheckoutLayout = () => {
                                         <CheckCircle2 className="text-primary w-5 h-5" />
                                         <span className="text-sm font-medium">Dukungan Prioritas 24/7</span>
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-2 py-1 rounded-full">Termasuk</span>
+                                    <span className="text-[10px]  font-bold text-primary bg-primary/10 px-2 py-1 rounded-full">Termasuk</span>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <CheckCircle2 className="text-primary w-5 h-5" />
@@ -227,7 +227,7 @@ export const CheckoutLayout = () => {
                                     <span className="font-bold text-slate-900">Rp 75.000</span>
                                 </div>
                                 <div className="h-px bg-slate-200 my-2"></div>
-                                <div className="flex justify-between text-xl font-black">
+                                <div className="flex justify-between text-xl font-bold">
                                     <span className="text-slate-900">Total Pembayaran</span>
                                     <span className="text-primary">Rp 20.055.000</span>
                                 </div>
@@ -331,7 +331,7 @@ export const CheckoutLayout = () => {
                                             paymentMethod === method.id ? "text-primary" : "text-slate-400 group-hover:text-slate-600"
                                         )} />
                                         <span className={cn(
-                                            "text-xs font-black uppercase tracking-widest transition-colors",
+                                            "text-xs  font-bold transition-colors",
                                             paymentMethod === method.id ? "text-slate-900" : "text-slate-400 group-hover:text-slate-600"
                                         )}>
                                             {method.label}
@@ -344,7 +344,7 @@ export const CheckoutLayout = () => {
                             </div>
 
                             <div className="space-y-6">
-                                <p className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Unggah Bukti Transfer</p>
+                                <p className="text-xs font-bold text-slate-400   tracking-[0.2em]">Unggah Bukti Transfer</p>
                                 <input
                                     type="file"
                                     ref={fileInputRef}

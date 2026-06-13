@@ -14,7 +14,7 @@ export const CustomInput = ({ icon: Icon, className, variant = 'dark', ...props 
                 className={cn(
                     "w-full rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all",
                     variant === 'light'
-                        ? "bg-slate-50 border border-slate-200 text-slate-800 placeholder:text-slate-400"
+                        ? "bg-white border border-slate-200 text-black placeholder:text-slate-500"
                         : "bg-background-dark border border-white/10 text-white placeholder:text-gray-500",
                     Icon ? "pl-12 pr-4" : "px-4",
                     className

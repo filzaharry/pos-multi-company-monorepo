@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, PlusCircle, Save } from 'lucide-react';
 import { PosExtra } from '../../../../types';
-import { CustomInput } from '@/components/ui/CustomInput';
+import { InputText, InputCurrency } from '@/components/ui/input';
 
 interface ExtraModalProps {
     isOpen: boolean;
@@ -81,7 +81,7 @@ export const ExtraModal: React.FC<ExtraModalProps> = ({ isOpen, onClose, onSubmi
                                     <PlusCircle className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-800 italic uppercase tracking-wider">
+                                    <h2 className="text-xl font-bold text-slate-800 italic      ">
                                         {extra ? 'Edit Extra' : 'New Extra'}
                                     </h2>
                                     <p className="text-sm text-slate-800">
@@ -99,34 +99,22 @@ export const ExtraModal: React.FC<ExtraModalProps> = ({ isOpen, onClose, onSubmi
 
                         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-6">
                             <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Extra Name *</label>
-                                    <CustomInput
-                                        type="text"
-                                        name="name"
-                                        required
-                                        value={formData.name || ''}
-                                        onChange={handleChange}
-                                        placeholder="e.g. Extra Cheese"
-                                        variant="light"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Price (IDR) *</label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm font-bold z-10">Rp</span>
-                                        <CustomInput
-                                            type="number"
-                                            name="price"
-                                            required
-                                            min="0"
-                                            value={formData.price || '0'}
-                                            onChange={handleChange}
-                                            className="pl-12"
-                                            variant="light"
-                                        />
-                                    </div>
-                                </div>
+                                <InputText
+                                    label="Extra Name *"
+                                    name="name"
+                                    required
+                                    value={formData.name || ''}
+                                    onChange={handleChange}
+                                    placeholder="e.g. Extra Cheese"
+                                />
+                                <InputCurrency
+                                    label="Price (IDR) *"
+                                    name="price"
+                                    required
+                                    min="0"
+                                    value={formData.price || '0'}
+                                    onChange={handleChange}
+                                />
                             </div>
 
                             <div className="pt-6 border-t border-slate-200 flex gap-4 shrink-0 mt-4">

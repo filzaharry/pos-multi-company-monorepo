@@ -23,7 +23,7 @@ export const RoleFilter: React.FC<RoleFilterProps> = ({
         <div className="grid grid-cols-1 gap-6">
             {isSuperAdmin && (
                 <div className="space-y-2">
-                    <label className="text-xs font-black text-primary uppercase tracking-widest">Company</label>
+                    <label className="text-xs font-bold text-primary ">Company</label>
                     <div className="relative">
                         <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                         <select
@@ -43,7 +43,7 @@ export const RoleFilter: React.FC<RoleFilterProps> = ({
             )}
 
             <div className="space-y-2">
-                <label className="text-xs font-black text-primary uppercase tracking-widest">Status</label>
+                <label className="text-xs font-bold text-primary ">Status</label>
                 <div className="relative">
                     <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                     <select

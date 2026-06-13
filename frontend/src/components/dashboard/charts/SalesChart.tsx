@@ -13,6 +13,7 @@ import {
     Filler,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { SalesChartData } from '@/lib/modules/dashboard/services/dashboard.service';
 
 ChartJS.register(
     CategoryScale,
@@ -25,7 +26,11 @@ ChartJS.register(
     Filler
 );
 
-export const SalesChart = () => {
+interface SalesChartProps {
+    data?: SalesChartData[];
+}
+
+export const SalesChart: React.FC<SalesChartProps> = ({ data: chartData }) => {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -34,9 +39,9 @@ export const SalesChart = () => {
                 display: false,
             },
             tooltip: {
-                backgroundColor: '#13191f',
+                backgroundColor: '#1e293b', // slate-800
                 titleColor: '#fff',
-                bodyColor: '#478cd1',
+                bodyColor: '#22c55e', // primary green
                 borderColor: 'rgba(255,255,255,0.1)',
                 borderWidth: 1,
                 padding: 12,
@@ -50,22 +55,34 @@ export const SalesChart = () => {
                     drawBorder: false,
                 },
                 ticks: {
-                    color: 'rgba(255,255,255,0.5)',
+                    color: 'rgba(0,0,0,0.4)', // updated for light mode
                 },
             },
             y: {
                 grid: {
-                    color: 'rgba(255,255,255,0.05)',
+                    color: 'rgba(0,0,0,0.05)',
                     drawBorder: false,
                 },
                 ticks: {
-                    color: 'rgba(255,255,255,0.5)',
+                    color: 'rgba(0,0,0,0.4)',
                 },
             },
         },
     };
 
-    const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const defaultLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const defaultData = [0, 0, 0, 0, 0, 0, 0];
+
+    let labels = defaultLabels;
+    let values = defaultData;
+
+    if (chartData && chartData.length > 0) {
+        labels = chartData.map(d => {
+            const date = new Date(d.date);
+            return date.toLocaleDateString('en-US', { weekday: 'short' });
+        });
+        values = chartData.map(d => d.amount);
+    }
 
     const data = {
         labels,
@@ -73,12 +90,12 @@ export const SalesChart = () => {
             {
                 fill: true,
                 label: 'Sales',
-                data: [12000, 19000, 15000, 25000, 22000, 30000, 28000],
-                borderColor: '#478cd1',
-                backgroundColor: 'rgba(71, 140, 209, 0.1)',
+                data: values,
+                borderColor: '#22c55e', // primary
+                backgroundColor: 'rgba(34, 197, 94, 0.1)', // primary/10
                 tension: 0.4,
                 pointRadius: 4,
-                pointBackgroundColor: '#478cd1',
+                pointBackgroundColor: '#22c55e',
             },
         ],
     };

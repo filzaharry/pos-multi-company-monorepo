@@ -152,7 +152,7 @@ func (r *posRepository) CreateOrder(order *models.PosOrder) error {
 	order.Code = fmt.Sprintf("ORD-%s-%s", time.Now().Format("20060102"), string(randomPart))
 
 	return r.db.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Create(order).Error; err != nil {
+		if err := tx.Omit("Company", "User", "Delivery").Create(order).Error; err != nil {
 			return err
 		}
 

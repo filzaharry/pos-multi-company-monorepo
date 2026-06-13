@@ -48,7 +48,7 @@ export function DataTable<T>({
                                     <th
                                         key={idx}
                                         className={cn(
-                                            "px-6 py-4 text-xs font-bold text-slate-800 uppercase tracking-wider",
+                                            "px-6 py-4 text-xs font-bold text-slate-800      ",
                                             col.sortable && "cursor-pointer hover:text-slate-900 transition-colors",
                                             col.align === 'center' && "text-center",
                                             col.align === 'right' && "text-right",
@@ -118,7 +118,7 @@ export function DataTable<T>({
                                                 </svg>
                                             </div>
                                             <div>
-                                                <p className="text-slate-800 font-bold italic uppercase tracking-widest text-sm">No Records Found</p>
+                                                <p className="text-slate-800 font-bold italic  text-sm">No Records Found</p>
                                                 <p className="text-slate-800 text-xs mt-1">Try adjusting your filters or adding new data.</p>
                                             </div>
                                         </div>

@@ -9,6 +9,7 @@ import (
 
 	"pos-backend/internal/dto"
 	"pos-backend/pkg/database"
+	"strings"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -43,11 +44,27 @@ func NewAuthService(userRepo repository.UserRepository, authRepo repository.Auth
 }
 
 func (s *authService) SubmitSubscription(input *dto.RegisterSubscriptionRequest, receiptPath string) error {
+	// Create pending Company header
+	companyRoute := strings.ToLower(strings.ReplaceAll(input.CompanyName, " ", "-"))
+	company := models.Company{
+		Name:   input.CompanyName,
+		Email:  input.BusinessEmail,
+		Phone:  input.PhoneNumber,
+		Route:  companyRoute,
+		Status: 0, // Pending registration
+	}
+
+	if err := database.DB.Create(&company).Error; err != nil {
+		return err
+	}
+
 	subscription := models.CompanySubscription{
+		CompanyID:      &company.ID,
 		FullName:       input.FullName,
 		BusinessEmail:  input.BusinessEmail,
 		PhoneNumber:    input.PhoneNumber,
 		CompanyName:    input.CompanyName,
+		Route:          companyRoute,
 		PackageID:      input.PackageID,
 		PaymentMethod:  input.PaymentMethod,
 		PaymentReceipt: receiptPath,
@@ -300,41 +317,33 @@ func (s *authService) ApproveSubscription(subscriptionID uint) error {
 	var endDate time.Time
 
 	if sub.CompanyID == nil {
-		// INITIAL REGISTRATION
-		company := models.Company{
-			Name:  sub.CompanyName,
-			Email: sub.BusinessEmail,
-			Phone: sub.PhoneNumber,
-		}
-
-		// Update sub dates
-		startDate = now
-		endDate = now.AddDate(0, 1, 0) // Default 1 month
-
-		sub.StartDate = &startDate
-		sub.EndDate = &endDate
-
-		return s.authRepo.ApproveSubscription(&sub, &company)
-	} else {
-		// RENEWAL
-		// Get last approved subscription for this company to determine new start date
-		var lastSub models.CompanySubscription
-		err := database.DB.Where("company_id = ? AND payment_status = 1", *sub.CompanyID).Order("end_date desc").First(&lastSub).Error
-		
-		if err == nil && lastSub.EndDate.After(now) {
-			startDate = *lastSub.EndDate
-		} else {
-			startDate = now
-		}
-		
-		endDate = startDate.AddDate(0, 1, 0)
-		
-		sub.StartDate = &startDate
-		sub.EndDate = &endDate
-		sub.PaymentStatus = 1
-		
-		return s.authRepo.UpdateSubscription(&sub)
+		return errors.New("company not found for this subscription")
 	}
+
+	// Fetch Company
+	var company models.Company
+	if err := database.DB.First(&company, *sub.CompanyID).Error; err != nil {
+		return err
+	}
+
+	// Calculate End Date
+	startDate = now
+	
+	// Check if this is a renewal (if company is already active and not expired)
+	if company.Status == 1 && company.SubscriptionEndDate != nil && company.SubscriptionEndDate.After(now) {
+		startDate = *company.SubscriptionEndDate
+	}
+
+	endDate = startDate.AddDate(0, 0, pkg.DurationDays)
+
+	sub.StartDate = &startDate
+	sub.EndDate = &endDate
+	sub.PaymentStatus = 1
+
+	company.SubscriptionEndDate = &endDate
+
+	return s.authRepo.ApproveSubscription(&sub, &company)
+
 }
 
 func (s *authService) RenewSubscription(companyID uint, packageID uint, receiptPath string) error {

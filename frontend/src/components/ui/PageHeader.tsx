@@ -4,22 +4,18 @@ import { cn } from '@/lib/utils';
 interface PageHeaderProps {
     title: string;
     subtitle?: string;
-    icon?: React.ElementType;
     actions?: React.ReactNode;
     className?: string;
 }
 
-export const PageHeader = ({ title, subtitle, icon: Icon, actions, className }: PageHeaderProps) => {
+export const PageHeader = ({ title, subtitle, actions, className }: PageHeaderProps) => {
     return (
-        <div className={cn("flex flex-col md:flex-row md:items-center justify-between gap-4 py-6", className)}>
-            <div className="space-y-1">
-                <h1 className="text-4xl font-black text-white tracking-tight flex items-center gap-3">
-                    {Icon && <Icon className="w-10 h-10 text-primary" />}
-                    {title.toUpperCase()}
-                </h1>
-                {subtitle && <p className="text-gray-500 font-medium">{subtitle}</p>}
+        <div className={cn("flex flex-col md:flex-row md:items-end justify-between gap-4", className)}>
+            <div>
+                <h1 className="text-2xl font-bold text-slate-900 mb-2">{title}</h1>
+                {subtitle && <p className="text-slate-500 text-sm">{subtitle}</p>}
             </div>
-            {actions && <div className="flex items-center gap-3">{actions}</div>}
+            {actions && <div className="flex flex-wrap items-center gap-3 w-full md:w-auto md:justify-end">{actions}</div>}
         </div>
     );
 };

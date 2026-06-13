@@ -143,9 +143,9 @@ export const RoleDetailModal: React.FC<RoleDetailModalProps> = ({ isOpen, onClos
                     <table className="w-full text-left">
                         <thead className="sticky top-0 z-10 bg-background-dark/95 backdrop-blur-sm border-b border-white/5">
                             <tr>
-                                <th className="px-8 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Permission Name</th>
-                                <th className="px-8 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] text-center">Status</th>
-                                <th className="px-8 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Slug</th>
+                                <th className="px-8 py-4 text-[10px] font-bold text-gray-500   tracking-[0.2em]">Permission Name</th>
+                                <th className="px-8 py-4 text-[10px] font-bold text-gray-500   tracking-[0.2em] text-center">Status</th>
+                                <th className="px-8 py-4 text-[10px] font-bold text-gray-500   tracking-[0.2em]">Slug</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -161,7 +161,7 @@ export const RoleDetailModal: React.FC<RoleDetailModalProps> = ({ isOpen, onClos
                                 <React.Fragment key={groupName}>
                                     <tr className="bg-primary/5">
                                         <td colSpan={3} className="px-8 py-2 border-b border-white/5">
-                                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">{groupName}</span>
+                                            <span className="text-[10px] font-bold text-primary   tracking-[0.2em]">{groupName}</span>
                                         </td>
                                     </tr>
                                     {groupedPermissions[groupName]

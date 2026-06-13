@@ -3,8 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Package, Save, Image as ImageIcon, Upload } from 'lucide-react';
 import { PosItem } from '../../../../types';
-import { CustomInput } from '@/components/ui/CustomInput';
-import { CustomSelect } from '@/components/ui/CustomSelect';
+import { InputText, InputDropdown, InputNumber, InputCurrency, InputTextArea } from '@/components/ui/input';
 import { LookupOption } from '@/lib/modules/users/types';
 import { MultiSelect } from '@/components/ui/MultiSelect';
 
@@ -48,7 +47,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
     const generateSKU = () => {
         const d = new Date();
         const ddmmyy = `${String(d.getDate()).padStart(2, '0')}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getFullYear()).slice(2)}`;
-        const randomStr = Math.random().toString(36).substring(2, 5).toUpperCase();
+        const randomStr = Math.random().toString(36).substring(2, 5).to();
         return `SKU${companyId}${ddmmyy}${randomStr}`;
     };
 
@@ -181,7 +180,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                     <Package className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-800 italic uppercase tracking-wider">
+                                    <h2 className="text-xl font-bold text-slate-800 italic      ">
                                         {item ? 'Edit Item' : 'New Item'}
                                     </h2>
                                     <p className="text-sm text-slate-800">
@@ -199,103 +198,69 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
 
                         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Item Name *</label>
-                                    <CustomInput
-                                        type="text"
-                                        name="name"
-                                        required
-                                        value={formData.name || ''}
-                                        onChange={handleChange}
-                                        placeholder="e.g. Classic Burger"
-                                        variant="light"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">SKU / Barcode</label>
-                                    <CustomInput
-                                        type="text"
-                                        name="sku"
-                                        value={formData.sku || ''}
-                                        onChange={handleChange}
-                                        placeholder="Auto-generated"
-                                        disabled={true}
-                                        className="opacity-50 cursor-not-allowed"
-                                        variant="light"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Category *</label>
-                                    <CustomSelect
-                                        name="category_id"
-                                        required
-                                        value={formData.category_id || ''}
-                                        onChange={handleChange}
-                                        variant="light"
-                                    >
-                                        <option value="" disabled>Select Category</option>
-                                        {categories.map(cat => (
-                                            <option key={cat.value} value={cat.value} className="bg-white text-slate-800">{cat.label}</option>
-                                        ))}
-                                    </CustomSelect>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Product Type</label>
-                                    <CustomSelect
-                                        name="product_type"
-                                        value={formData.product_type?.toString()}
-                                        onChange={handleChange}
-                                        variant="light"
-                                    >
-                                        <option value="0" className="bg-white text-slate-800">Retail (Barang Jadi)</option>
-                                        <option value="1" className="bg-white text-slate-800">Food/Drink (Olahan)</option>
-                                    </CustomSelect>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Selling Price *</label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm font-bold z-10">Rp</span>
-                                        <CustomInput
-                                            type="number"
-                                            name="price"
-                                            required
-                                            min="0"
-                                            value={formData.price || ''}
-                                            onChange={handleChange}
-                                            className="pl-12"
-                                            variant="light"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Cost Price</label>
-                                    <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm font-bold z-10">Rp</span>
-                                        <CustomInput
-                                            type="number"
-                                            name="cost_price"
-                                            min="0"
-                                            value={formData.cost_price || ''}
-                                            onChange={handleChange}
-                                            className="pl-12"
-                                            variant="light"
-                                        />
-                                    </div>
-                                </div>
+                                <InputText
+                                    label="Item Name *"
+                                    name="name"
+                                    required
+                                    value={formData.name || ''}
+                                    onChange={handleChange}
+                                    placeholder="e.g. Classic Burger"
+                                />
+                                <InputText
+                                    label="SKU / Barcode"
+                                    name="sku"
+                                    value={formData.sku || ''}
+                                    onChange={handleChange}
+                                    placeholder="Auto-generated"
+                                    disabled={true}
+                                    className="opacity-50 cursor-not-allowed"
+                                />
+                                <InputDropdown
+                                    label="Category *"
+                                    name="category_id"
+                                    required
+                                    value={formData.category_id || ''}
+                                    onChange={handleChange}
+                                >
+                                    <option value="" disabled>Select Category</option>
+                                    {categories.map(cat => (
+                                        <option key={cat.value} value={cat.value} className="bg-white text-slate-800">{cat.label}</option>
+                                    ))}
+                                </InputDropdown>
+                                <InputDropdown
+                                    label="Product Type"
+                                    name="product_type"
+                                    value={formData.product_type?.toString()}
+                                    onChange={handleChange}
+                                >
+                                    <option value="0" className="bg-white text-slate-800">Retail (Barang Jadi)</option>
+                                    <option value="1" className="bg-white text-slate-800">Food/Drink (Olahan)</option>
+                                </InputDropdown>
+                                <InputCurrency
+                                    label="Selling Price *"
+                                    name="price"
+                                    required
+                                    min="0"
+                                    value={formData.price || ''}
+                                    onChange={handleChange}
+                                />
+                                <InputCurrency
+                                    label="Cost Price"
+                                    name="cost_price"
+                                    min="0"
+                                    value={formData.cost_price || ''}
+                                    onChange={handleChange}
+                                />
                                 {formData.product_type === 0 && (
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Stock Quantity *</label>
-                                        <CustomInput
-                                            type="number"
-                                            name="stock_quantity"
-                                            required
-                                            min="0"
-                                            value={formData.stock_quantity || ''}
-                                            onChange={handleChange}
-                                            placeholder="Enter initial stock"
-                                            variant="light"
-                                        />
-                                    </div>
+                                    <InputNumber
+                                        label="Stock Quantity *"
+                                        name="stock_quantity"
+                                        required
+                                        min="0"
+                                        value={formData.stock_quantity || ''}
+                                        onChange={handleChange}
+                                        placeholder="Enter initial stock"
+                                    />
                                 )}
 
                                 <div className="space-y-2">
@@ -344,20 +309,19 @@ export const ItemModal: React.FC<ItemModalProps> = ({ isOpen, onClose, onSubmit,
                                     </div>
                                 </div>
 
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Description</label>
-                                    <textarea
+                                <div className="md:col-span-2">
+                                    <InputTextArea
+                                        label="Description"
                                         name="description"
                                         rows={3}
                                         value={formData.description || ''}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400 resize-none"
                                         placeholder="Brief description of the item..."
                                     />
                                 </div>
 
                                 <div className="space-y-2 md:col-span-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Product Image</label>
+                                    <label className="text-[10px] font-bold text-slate-800   tracking-[0.2em] px-1">Product Image</label>
                                     <div className="relative border-2 border-dashed border-slate-200 rounded-2xl hover:border-primary transition-colors bg-slate-50 overflow-hidden group">
                                         <input
                                             type="file"

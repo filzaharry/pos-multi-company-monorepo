@@ -40,7 +40,7 @@ export const FailedLayout = () => {
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-slate-900 tracking-tight text-[40px] md:text-[52px] font-black leading-tight px-4 pb-3"
+                            className="text-slate-900 tracking-tight text-[40px] md:text-[52px] font-bold leading-tight px-4 pb-3"
                         >
                             Pembayaran Gagal!
                         </motion.h1>
@@ -74,7 +74,7 @@ export const FailedLayout = () => {
 
                             <div className="flex w-full grow flex-col items-stretch justify-center gap-3 py-5 px-6 bg-white">
                                 <div className="flex items-center justify-between">
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-red-50 text-red-700 border border-red-200">
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px]  font-bold bg-red-50 text-red-700 border border-red-200">
                                         <AlertTriangle className="w-2.5 h-2.5 text-red-600" />
                                         Transaksi Ditolak
                                     </span>
@@ -82,7 +82,7 @@ export const FailedLayout = () => {
                                 <h3 className="text-slate-900 text-xl font-bold leading-tight tracking-tight">Paket Premium Enterprise</h3>
                                 <div className="flex flex-col gap-0.5 mt-1">
                                     <div className="flex items-baseline gap-1.5">
-                                        <p className="text-slate-900 text-2xl font-black">Rp 20.055.000</p>
+                                        <p className="text-slate-900 text-2xl font-bold">Rp 20.055.000</p>
                                         <p className="text-slate-400 text-xs font-bold">/ tahun</p>
                                     </div>
                                     <p className="text-slate-400 text-xs font-medium leading-normal mt-1.5 flex items-center gap-1.5">
@@ -103,7 +103,7 @@ export const FailedLayout = () => {
                     >
                         <Link
                             href="/checkout"
-                            className="flex min-w-[240px] cursor-pointer items-center justify-center rounded-2xl h-14 px-8 bg-red-600 hover:bg-red-700 text-white text-lg font-black transition-all shadow-xl shadow-red-600/30 active:scale-[0.98]"
+                            className="flex min-w-[240px] cursor-pointer items-center justify-center rounded-2xl h-14 px-8 bg-red-600 hover:bg-red-700 text-white text-lg font-bold transition-all shadow-xl shadow-red-600/30 active:scale-[0.98]"
                         >
                             <RotateCcw className="w-5 h-5 mr-3" />
                             Coba Pembayaran Lagi

@@ -1,5 +1,5 @@
 import { apiHandler } from '@/lib/api/handler';
-import { ApiResponse } from '../../login/types';
+import { ApiResponse } from '@/lib/types/api';
 import { MenuItem } from '../../../hooks/useSidebarMenus';
 
 export const menuService = {

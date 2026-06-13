@@ -28,7 +28,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ title, bannerUrl, content, d
             </div>
             <div className="p-5 flex flex-col flex-1 gap-2.5">
                 {date && (
-                    <span className="text-xs font-bold uppercase tracking-wider" style={{ color: '#22c55e' }}>
+                    <span className="text-xs font-bold      " style={{ color: '#22c55e' }}>
                         {date}
                     </span>
                 )}

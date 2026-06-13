@@ -84,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onLogout }) => {
                 isOpen ? "w-64" : "w-20"
             )}
         >
-            <div className="h-16 flex items-center px-6 border-b border-white/5">
+            <div className={cn("h-16 flex items-center border-b border-white/5", isOpen ? "px-6" : "justify-center")}>
                 <div className="flex items-center gap-3 overflow-hidden">
                     <div className="flex shrink-0 items-center justify-center w-8 h-8">
                         <Image src="/assets/logo.png" width={32} height={32} alt="Logo" className="object-contain" />
@@ -104,7 +104,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onLogout }) => {
                     Object.keys(groupedMenus).map(groupName => (
                         <div key={groupName} className="space-y-2">
                             {isOpen && (
-                                <h4 className="px-4 text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                                <h4 className="px-4 text-[10px] font-bold text-gray-500 ">
                                     {groupName}
                                 </h4>
                             )}
@@ -112,7 +112,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onLogout }) => {
                                 {groupedMenus[groupName].map(menu => {
                                     const hasChildren = menu.children && menu.children.length > 0;
                                     const Icon = IconMap[menu.icon] || LayoutDashboard;
-                                    
+
                                     // Calculate expansion state during render (Derived State)
                                     const isParentOfActive = menu.children?.some(child => pathname === child.path);
                                     const isExpanded = openMenus[menu.id] ?? isParentOfActive;

@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Layers, Save } from 'lucide-react';
 import { PosLevel } from '../../../../types';
-import { CustomInput } from '@/components/ui/CustomInput';
+import { InputText, InputTextArea } from '@/components/ui/input';
 
 interface LevelModalProps {
     isOpen: boolean;
@@ -81,7 +81,7 @@ export const LevelModal: React.FC<LevelModalProps> = ({ isOpen, onClose, onSubmi
                                     <Layers className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-800 italic uppercase tracking-wider">
+                                    <h2 className="text-xl font-bold text-slate-800 italic      ">
                                         {level ? 'Edit Level' : 'New Level'}
                                     </h2>
                                     <p className="text-sm text-slate-800">
@@ -99,29 +99,22 @@ export const LevelModal: React.FC<LevelModalProps> = ({ isOpen, onClose, onSubmi
 
                         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-6">
                             <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Level Name *</label>
-                                    <CustomInput
-                                        type="text"
-                                        name="name"
-                                        required
-                                        value={formData.name || ''}
-                                        onChange={handleChange}
-                                        placeholder="e.g. Level 1 (Mild)"
-                                        variant="light"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Description</label>
-                                    <textarea
-                                        name="description"
-                                        rows={3}
-                                        value={formData.description || ''}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400 resize-none"
-                                        placeholder="Level description..."
-                                    />
-                                </div>
+                                <InputText
+                                    label="Level Name *"
+                                    name="name"
+                                    required
+                                    value={formData.name || ''}
+                                    onChange={handleChange}
+                                    placeholder="e.g. Level 1 (Mild)"
+                                />
+                                <InputTextArea
+                                    label="Description"
+                                    name="description"
+                                    rows={3}
+                                    value={formData.description || ''}
+                                    onChange={handleChange}
+                                    placeholder="Level description..."
+                                />
                             </div>
 
                             <div className="pt-6 border-t border-slate-200 flex gap-4 shrink-0 mt-4">

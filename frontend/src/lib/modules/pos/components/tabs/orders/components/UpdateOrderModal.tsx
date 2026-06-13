@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ClipboardList, Save } from 'lucide-react';
 import { PosOrder } from '../../../../types';
-import { CustomSelect } from '@/components/ui/CustomSelect';
+import { InputDropdown, InputTextArea } from '@/components/ui/input';
 import { ORDER_STATUS_LIST } from '../../../../constants';
 
 interface UpdateOrderModalProps {
@@ -68,7 +68,7 @@ export const UpdateOrderModal: React.FC<UpdateOrderModalProps> = ({ isOpen, onCl
                                 <ClipboardList className="w-6 h-6" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-black text-slate-800 italic uppercase tracking-wider">Update Order {order.code}</h2>
+                                <h2 className="text-xl font-bold text-slate-800 italic      ">Update Order {order.code}</h2>
                                 <p className="text-sm text-slate-800">Modify order status and payment information</p>
                             </div>
                         </div>
@@ -79,7 +79,7 @@ export const UpdateOrderModal: React.FC<UpdateOrderModalProps> = ({ isOpen, onCl
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Order Status</label>
+                            <label className="text-[10px] font-bold text-slate-800   tracking-[0.2em] px-1">Order Status</label>
                             <div className="grid grid-cols-2 gap-2">
                                 {ORDER_STATUS_LIST.map((s) => {
                                     const Icon = s.icon;
@@ -102,30 +102,24 @@ export const UpdateOrderModal: React.FC<UpdateOrderModalProps> = ({ isOpen, onCl
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Payment Status</label>
-                            <CustomSelect
-                                value={paymentStatus}
-                                onChange={(e) => setPaymentStatus(e.target.value)}
-                                variant="light"
-                            >
-                                <option value="Pending" className="bg-white text-slate-800">Pending</option>
-                                <option value="Paid" className="bg-white text-slate-800">Paid</option>
-                                <option value="Refunded" className="bg-white text-slate-800">Refunded</option>
-                                <option value="Cancelled" className="bg-white text-slate-800">Cancelled</option>
-                            </CustomSelect>
-                        </div>
+                        <InputDropdown
+                            label="Payment Status"
+                            value={paymentStatus}
+                            onChange={(e) => setPaymentStatus(e.target.value)}
+                        >
+                            <option value="Pending" className="bg-white text-slate-800">Pending</option>
+                            <option value="Paid" className="bg-white text-slate-800">Paid</option>
+                            <option value="Refunded" className="bg-white text-slate-800">Refunded</option>
+                            <option value="Cancelled" className="bg-white text-slate-800">Cancelled</option>
+                        </InputDropdown>
 
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Internal Notes</label>
-                            <textarea
-                                value={notes}
-                                onChange={(e) => setNotes(e.target.value)}
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400 resize-none"
-                                rows={3}
-                                placeholder="Add any internal notes here..."
-                            />
-                        </div>
+                        <InputTextArea
+                            label="Internal Notes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            placeholder="Add any internal notes here..."
+                            rows={3}
+                        />
 
                         <div className="pt-4 flex gap-4">
                             <button

@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Truck, Save } from 'lucide-react';
 import { PosDelivery } from '../../../../types';
-import { CustomInput } from '@/components/ui/CustomInput';
+import { InputText, InputCurrency, InputTextArea } from '@/components/ui/input';
 
 interface DeliveryModalProps {
     isOpen: boolean;
@@ -84,7 +84,7 @@ export const DeliveryModal: React.FC<DeliveryModalProps> = ({ isOpen, onClose, o
                                     <Truck className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-800 italic uppercase tracking-wider">
+                                    <h2 className="text-xl font-bold text-slate-800 italic      ">
                                         {delivery ? 'Edit Delivery' : 'New Delivery'}
                                     </h2>
                                     <p className="text-sm text-slate-800">
@@ -102,41 +102,30 @@ export const DeliveryModal: React.FC<DeliveryModalProps> = ({ isOpen, onClose, o
 
                         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-6">
                             <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Delivery Name *</label>
-                                    <CustomInput
-                                        type="text"
-                                        name="name"
-                                        required
-                                        value={formData.name || ''}
-                                        onChange={handleChange}
-                                        placeholder="e.g. GrabFood, GoFood"
-                                        variant="light"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Price *</label>
-                                    <CustomInput
-                                        type="text"
-                                        name="price"
-                                        required
-                                        value={formData.price || ''}
-                                        onChange={handleChange}
-                                        placeholder="e.g. 10000"
-                                        variant="light"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Description</label>
-                                    <textarea
-                                        name="description"
-                                        rows={3}
-                                        value={formData.description || ''}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400 resize-none"
-                                        placeholder="Delivery method description..."
-                                    />
-                                </div>
+                                <InputText
+                                    label="Delivery Name *"
+                                    name="name"
+                                    required
+                                    value={formData.name || ''}
+                                    onChange={handleChange}
+                                    placeholder="e.g. GrabFood, GoFood"
+                                />
+                                <InputCurrency
+                                    label="Price *"
+                                    name="price"
+                                    required
+                                    value={formData.price || ''}
+                                    onChange={handleChange}
+                                    placeholder="e.g. 10000"
+                                />
+                                <InputTextArea
+                                    label="Description"
+                                    name="description"
+                                    rows={3}
+                                    value={formData.description || ''}
+                                    onChange={handleChange}
+                                    placeholder="Delivery method description..."
+                                />
                             </div>
 
                             <div className="pt-6 border-t border-slate-200 flex gap-4 shrink-0 mt-4">

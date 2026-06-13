@@ -6,6 +6,7 @@ export interface CompanySubsPackage {
     name: string;
     description: string;
     pricing: number;
+    duration_days: number;
     created_at: string;
     updated_at: string;
 }
@@ -17,24 +18,43 @@ export interface CompanySubscription {
     business_email: string;
     phone_number: string;
     company_name: string;
+    route?: string;
     package_id: number;
     payment_method: number; // 0: Bank, 1: QRIS
     payment_receipt: string;
     payment_status: number; // 0: Pending, 1: Success, 2: Failed
     start_date?: string;
     end_date?: string;
+    approved_by_id?: number;
     created_at: string;
     updated_at: string;
     package: CompanySubsPackage;
-    company?: {
-        id: number;
-        name: string;
-    };
+    company?: CompanyHeader;
+}
+
+// Header: represents a Company in the subscription list
+export interface CompanyHeader {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    route: string;
+    status: number; // 0: Pending, 1: Active, 2: Expired
+    logo_url?: string;
+    banner_url?: string;
+    subscription_end_date?: string;
+    created_at: string;
+    updated_at: string;
+    subscriptions?: CompanySubscription[];
 }
 
 export interface SubscriptionListResponse {
-    subscriptions: CompanySubscription[];
+    result: CompanyHeader[];
     pagination: PaginationData;
+}
+
+export interface SubscriptionHistoryResponse {
+    result: CompanySubscription[];
 }
 
 export interface SubscriptionStats {
@@ -49,8 +69,10 @@ export interface SubscriptionPayload {
     business_email: string;
     phone_number: string;
     company_name: string;
+    route?: string;
     package_id: number;
     payment_method: number;
     payment_receipt?: string;
     payment_status?: number;
+    company_id?: number;
 }

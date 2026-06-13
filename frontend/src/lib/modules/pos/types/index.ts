@@ -117,6 +117,13 @@ export interface PosStats {
     low_stock: number;
 }
 
+export interface DashboardStats {
+    total_revenue: number;
+    total_sales?: number;
+    total_orders: number;
+    low_stock: number;
+}
+
 export interface PosQueryParams {
     page?: number;
     limit?: number;

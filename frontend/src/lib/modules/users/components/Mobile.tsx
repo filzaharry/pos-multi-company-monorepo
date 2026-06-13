@@ -108,7 +108,7 @@ export const Mobile: React.FC<MobileProps> = ({
             {showFilters && (
                 <div className="p-4 bg-background-dark border border-white/5 rounded-xl space-y-4 animate-in slide-in-from-top-2 duration-200">
                     <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase ml-1">Role</label>
+                        <label className="text-[10px] font-bold text-gray-500   ml-1">Role</label>
                         <select
                             value={roleId}
                             onChange={(e) => setRoleId(e.target.value)}
@@ -123,7 +123,7 @@ export const Mobile: React.FC<MobileProps> = ({
 
                     {isSuperAdmin && (
                         <div className="space-y-1">
-                            <label className="text-[10px] font-bold text-gray-500 uppercase ml-1">Company</label>
+                            <label className="text-[10px] font-bold text-gray-500   ml-1">Company</label>
                             <select
                                 value={companyId}
                                 onChange={(e) => setCompanyId(e.target.value)}
@@ -164,7 +164,7 @@ export const Mobile: React.FC<MobileProps> = ({
                         <div key={u.id} className="p-4 bg-background-dark border border-white/5 rounded-2xl space-y-4">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                    {u.name.charAt(0).toUpperCase()}
+                                    {u.name.charAt(0).to()}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <h4 className="text-sm font-bold text-white truncate">{u.name}</h4>
@@ -185,18 +185,18 @@ export const Mobile: React.FC<MobileProps> = ({
                             </div>
                             <div className="flex items-center justify-between pt-3 border-t border-white/5">
                                 <div className="flex gap-2">
-                                    <span className="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase">
+                                    <span className="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 text-[10px] font-bold  ">
                                         {u.role?.name}
                                     </span>
                                     {u.company && (
-                                        <span className="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 text-[10px] font-bold uppercase">
+                                        <span className="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 text-[10px] font-bold  ">
                                             {u.company.name}
                                         </span>
                                     )}
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                                    <span className="text-[10px] text-green-500 font-bold uppercase tracking-wider">Active</span>
+                                    <span className="text-[10px] text-green-500 font-bold      ">Active</span>
                                 </div>
                             </div>
                         </div>

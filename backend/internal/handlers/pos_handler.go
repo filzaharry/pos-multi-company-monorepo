@@ -2,11 +2,13 @@ package handlers
 
 import (
 	"pos-backend/internal/dto"
+	"pos-backend/internal/models"
 	"pos-backend/internal/repository"
 	"pos-backend/internal/service"
 	"pos-backend/pkg/database"
 	"pos-backend/pkg/utils"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -390,6 +392,31 @@ func GetPosDashboardStats(c *fiber.Ctx) error {
 }
 
 // App Routes (Public)
+func ResolveAppPosCompany(c *fiber.Ctx) error {
+	route := c.Params("route")
+	
+	var company models.Company
+	if err := database.DB.Where("route = ?", route).First(&company).Error; err != nil {
+		return utils.ErrorResponse(c, fiber.StatusNotFound, "Store not found")
+	}
+
+	if company.Status != 1 {
+		return utils.ErrorResponse(c, fiber.StatusForbidden, "Store is currently inactive")
+	}
+
+	if company.SubscriptionEndDate != nil && company.SubscriptionEndDate.Before(time.Now()) {
+		return utils.ErrorResponse(c, fiber.StatusForbidden, "Store subscription has expired")
+	}
+
+	return utils.SuccessResponse(c, "Store resolved successfully", fiber.Map{
+		"id":       company.ID,
+		"name":     company.Name,
+		"logo_url": company.LogoURL,
+		"address":  company.Address,
+		"phone":    company.Phone,
+	})
+}
+
 func GetAppPosCategories(c *fiber.Ctx) error {
 	companyID, _ := strconv.ParseUint(c.Params("company_id"), 10, 32)
 	categories, _, err := posService().GetCategories(uint(companyID), 1, 100) // Get all for app

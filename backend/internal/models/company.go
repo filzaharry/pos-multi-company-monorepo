@@ -13,9 +13,15 @@ type Company struct {
 	Phone              string         `gorm:"size:50" json:"phone"`
 	Address            string         `gorm:"type:text" json:"address"`
 	LogoURL            string         `gorm:"size:255" json:"logo_url"`
+	BannerURL          string         `gorm:"size:255" json:"banner_url"`
+	Route              string         `gorm:"size:255;unique" json:"route"`
+	Status             int            `gorm:"default:1" json:"status"` // 0: Pending, 1: Active, 2: Suspended
+	SubscriptionEndDate *time.Time    `json:"subscription_end_date"`
 	CreatedAt          time.Time      `json:"created_at"`
 	UpdatedAt          time.Time      `json:"updated_at"`
 	DeletedAt          gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+
+	Subscriptions      []CompanySubscription `gorm:"foreignKey:CompanyID" json:"subscriptions,omitempty"`
 }
 
 type GeneralParameter struct {

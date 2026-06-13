@@ -27,11 +27,13 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
         <Link
             href={path || '#'}
             className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg transition-all group",
+                "flex items-center gap-3 transition-all group",
                 isActive
-                    ? "bg-primary text-white shadow-lg shadow-primary/20"
-                    : "text-gray-400 hover:bg-white/5 hover:text-white",
-                isSubmenu && "py-2 pl-4" // Removed smaller padding, using standard px
+                    ? "bg-primary text-white shadow-lg shadow-primary/20 rounded-2xl py-3"
+                    : "text-gray-400 hover:bg-white/5 hover:text-white rounded-xl py-2",
+                isOpen ? "px-3" : "px-0 justify-center",
+                isSubmenu && "py-2",
+                isSubmenu && isOpen && "pl-4"
             )}
         >
             {!isSubmenu && (

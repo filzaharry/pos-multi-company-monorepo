@@ -40,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, isSidebarOpen, onToggleSid
                 <div className="relative group/user">
                     <div className="w-10 h-10 rounded-full bg-linear-to-br from-primary to-green-600 flex items-center justify-center border-2 border-slate-200 cursor-pointer shadow-lg">
                         <span className="text-sm font-bold text-white">
-                            {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || '??'}
+                            {user?.name?.split(' ').map(n => n[0]).join('').to() || '??'}
                         </span>
                     </div>
                 </div>

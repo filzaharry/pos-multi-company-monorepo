@@ -68,13 +68,24 @@ export const ImagePreview = ({
         setRotate(0);
     };
 
-    const handleDownload = () => {
-        const link = document.createElement('a');
-        link.href = images[currentIndex];
-        link.download = `receipt-${currentIndex + 1}.jpg`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    const handleDownload = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        try {
+            const response = await fetch(images[currentIndex]);
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = `receipt-${currentIndex + 1}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+            console.error('Download failed', error);
+            // Fallback
+            window.open(images[currentIndex], '_blank');
+        }
     };
 
     if (!isOpen) return null;
@@ -90,7 +101,7 @@ export const ImagePreview = ({
                         className="absolute top-0 left-0 right-0 h-20 px-8 flex items-center justify-between z-[210] bg-linear-to-b from-black/50 to-transparent"
                     >
                         <div className="flex items-center gap-6">
-                            <span className="text-white/70 font-mono text-sm tracking-widest uppercase">
+                            <span className="text-white/70 font-mono text-sm     ">
                                 {currentIndex + 1} / {images.length}
                             </span>
                         </div>
@@ -134,11 +145,10 @@ export const ImagePreview = ({
                         <motion.div
                             key={currentIndex}
                             initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
+                            animate={{ scale: scale, rotate: rotate, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
                             className="relative cursor-grab active:cursor-grabbing"
-                            style={{ scale, rotate }}
                             drag
                             dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
                             onDragStart={() => setIsDragging(true)}
@@ -179,9 +189,13 @@ export const ImagePreview = ({
     );
 };
 
-const ToolbarButton = ({ onClick, icon: Icon, label }: { onClick: () => void, icon: LucideIcon, label: string }) => (
+const ToolbarButton = ({ onClick, icon: Icon, label }: { onClick: (e: React.MouseEvent) => void, icon: LucideIcon, label: string }) => (
     <button
-        onClick={onClick}
+        type="button"
+        onClick={(e) => {
+            e.stopPropagation();
+            onClick(e);
+        }}
         title={label}
         className="p-3 text-white/60 hover:text-white hover:bg-white/10 rounded-xl transition-all group"
     >

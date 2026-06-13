@@ -29,3 +29,10 @@ export const getCookie = (name: string) => {
 export const deleteCookie = (name: string) => {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
+
+export const getImageUrl = (path?: string | null) => {
+    if (!path) return null;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '').replace(/\/$/, '') || 'http://localhost:8080';
+    const cleanPath = path.replace(/^\//, '');
+    return `${baseUrl}/${cleanPath}`;
+};

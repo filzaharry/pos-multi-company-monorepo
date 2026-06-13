@@ -44,8 +44,11 @@ export const PermissionMatrixModal = ({
         try {
             // Get all available system permissions
             const permsRes = await userService.getPermissions();
-            setPermissions(permsRes.data);
-
+            if (permsRes.status === 'success' || permsRes.status === 'Success') {
+                setPermissions(permsRes.data.result);
+            } else {
+                setPermissions(permsRes.data as unknown as Permission[]); // fallback just in case
+            }
             // Fetch the role again specifically to get preloaded permissions
             // or just use role.permissions if we're sure it's up to date.
             // Since we preloaded in the list, we can use it, but to be safe, 
@@ -165,9 +168,9 @@ export const PermissionMatrixModal = ({
                             <table className="w-full text-left border-collapse">
                                 <thead className="sticky top-0 z-20 bg-background-dark/95 backdrop-blur-sm shadow-sm border-b border-white/5">
                                     <tr>
-                                        <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest min-w-[300px]">Permission Modules</th>
-                                        <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center min-w-[200px]">Akses Status</th>
-                                        <th className="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest min-w-[200px]">Slug Reference</th>
+                                        <th className="px-8 py-4 text-xs font-bold text-gray-400  min-w-[300px]">Permission Modules</th>
+                                        <th className="px-8 py-4 text-xs font-bold text-gray-400  text-center min-w-[200px]">Akses Status</th>
+                                        <th className="px-8 py-4 text-xs font-bold text-gray-400  min-w-[200px]">Slug Reference</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -186,7 +189,7 @@ export const PermissionMatrixModal = ({
                                                 <td colSpan={3} className="px-8 py-3">
                                                     <div className="flex items-center gap-2">
                                                         <div className="w-1.5 h-4 bg-primary rounded-full shadow-[0_0_10px_rgba(71,140,209,0.5)]" />
-                                                        <span className="text-xs font-black text-primary uppercase tracking-[0.2em]">{groupName}</span>
+                                                        <span className="text-xs font-bold text-primary   tracking-[0.2em]">{groupName}</span>
                                                     </div>
                                                 </td>
                                             </tr>

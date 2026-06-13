@@ -30,7 +30,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitl
                             <div className="bg-primary/10 p-4 rounded-full mb-6 text-primary">
                                 {icon}
                             </div>
-                            <h1 className="text-slate-900 tracking-tight text-3xl font-black leading-tight text-center pb-2">
+                            <h1 className="text-slate-900 tracking-tight text-3xl font-bold leading-tight text-center pb-2">
                                 {title}
                             </h1>
                             <p className="text-slate-500 text-sm font-normal leading-normal text-center max-w-[320px]">

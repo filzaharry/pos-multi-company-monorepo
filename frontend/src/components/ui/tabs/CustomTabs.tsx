@@ -56,7 +56,7 @@ export const CustomTabs = ({ tabs, activeTab, onChange, className }: CustomTabsP
                                 />
                             )}
 
-                            <span className="relative z-10 flex items-center justify-center gap-2 text-xs font-black uppercase tracking-[0.15em] italic">
+                            <span className="relative z-10 flex items-center justify-center gap-2 text-xs font-bold   tracking-[0.15em] italic">
                                 {tab.icon && <tab.icon className="w-4 h-4 opacity-70" />}
                                 {tab.label}
                             </span>

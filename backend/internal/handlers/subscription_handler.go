@@ -1,12 +1,14 @@
 package handlers
 
 import (
+	"fmt"
 	"pos-backend/internal/models"
 	"pos-backend/internal/repository"
 	"pos-backend/internal/service"
 	"pos-backend/pkg/database"
 	"pos-backend/pkg/utils"
 	"strconv"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -28,8 +30,8 @@ func GetSubscriptions(c *fiber.Ctx) error {
 	}
 
 	return utils.SuccessResponse(c, "Subscriptions fetched successfully", fiber.Map{
-		"subscriptions": subscriptions,
-		"pagination":    pagination,
+		"result":     subscriptions,
+		"pagination": pagination,
 	})
 }
 
@@ -54,12 +56,43 @@ func GetDetailSubscription(c *fiber.Ctx) error {
 
 func CreateSubscription(c *fiber.Ctx) error {
 	var sub models.CompanySubscription
-	if err := c.BodyParser(&sub); err != nil {
-		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
+
+	contentType := c.Get("Content-Type")
+	if strings.Contains(contentType, fiber.MIMEMultipartForm) {
+		companyID, _ := strconv.ParseUint(c.FormValue("company_id"), 10, 32)
+		if companyID > 0 {
+			cid := uint(companyID)
+			sub.CompanyID = &cid
+		}
+		
+		sub.FullName = c.FormValue("full_name")
+		sub.BusinessEmail = c.FormValue("business_email")
+		sub.PhoneNumber = c.FormValue("phone_number")
+		sub.CompanyName = c.FormValue("company_name")
+		sub.Route = c.FormValue("route")
+		
+		packageID, _ := strconv.ParseUint(c.FormValue("package_id"), 10, 32)
+		sub.PackageID = uint(packageID)
+		
+		paymentMethod, _ := strconv.ParseInt(c.FormValue("payment_method"), 10, 32)
+		sub.PaymentMethod = int(paymentMethod)
+		
+		paymentStatus, _ := strconv.ParseInt(c.FormValue("payment_status"), 10, 32)
+		sub.PaymentStatus = int(paymentStatus)
+
+		receiptPath, err := utils.SaveUploadedFile(c, "payment_receipt", "receipts")
+		if err == nil && receiptPath != "" {
+			sub.PaymentReceipt = receiptPath
+		}
+	} else {
+		if err := c.BodyParser(&sub); err != nil {
+			return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid input")
+		}
 	}
 
 	if err := subService().Create(&sub); err != nil {
-		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to create subscription")
+		fmt.Println("Create Subscription Error:", err)
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to create subscription: "+err.Error())
 	}
 
 	return utils.SuccessResponse(c, "Subscription created", sub)
@@ -105,4 +138,63 @@ func ApproveSubscription(c *fiber.Ctx) error {
 	return utils.SuccessResponse(c, "Subscription approved, company and user created", nil)
 }
 
+func GetSubscriptionHistory(c *fiber.Ctx) error {
+	idStr := c.Params("id")
+	id, err := strconv.ParseUint(idStr, 10, 32)
+	if err != nil {
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid company ID")
+	}
 
+	history, err := subService().GetHistory(uint(id))
+	if err != nil {
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to fetch history")
+	}
+
+	return utils.SuccessResponse(c, "History fetched", fiber.Map{
+		"result": history,
+	})
+}
+
+func UpdateCompanyInfo(c *fiber.Ctx) error {
+	idStr := c.Params("id")
+	id, err := strconv.ParseUint(idStr, 10, 32)
+	if err != nil {
+		return utils.ErrorResponse(c, fiber.StatusBadRequest, "Invalid company ID")
+	}
+
+	var company models.Company
+	if err := database.DB.First(&company, id).Error; err != nil {
+		return utils.ErrorResponse(c, fiber.StatusNotFound, "Company not found")
+	}
+
+	// Parse text fields from FormValue
+	if name := c.FormValue("name"); name != "" {
+		company.Name = name
+	}
+	if email := c.FormValue("email"); email != "" {
+		company.Email = email
+	}
+	if phone := c.FormValue("phone"); phone != "" {
+		company.Phone = phone
+	}
+	if route := c.FormValue("route"); route != "" {
+		company.Route = route
+	}
+
+	// Handle Image Uploads if they exist
+	logoPath, err := utils.SaveUploadedFile(c, "logo", "companies")
+	if err == nil && logoPath != "" {
+		company.LogoURL = logoPath
+	}
+
+	bannerPath, err := utils.SaveUploadedFile(c, "banner", "companies")
+	if err == nil && bannerPath != "" {
+		company.BannerURL = bannerPath
+	}
+
+	if err := database.DB.Save(&company).Error; err != nil {
+		return utils.ErrorResponse(c, fiber.StatusInternalServerError, "Failed to update company info")
+	}
+
+	return utils.SuccessResponse(c, "Company info updated successfully", company)
+}

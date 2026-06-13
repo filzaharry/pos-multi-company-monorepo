@@ -20,7 +20,7 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
         cell: (u) => (
             <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20 shadow-inner">
-                    {u.name.charAt(0).toUpperCase()}
+                    {u.name.charAt(0).to()}
                 </div>
                 <div>
                     <div className="text-sm font-bold group-hover:text-primary transition-colors">{u.name}</div>
@@ -41,7 +41,7 @@ export const getUserColumns = ({ onEdit, onDelete }: UserColumnProps): Column<Us
         sortable: true,
         cell: (u) => (
             <span className={cn(
-                "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border",
+                "px-2.5 py-1 rounded-lg text-[10px]  font-bold border",
                 u.role?.name === 'Super Admin' ? "bg-red-50 text-red-700 border-red-100" :
                     u.role?.name === 'Admin' ? "bg-blue-50 text-blue-700 border-blue-100" :
                         "bg-emerald-50 text-emerald-700 border-emerald-100"

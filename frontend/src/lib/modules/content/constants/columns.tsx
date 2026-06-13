@@ -22,7 +22,7 @@ export const getPackageColumns = (
             header: 'Status',
             accessorKey: 'status',
             cell: (item) => (
-                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-700 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20">
+                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-700 text-[10px]  font-bold rounded-full border border-emerald-500/20">
                     {item.status || 'Active'}
                 </span>
             )
@@ -92,7 +92,7 @@ export const getFaqColumns = (
             header: 'Status',
             accessorKey: 'status',
             cell: (item) => (
-                <span className="px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100">
+                <span className="px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px]  font-bold rounded-full border border-emerald-100">
                     {item.status || 'Active'}
                 </span>
             )

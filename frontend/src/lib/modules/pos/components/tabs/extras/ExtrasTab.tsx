@@ -93,8 +93,8 @@ export const ExtrasTab: React.FC<ExtrasTabProps> = ({ companyId }) => {
 
     const columns: Column<PosExtra>[] = [
         { header: 'Extra Name', accessorKey: 'name', sortable: true },
-        { 
-            header: 'Price', 
+        {
+            header: 'Price',
             accessorKey: 'price',
             cell: (item) => (
                 <span className="text-slate-800 font-bold">
@@ -128,7 +128,7 @@ export const ExtrasTab: React.FC<ExtrasTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">Extras / Add-ons</h3>
+                    <h3 className="text-xl font-bold text-slate-800   italic    ">Extras / Add-ons</h3>
                     <p className="text-xs text-slate-800">Manage extra toppings, sauces, or add-ons.</p>
                 </div>
                 <button

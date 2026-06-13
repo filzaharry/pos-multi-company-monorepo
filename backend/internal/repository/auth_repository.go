@@ -77,29 +77,27 @@ func (r *authRepository) UpdateSubscription(sub *models.CompanySubscription) err
 
 func (r *authRepository) ApproveSubscription(sub *models.CompanySubscription, company *models.Company) error {
 	return r.db.Transaction(func(tx *gorm.DB) error {
-		// 1. Create Company
-		if err := tx.Create(company).Error; err != nil {
+		// 1. Update Company Status and End Date
+		company.Status = 1 // Active
+		if err := tx.Save(company).Error; err != nil {
 			return err
 		}
 
-		// 2. Create User (Owner/Admin)
-		// Default Password: Password123
-		// We should import bcrypt, but since we are in repository, 
-		// we should ideally have hashed password passed from service.
-		// However, for simplicity and meeting user's request "once executed", 
-		// I'll do it here or assume service should have done it.
-		// Actually, I'll update service to pass a full User object.
-		
-		roleID := uint(2)
-		user := models.User{
-			CompanyID: &company.ID,
-			RoleID:    &roleID, // Admin
-			Name:      sub.FullName,
-			Email:     sub.BusinessEmail,
-			Password:  "$2a$10$6IrumSb1b.xiaXf/AOMvh.E/DViP2UQ5c0Xt7KBf9HKHGzRQkGQLa", // Hashed "Password123"
-		}
-		if err := tx.Create(&user).Error; err != nil {
-			return err
+		// 2. Check if User exists, if not create User (Owner/Admin)
+		var existingUser int64
+		tx.Model(&models.User{}).Where("company_id = ?", company.ID).Count(&existingUser)
+		if existingUser == 0 {
+			roleID := uint(2)
+			user := models.User{
+				CompanyID: &company.ID,
+				RoleID:    &roleID, // Admin
+				Name:      sub.FullName,
+				Email:     sub.BusinessEmail,
+				Password:  "$2a$10$6IrumSb1b.xiaXf/AOMvh.E/DViP2UQ5c0Xt7KBf9HKHGzRQkGQLa", // Hashed "Password123"
+			}
+			if err := tx.Create(&user).Error; err != nil {
+				return err
+			}
 		}
 
 		// 3. Update Subscription Status

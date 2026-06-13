@@ -85,7 +85,7 @@ export const Mobile: React.FC<MobileProps> = ({
                 <div className="max-w-[1280px] mx-auto px-5 relative z-10">
                     <div className="flex flex-col gap-6 text-center items-center pb-10">
                         <div className="m-tag"><Tag>🚀 Platform POS Generasi Baru</Tag></div>
-                        <h1 className="m-title text-4xl font-black text-slate-900 leading-tight tracking-tight max-w-sm">
+                        <h1 className="m-title text-4xl font-bold text-slate-900 leading-tight tracking-tight max-w-sm">
                             {heroTitle}
                         </h1>
                         <p className="m-sub text-base text-slate-500 leading-relaxed max-w-xs">
@@ -114,8 +114,8 @@ export const Mobile: React.FC<MobileProps> = ({
                                 { value: '24/7', label: 'Dukungan' },
                             ].map(s => (
                                 <div key={s.label} className="flex flex-col items-center gap-0.5">
-                                    <span className="text-xl font-black" style={{ color: '#16a34a' }}>{s.value}</span>
-                                    <span className="text-[10px] text-slate-400 uppercase tracking-wider">{s.label}</span>
+                                    <span className="text-xl font-bold" style={{ color: '#16a34a' }}>{s.value}</span>
+                                    <span className="text-[10px] text-slate-400      ">{s.label}</span>
                                 </div>
                             ))}
                         </div>
@@ -138,7 +138,7 @@ export const Mobile: React.FC<MobileProps> = ({
                     <div className="m-sec-feat flex flex-col gap-8">
                         <div className="flex flex-col gap-3">
                             <Tag>Fitur Unggulan</Tag>
-                            <h2 className="text-2xl font-black text-slate-900 leading-tight">Optimalkan Bisnis dengan Fitur Lengkap</h2>
+                            <h2 className="text-2xl font-bold text-slate-900 leading-tight">Optimalkan Bisnis dengan Fitur Lengkap</h2>
                             <p className="text-slate-500 text-sm leading-relaxed">Semua yang Anda butuhkan untuk operasional kasir modern.</p>
                         </div>
                         <div className="flex flex-col">
@@ -177,7 +177,7 @@ export const Mobile: React.FC<MobileProps> = ({
                     <div className="m-sec-stats flex flex-col gap-7">
                         <div className="flex flex-col gap-3">
                             <Tag>Analitik</Tag>
-                            <h2 className="text-2xl font-black text-slate-900 leading-tight">Pantau Statistik Penjualan Anda</h2>
+                            <h2 className="text-2xl font-bold text-slate-900 leading-tight">Pantau Statistik Penjualan Anda</h2>
                         </div>
                         <MockupFrame src={DUMMY_CHART} alt="Sales Chart" />
                         <div className="grid grid-cols-2 gap-3">
@@ -193,7 +193,7 @@ export const Mobile: React.FC<MobileProps> = ({
                                     style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}
                                 >
                                     <span className="material-symbols-outlined text-xl" style={{ color: '#22c55e' }}>{s.icon}</span>
-                                    <div className="text-xl font-black text-slate-900 mt-1">{s.val}</div>
+                                    <div className="text-xl font-bold text-slate-900 mt-1">{s.val}</div>
                                     <div className="text-xs text-slate-500">{s.label}</div>
                                 </div>
                             ))}
@@ -208,7 +208,7 @@ export const Mobile: React.FC<MobileProps> = ({
                     <div className="m-sec-orders flex flex-col gap-7">
                         <div className="flex flex-col gap-3">
                             <Tag>Manajemen Pesanan</Tag>
-                            <h2 className="text-2xl font-black text-slate-900 leading-tight">Kelola Pesanan dengan Efisien</h2>
+                            <h2 className="text-2xl font-bold text-slate-900 leading-tight">Kelola Pesanan dengan Efisien</h2>
                             <p className="text-slate-500 text-sm leading-relaxed">Tangani ratusan pesanan sekaligus tanpa kewalahan.</p>
                         </div>
                         <MockupFrame src={DUMMY_ORDERS} alt="Orders" />
@@ -224,7 +224,7 @@ export const Mobile: React.FC<MobileProps> = ({
                 <div className="max-w-[1280px] mx-auto px-5">
                     <div className="m-sec-tut flex flex-col gap-7 items-center text-center">
                         <Tag>Tutorial</Tag>
-                        <h2 className="text-2xl font-black text-slate-900 leading-tight">Pelajari Cara Menggunakan Aplikasi Kami</h2>
+                        <h2 className="text-2xl font-bold text-slate-900 leading-tight">Pelajari Cara Menggunakan Aplikasi Kami</h2>
                         <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
                             Siap beroperasi dalam hitungan menit dengan panduan onboarding kami.
                         </p>
@@ -250,7 +250,7 @@ export const Mobile: React.FC<MobileProps> = ({
                 <div className="max-w-[1280px] mx-auto px-5 relative z-10">
                     <div className="m-sec-nums flex flex-col gap-8">
                         <div>
-                            <h2 className="text-3xl font-black text-white leading-tight">Biarkan Angka Berbicara</h2>
+                            <h2 className="text-3xl font-bold text-white leading-tight">Biarkan Angka Berbicara</h2>
                             <p className="text-white/75 text-sm mt-2 leading-relaxed">
                                 Dipercaya puluhan ribu bisnis di seluruh dunia.
                             </p>
@@ -262,7 +262,7 @@ export const Mobile: React.FC<MobileProps> = ({
                                 { value: '10+', label: 'Integrasi' },
                             ].map(s => (
                                 <div key={s.label} className="flex flex-col gap-1">
-                                    <div className="text-3xl font-black text-white">{s.value}</div>
+                                    <div className="text-3xl font-bold text-white">{s.value}</div>
                                     <div className="text-white/65 text-xs font-medium">{s.label}</div>
                                 </div>
                             ))}
@@ -277,7 +277,7 @@ export const Mobile: React.FC<MobileProps> = ({
                     <div className="m-sec-price flex flex-col gap-8">
                         <div className="text-center flex flex-col items-center gap-3">
                             <Tag>Harga</Tag>
-                            <h2 className="text-2xl font-black text-slate-900 leading-tight">Paket Harga Fleksibel</h2>
+                            <h2 className="text-2xl font-bold text-slate-900 leading-tight">Paket Harga Fleksibel</h2>
                         </div>
                         <div className="flex flex-col gap-5">
                             {isLoading ? (
@@ -326,7 +326,7 @@ export const Mobile: React.FC<MobileProps> = ({
                     <div className="m-sec-test flex flex-col gap-8">
                         <div className="text-center flex flex-col items-center gap-3">
                             <Tag>Ulasan</Tag>
-                            <h2 className="text-2xl font-black text-slate-900 leading-tight">Apa Kata Mereka tentang Kami</h2>
+                            <h2 className="text-2xl font-bold text-slate-900 leading-tight">Apa Kata Mereka tentang Kami</h2>
                         </div>
                         <div className="flex flex-col gap-5">
                             {isLoading ? (
@@ -363,7 +363,7 @@ export const Mobile: React.FC<MobileProps> = ({
                     <div className="m-sec-faq flex flex-col gap-8">
                         <div className="text-center flex flex-col items-center gap-3">
                             <Tag>FAQ</Tag>
-                            <h2 className="text-2xl font-black text-slate-900 leading-tight">Pertanyaan yang Sering Diajukan</h2>
+                            <h2 className="text-2xl font-bold text-slate-900 leading-tight">Pertanyaan yang Sering Diajukan</h2>
                         </div>
                         {isLoading ? (
                             <div className="flex flex-col gap-3">
@@ -397,7 +397,7 @@ export const Mobile: React.FC<MobileProps> = ({
                 <div className="max-w-[1280px] mx-auto px-5 relative z-10">
                     <div className="m-sec-cta flex flex-col items-center gap-6 text-center">
                         <Tag>Mulai Sekarang</Tag>
-                        <h2 className="text-3xl font-black text-slate-900 leading-tight">Siap Mengambil Langkah Pertama?</h2>
+                        <h2 className="text-3xl font-bold text-slate-900 leading-tight">Siap Mengambil Langkah Pertama?</h2>
                         <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
                             Bergabunglah dengan 50.000+ bisnis yang sudah menggunakan POS SaaS.
                         </p>

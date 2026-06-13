@@ -132,7 +132,7 @@ export const Layout = () => {
             else if (deleteType === 'testimonial') await contentService.deleteTestimonial(itemToDelete.id);
             else if (deleteType === 'faq') await contentService.deleteFaq(itemToDelete.id);
 
-            showToast(`${deleteType.charAt(0).toUpperCase() + deleteType.slice(1)} deleted successfully`, 'success');
+            showToast(`${deleteType.charAt(0).to() + deleteType.slice(1)} deleted successfully`, 'success');
             setIsDeleteModalOpen(false);
             setItemToDelete(null);
             setDeleteType(null);

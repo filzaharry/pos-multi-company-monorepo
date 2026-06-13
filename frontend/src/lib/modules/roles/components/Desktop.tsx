@@ -1,22 +1,18 @@
 'use client';
 
-import React from 'react';
-import { Role, PaginationData } from '@/lib/modules/users/types';
+import { PaginationData, Role } from '@/lib/modules/users/types';
+import { cn } from '@/lib/utils';
 import {
-    Search,
     Filter,
     Plus,
-    Shield,
-    ChevronRight,
-    MoreVertical,
-    Trash2,
-    Edit3,
-    ExternalLink
+    Search,
+    Shield
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React from 'react';
 import { RoleCard } from './widgets/RoleCard';
-import { RoleSkeleton } from './widgets/RoleSkeleton';
 import { RolePagination } from './widgets/RolePagination';
+import { RoleSkeleton } from './widgets/RoleSkeleton';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 interface DesktopProps {
     roles: Role[];
@@ -51,8 +47,6 @@ export const Desktop: React.FC<DesktopProps> = ({
     onPermissions,
     onDetail,
     onOpenFilter,
-    onApplyFilters,
-    onResetFilters,
     appliedFiltersCount
 }) => {
     const activeFiltersCount = appliedFiltersCount;
@@ -60,53 +54,52 @@ export const Desktop: React.FC<DesktopProps> = ({
     return (
         <div className="space-y-6">
             {/* Header Area */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div className="space-y-1">
-                    <h1 className="text-3xl font-black text-slate-800 tracking-tight uppercase italic">Role <span className="text-primary">Management</span></h1>
-                    <p className="text-gray-500 text-sm font-medium tracking-wide">Define and manage user roles and permissions.</p>
-                </div>
+            <PageHeader
+                title="Role Management"
+                subtitle="Define and manage user roles and permissions."
+                actions={
+                    <>
+                        <div className="relative group w-64 lg:w-80">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-primary transition-colors" />
+                            <input
+                                type="text"
+                                placeholder="Search roles..."
+                                value={search}
+                                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                                className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm text-black focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400 shadow-xs"
+                            />
+                        </div>
 
-                <div className="flex items-center gap-3 self-end">
-                    <div className="relative group w-64 lg:w-80">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-primary transition-colors" />
-                        <input
-                            type="text"
-                            placeholder="Search roles..."
-                            value={search}
-                            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                            className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-gray-600 shadow-inner"
-                        />
-                    </div>
+                        <button
+                            onClick={onOpenFilter}
+                            className={cn(
+                                "flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all border",
+                                activeFiltersCount > 0
+                                    ? "bg-primary/10 border-primary text-primary shadow-lg shadow-primary/10"
+                                    : "bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 hover:border-slate-300"
+                            )}
+                        >
+                            <Filter className="w-4 h-4" />
+                            <span>Filter</span>
+                            {activeFiltersCount > 0 && (
+                                <span className="flex items-center justify-center w-5 h-5 bg-primary text-white text-[10px] rounded-full">
+                                    {activeFiltersCount}
+                                </span>
+                            )}
+                        </button>
 
-                    <button
-                        onClick={onOpenFilter}
-                        className={cn(
-                            "flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all border",
-                            activeFiltersCount > 0
-                                ? "bg-primary/10 border-primary text-primary shadow-lg shadow-primary/10"
-                                : "bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20"
-                        )}
-                    >
-                        <Filter className="w-4 h-4" />
-                        <span>Filter</span>
-                        {activeFiltersCount > 0 && (
-                            <span className="flex items-center justify-center w-5 h-5 bg-primary text-white text-[10px] rounded-full">
-                                {activeFiltersCount}
-                            </span>
-                        )}
-                    </button>
+                        <button
+                            onClick={onAdd}
+                            className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-sm transition-all shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                            <Plus className="w-5 h-5" />
+                            <span>New Role</span>
+                        </button>
+                    </>
+                }
+            />
 
-                    <button
-                        onClick={onAdd}
-                        className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-sm transition-all shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                        <Plus className="w-5 h-5" />
-                        <span>New Role</span>
-                    </button>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {isLoading ? (
                     <RoleSkeleton count={6} />
                 ) : roles.length > 0 ? (

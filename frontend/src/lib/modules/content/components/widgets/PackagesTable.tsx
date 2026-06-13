@@ -1,7 +1,7 @@
-import React from 'react';
+import { DataTable } from '@/components/ui/DataTable';
 import { motion } from 'framer-motion';
 import { Box, Plus } from 'lucide-react';
-import { DataTable } from '@/components/ui/DataTable';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { getPackageColumns } from '../../constants/columns';
 import { LandingPackage } from '../../types';
 
@@ -21,17 +21,19 @@ export const PackagesTable = ({ data, onEdit, onDelete, onAdd }: PackagesTablePr
             exit={{ opacity: 0, y: -20 }}
             className="space-y-6"
         >
-            <div className="flex justify-between items-center px-4">
-                <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-                        <Box className="w-6 h-6" />
-                    </div>
-                    <div>
-                        <h3 className="text-2xl font-black text-white uppercase italic">Service <span className="text-primary">Packages</span></h3>
-                        <p className="text-gray-500 text-xs font-medium uppercase tracking-widest">Manage pricing plans and feature lists</p>
-                    </div>
-                </div><div className=""></div>
-            </div>
+            <PageHeader
+                title="Service Packages"
+                subtitle="Manage pricing plans and feature lists"
+                actions={
+                    <button
+                        onClick={onAdd}
+                        className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold text-sm transition-all shadow-lg shadow-primary/20 hover:scale-[1.02]"
+                    >
+                        <Plus className="w-5 h-5" />
+                        <span>Add Package</span>
+                    </button>
+                }
+            />
 
             <DataTable
                 columns={getPackageColumns(onEdit, onDelete)}

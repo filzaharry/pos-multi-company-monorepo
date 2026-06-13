@@ -69,7 +69,7 @@ export const VerifyOTPDesktop: React.FC<VerifyOTPDesktopProps> = ({
                             key={index}
                             type="text"
                             maxLength={1}
-                            className="w-full h-14 bg-slate-50 border border-slate-200 rounded-xl text-center text-2xl font-black text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                            className="w-full h-14 bg-slate-50 border border-slate-200 rounded-xl text-center text-2xl font-bold text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                             value={data}
                             onChange={(e) => handleChange(e.target, index)}
                             onKeyDown={(e) => handleKeyDown(e, index)}

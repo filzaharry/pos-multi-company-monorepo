@@ -55,7 +55,10 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     return (
         <div className="space-y-2" ref={containerRef}>
             {label && (
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] px-1">
+                <label className={cn(
+                    "text-[10px] font-bold   tracking-[0.2em] px-1",
+                    variant === 'light' ? "text-slate-900" : "text-primary"
+                )}>
                     {label}
                 </label>
             )}
@@ -66,7 +69,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                         `min-h-[50px] w-full px-4 py-2 border rounded-xl cursor-pointer flex flex-wrap gap-2 items-center transition-all`,
                         isOpen ? 'ring-2 ring-primary/20' : '',
                         variant === 'light'
-                            ? `${isOpen ? 'border-primary/50' : 'border-slate-200'} bg-slate-50`
+                            ? `${isOpen ? 'border-primary/50' : 'border-slate-200'} bg-white text-slate-900`
                             : `${isOpen ? 'border-primary/50' : 'border-white/10'} bg-white/5`
                     )}
                 >
@@ -89,7 +92,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                     ) : (
                         <span className={cn(
                             "text-sm",
-                            variant === 'light' ? "text-slate-400" : "text-gray-600"
+                            variant === 'light' ? "text-slate-500" : "text-gray-600"
                         )}>{placeholder}</span>
                     )}
                     <div className={cn(

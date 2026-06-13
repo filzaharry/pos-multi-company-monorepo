@@ -41,7 +41,7 @@ export const SuccessLayout = () => {
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-slate-900 tracking-tight text-[32px] md:text-[44px] font-black leading-tight px-4 pb-3"
+                            className="text-slate-900 tracking-tight text-[32px] md:text-[44px] font-bold leading-tight px-4 pb-3"
                         >
                             Terima Kasih! Pengajuan Langganan Berhasil Dikirim.
                         </motion.h1>
@@ -75,7 +75,7 @@ export const SuccessLayout = () => {
 
                             <div className="flex w-full grow flex-col items-stretch justify-center gap-3 py-5 px-6 bg-white">
                                 <div className="flex items-center justify-between">
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-yellow-50 text-yellow-700 border border-yellow-200">
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px]  font-bold bg-yellow-50 text-yellow-700 border border-yellow-200">
                                         <Clock className="w-2.5 h-2.5 text-yellow-600" />
                                         Menunggu Persetujuan Admin
                                     </span>
@@ -83,7 +83,7 @@ export const SuccessLayout = () => {
                                 <h3 className="text-slate-900 text-xl font-bold leading-tight tracking-tight">Paket Premium Enterprise</h3>
                                 <div className="flex flex-col gap-0.5 mt-1">
                                     <div className="flex items-baseline gap-1.5">
-                                        <p className="text-slate-900 text-2xl font-black">Rp 20.055.000</p>
+                                        <p className="text-slate-900 text-2xl font-bold">Rp 20.055.000</p>
                                         <p className="text-slate-400 text-xs font-bold">/ tahun</p>
                                     </div>
                                     <p className="text-slate-400 text-xs font-medium leading-normal mt-1.5 flex items-center gap-1.5">
@@ -104,7 +104,7 @@ export const SuccessLayout = () => {
                     >
                         <Link
                             href="/"
-                            className="flex min-w-[240px] cursor-pointer items-center justify-center rounded-2xl h-14 px-8 btn-green hover:bg-primary/95 text-white text-lg font-black transition-all shadow-xl shadow-primary/30 active:scale-[0.98]"
+                            className="flex min-w-[240px] cursor-pointer items-center justify-center rounded-2xl h-14 px-8 btn-green hover:bg-primary/95 text-white text-lg font-bold transition-all shadow-xl shadow-primary/30 active:scale-[0.98]"
                         >
                             <LayoutDashboard className="w-5 h-5 mr-3" />
                             Kembali ke Beranda

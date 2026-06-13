@@ -29,11 +29,12 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
             <button
                 onClick={() => onToggle(item.id)}
                 className={cn(
-                    "w-full flex items-center justify-between gap-3 px-3 py-2 rounded-lg transition-all group",
-                    isActive ? "bg-white/5 text-white" : "text-gray-400 hover:bg-white/5 hover:text-white"
+                    "w-full flex items-center justify-between transition-all group",
+                    isActive ? "bg-white/5 text-white rounded-2xl py-3" : "text-gray-400 hover:bg-white/5 hover:text-white rounded-xl py-2",
+                    isOpen ? "px-3" : "px-0 justify-center"
                 )}
             >
-                <div className="flex items-center gap-3">
+                <div className={cn("flex items-center gap-3", !isOpen && "justify-center w-full")}>
                     <Icon className={cn("w-5 h-5 shrink-0", isActive ? "text-primary" : "text-gray-400 group-hover:text-white")} />
                     {isOpen && <span className="font-medium text-sm">{item.name}</span>}
                 </div>

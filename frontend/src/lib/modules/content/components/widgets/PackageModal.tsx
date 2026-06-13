@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, DollarSign, Type, FileText, Loader2 } from 'lucide-react';
+import { Box, Loader2 } from 'lucide-react';
 import { BaseModal } from '@/components/ui/modal';
-import { CustomInput } from '@/components/ui/CustomInput';
+import { InputText, InputCurrency, InputTextArea } from '@/components/ui/input';
 import { LandingPackage } from '../../types';
 
 interface PackageModalProps {
@@ -76,47 +76,40 @@ export const PackageModal = ({ isOpen, onClose, onSubmit, item }: PackageModalPr
         >
             <form className="space-y-6">
                 <div className="space-y-4">
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Package Name</label>
-                        <CustomInput
-                            name="name"
-                            icon={Box}
-                            placeholder="e.g. Basic Plan"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.name}
-                            className={formik.touched.name && formik.errors.name ? "border-red-500/50" : "border-white/10"}
-                        />
-                        {formik.touched.name && formik.errors.name && <p className="text-xs text-red-500 font-medium">*{formik.errors.name}</p>}
-                    </div>
+                    <InputText
+                        label="Package Name"
+                        name="name"
+                        icon={Box}
+                        placeholder="e.g. Basic Plan"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.name}
+                        error={formik.errors.name}
+                        touched={formik.touched.name}
+                    />
 
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Pricing (IDR)</label>
-                        <CustomInput
-                            name="pricing"
-                            type="number"
-                            icon={DollarSign}
-                            placeholder="e.g. 100000"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.pricing}
-                            className={formik.touched.pricing && formik.errors.pricing ? "border-red-500/50" : "border-white/10"}
-                        />
-                        {formik.touched.pricing && formik.errors.pricing && <p className="text-xs text-red-500 font-medium">*{formik.errors.pricing}</p>}
-                    </div>
+                    <InputCurrency
+                        label="Pricing (IDR)"
+                        name="pricing"
+                        currencySymbol="Rp"
+                        placeholder="e.g. 100000"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.pricing}
+                        error={formik.errors.pricing}
+                        touched={formik.touched.pricing}
+                    />
 
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Description</label>
-                        <textarea
-                            name="description"
-                            placeholder="What's included in this package?"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.description}
-                            className="w-full px-6 py-4 bg-background-dark border border-white/10 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all min-h-[120px] resize-none"
-                        />
-                        {formik.touched.description && formik.errors.description && <p className="text-xs text-red-500 font-medium">*{formik.errors.description}</p>}
-                    </div>
+                    <InputTextArea
+                        label="Description"
+                        name="description"
+                        placeholder="What's included in this package?"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.description}
+                        error={formik.errors.description}
+                        touched={formik.touched.description}
+                    />
                 </div>
             </form>
         </BaseModal>

@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { User, Star, Quote, Loader2, Building2 } from 'lucide-react';
+import { InputText, InputNumber, InputTextArea } from '@/components/ui/input';
 import { BaseModal } from '@/components/ui/modal';
-import { CustomInput } from '@/components/ui/CustomInput';
+import { useFormik } from 'formik';
+import { Loader2, Quote, Star, User } from 'lucide-react';
+import { useEffect } from 'react';
+import * as Yup from 'yup';
 import { LandingTestimonial } from '../../types';
 
 interface TestimonialModalProps {
@@ -76,51 +76,42 @@ export const TestimonialModal = ({ isOpen, onClose, onSubmit, item }: Testimonia
         >
             <form className="space-y-6">
                 <div className="space-y-4">
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Author Name</label>
-                        <CustomInput
-                            name="name"
-                            icon={User}
-                            placeholder="e.g. John Doe"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.name}
-                            className={formik.touched.name && formik.errors.name ? "border-red-500/50" : "border-white/10"}
-                        />
-                        {formik.touched.name && formik.errors.name && <p className="text-xs text-red-500 font-medium">*{formik.errors.name}</p>}
-                    </div>
+                    <InputText
+                        label="Author Name"
+                        name="name"
+                        icon={User}
+                        placeholder="e.g. John Doe"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.name}
+                        error={formik.errors.name}
+                        touched={formik.touched.name}
+                    />
 
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Rating (1-5)</label>
-                        <CustomInput
-                            name="rating"
-                            type="number"
-                            icon={Star}
-                            min="1"
-                            max="5"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.rating}
-                            className={formik.touched.rating && formik.errors.rating ? "border-red-500/50" : "border-white/10"}
-                        />
-                        {formik.touched.rating && formik.errors.rating && <p className="text-xs text-red-500 font-medium">*{formik.errors.rating}</p>}
-                    </div>
+                    <InputNumber
+                        label="Rating (1-5)"
+                        name="rating"
+                        icon={Star}
+                        min="1"
+                        max="5"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.rating}
+                        error={formik.errors.rating}
+                        touched={formik.touched.rating}
+                    />
 
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Content</label>
-                        <div className="relative">
-                            <Quote className="absolute left-4 top-4 w-4 h-4 text-gray-500" />
-                            <textarea
-                                name="content"
-                                placeholder="What did they say about us?"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.content}
-                                className="w-full pl-11 pr-4 py-4 bg-background-dark border border-white/10 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all min-h-[120px] resize-none"
-                            />
-                        </div>
-                        {formik.touched.content && formik.errors.content && <p className="text-xs text-red-500 font-medium">*{formik.errors.content}</p>}
-                    </div>
+                    <InputTextArea
+                        label="Content"
+                        name="content"
+                        icon={Quote}
+                        placeholder="What did they say about us?"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.content}
+                        error={formik.errors.content}
+                        touched={formik.touched.content}
+                    />
                 </div>
             </form>
         </BaseModal>

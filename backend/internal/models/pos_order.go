@@ -9,14 +9,14 @@ import (
 type PosOrder struct {
 	ID             uint           `gorm:"primaryKey" json:"id"`
 	CompanyID      uint           `gorm:"not null" json:"company_id"`
-	UserID         uint           `gorm:"not null" json:"user_id"` // Cashier
+	UserID         *uint          `json:"user_id"` // Nullable for storefront orders
 	Code           string         `gorm:"size:50;uniqueIndex:idx_company_code" json:"code"`
 	CustomerName   string         `gorm:"size:255" json:"customer_name"`
 	PhoneNumber    string         `gorm:"size:20" json:"phone_number"`
 	TotalAmount    float64        `gorm:"type:decimal(16,2);not null" json:"total_amount"`
 	TaxAmount      float64        `gorm:"type:decimal(16,2);default:0" json:"tax_amount"`
 	DiscountAmount float64        `gorm:"type:decimal(16,2);default:0" json:"discount_amount"`
-	DeliveryID     uint           `json:"delivery_id"`
+	DeliveryID     *uint          `json:"delivery_id"`
 	PaymentMethod  int            `json:"payment_method"`                   // 0->cash, 1->qris
 	PaymentStatus  string         `gorm:"size:50;default:'pending'" json:"payment_status"` // Paid, Pending, Refunded
 	Status         int            `gorm:"default:0" json:"status"`                         // 0: order masuk, 1: order terbayar, etc.

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { HelpCircle, Type, Loader2, List } from 'lucide-react';
+import { HelpCircle, Loader2 } from 'lucide-react';
 import { BaseModal } from '@/components/ui/modal';
-import { CustomInput } from '@/components/ui/CustomInput';
+import { InputText, InputTextArea } from '@/components/ui/input';
 import { LandingFaq } from '../../types';
 
 interface FaqModalProps {
@@ -73,32 +73,28 @@ export const FaqModal = ({ isOpen, onClose, onSubmit, item }: FaqModalProps) => 
         >
             <form className="space-y-6">
                 <div className="space-y-4">
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Question</label>
-                        <CustomInput
-                            name="title"
-                            icon={HelpCircle}
-                            placeholder="e.g. How to get started?"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.title}
-                            className={formik.touched.title && formik.errors.title ? "border-red-500/50" : "border-white/10"}
-                        />
-                        {formik.touched.title && formik.errors.title && <p className="text-xs text-red-500 font-medium">*{formik.errors.title}</p>}
-                    </div>
+                    <InputText
+                        label="Question"
+                        name="title"
+                        icon={HelpCircle}
+                        placeholder="e.g. How to get started?"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.title}
+                        error={formik.errors.title}
+                        touched={formik.touched.title}
+                    />
 
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Answer</label>
-                        <textarea
-                            name="subtitle"
-                            placeholder="Provide a detailed answer here..."
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.subtitle}
-                            className="w-full px-6 py-4 bg-background-dark border border-white/10 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all min-h-[150px] resize-none shadow-inner"
-                        />
-                        {formik.touched.subtitle && formik.errors.subtitle && <p className="text-xs text-red-500 font-medium">*{formik.errors.subtitle}</p>}
-                    </div>
+                    <InputTextArea
+                        label="Answer"
+                        name="subtitle"
+                        placeholder="Provide a detailed answer here..."
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.subtitle}
+                        error={formik.errors.subtitle}
+                        touched={formik.touched.subtitle}
+                    />
                 </div>
             </form>
         </BaseModal>

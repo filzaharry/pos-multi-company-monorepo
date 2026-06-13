@@ -95,8 +95,8 @@ export const DeliveriesTab: React.FC<DeliveriesTabProps> = ({ companyId }) => {
     const columns: Column<PosDelivery>[] = [
         { header: 'Delivery Name', accessorKey: 'name' },
         { header: 'Description', accessorKey: 'description' },
-        { 
-            header: 'Price', 
+        {
+            header: 'Price',
             accessorKey: 'price',
             cell: (del) => (
                 <span className="text-slate-800 font-bold">
@@ -130,7 +130,7 @@ export const DeliveriesTab: React.FC<DeliveriesTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">Delivery Methods</h3>
+                    <h3 className="text-xl font-bold text-slate-800   italic    ">Delivery Methods</h3>
                     <p className="text-xs text-slate-800">Manage delivery services and shipping rates.</p>
                 </div>
                 <button

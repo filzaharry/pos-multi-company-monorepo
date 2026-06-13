@@ -57,7 +57,7 @@ export const BaseModal = ({
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: 20 }}
                         className={cn(
-                            "relative w-full bg-background-dark border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]",
+                            "relative w-full bg-background-light border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]",
                             sizeClasses[size],
                             className
                         )}
@@ -65,11 +65,11 @@ export const BaseModal = ({
                         {/* Header */}
                         <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/2">
                             <div>
-                                <h3 className="text-xl font-bold text-white leading-none">
+                                <h3 className="text-xl font-bold text-black leading-none">
                                     {title}
                                 </h3>
                                 {description && (
-                                    <p className="text-sm text-gray-400 mt-2">
+                                    <p className="text-sm text-gray-800 mt-2">
                                         {description}
                                     </p>
                                 )}
@@ -78,7 +78,7 @@ export const BaseModal = ({
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="p-2 text-gray-500 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                                    className="p-2 text-gray-800 hover:text-black hover:bg-white/5 rounded-xl transition-all"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>

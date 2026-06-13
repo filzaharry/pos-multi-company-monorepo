@@ -187,7 +187,7 @@ export const ItemsTab: React.FC<ItemsTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">Product Items</h3>
+                    <h3 className="text-xl font-bold text-slate-800   italic    ">Product Items</h3>
                     <p className="text-xs text-slate-800">Manage your company inventory and pricing.</p>
                 </div>
                 <button

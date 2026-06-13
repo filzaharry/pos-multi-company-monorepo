@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Tags, Save } from 'lucide-react';
 import { PosCategory } from '../../../../types';
-import { CustomInput } from '@/components/ui/CustomInput';
+import { InputText, InputTextArea, InputNumber } from '@/components/ui/input';
 
 interface CategoryModalProps {
     isOpen: boolean;
@@ -90,7 +90,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, o
                                     <Tags className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-800 italic uppercase tracking-wider">
+                                    <h2 className="text-xl font-bold text-slate-800 italic      ">
                                         {category ? 'Edit Category' : 'New Category'}
                                     </h2>
                                     <p className="text-sm text-slate-800">
@@ -108,39 +108,28 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, o
 
                         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-6">
                             <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Category Name *</label>
-                                    <CustomInput
-                                        type="text"
-                                        name="name"
-                                        required
-                                        value={formData.name || ''}
-                                        onChange={handleChange}
-                                        placeholder="e.g. Beverages"
-                                        variant="light"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Description</label>
-                                    <textarea
-                                        name="description"
-                                        rows={3}
-                                        value={formData.description || ''}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-400 resize-none"
-                                        placeholder="Category description..."
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.2em] px-1">Sort Order</label>
-                                    <CustomInput
-                                        type="number"
-                                        name="sort_order"
-                                        value={formData.sort_order || 0}
-                                        onChange={handleChange}
-                                        variant="light"
-                                    />
-                                </div>
+                                <InputText
+                                    label="Category Name *"
+                                    name="name"
+                                    required
+                                    value={formData.name || ''}
+                                    onChange={handleChange}
+                                    placeholder="e.g. Beverages"
+                                />
+                                <InputTextArea
+                                    label="Description"
+                                    name="description"
+                                    rows={3}
+                                    value={formData.description || ''}
+                                    onChange={handleChange}
+                                    placeholder="Category description..."
+                                />
+                                <InputNumber
+                                    label="Sort Order"
+                                    name="sort_order"
+                                    value={formData.sort_order || 0}
+                                    onChange={handleChange}
+                                />
                             </div>
 
                             <div className="pt-6 border-t border-slate-200 flex gap-4 shrink-0 mt-4">

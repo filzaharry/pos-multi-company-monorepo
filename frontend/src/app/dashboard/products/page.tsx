@@ -69,7 +69,7 @@ export default function InventoryManagementPage() {
                     <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mb-6 border border-red-500/20">
                         <AlertTriangle className="w-12 h-12 text-red-500" />
                     </div>
-                    <h2 className="text-3xl font-black text-white uppercase tracking-tight">No Company Selected</h2>
+                    <h2 className="text-3xl font-bold text-white   tracking-tight">No Company Selected</h2>
                     <p className="text-gray-500 mt-2 max-w-md">Please select a company to manage its inventory.</p>
                 </div>
             </DashboardLayout>
@@ -82,7 +82,7 @@ export default function InventoryManagementPage() {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-4xl font-black text-white tracking-tight flex items-center gap-3">
+                        <h1 className="text-4xl font-bold text-white tracking-tight flex items-center gap-3">
                             <Box className="w-10 h-10 text-primary" />
                             INVENTORY
                         </h1>
@@ -136,7 +136,7 @@ export default function InventoryManagementPage() {
                             ))}
                         </select>
                     )}
-                    <button className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-xl font-black text-sm shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                    <button className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-xl font-bold text-sm shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
                         <Plus className="w-5 h-5" />
                         ADD NEW
                     </button>
@@ -149,12 +149,12 @@ export default function InventoryManagementPage() {
                             <table className="w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-white/5 bg-white/2">
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap">Product Details</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap">Category</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap">Pricing</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap text-center">Stock</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap text-center">Status</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap text-right">Actions</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap">Product Details</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap">Category</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap">Pricing</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap text-center">Stock</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap text-center">Status</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/2">
@@ -171,7 +171,7 @@ export default function InventoryManagementPage() {
                                             <td colSpan={6} className="px-6 py-20 text-center">
                                                 <div className="flex flex-col items-center gap-3 grayscale opacity-30">
                                                     <Package className="w-16 h-16 text-gray-500" />
-                                                    <p className="text-gray-500 font-black tracking-widest uppercase text-xs">No products found</p>
+                                                    <p className="text-gray-500 font-bold      text-xs">No products found</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -191,7 +191,7 @@ export default function InventoryManagementPage() {
                                                         </div>
                                                         <div className="min-w-0">
                                                             <p className="font-bold text-white text-lg truncate">{p.name}</p>
-                                                            <p className="text-sm text-gray-500 font-medium tracking-widest uppercase">SKU: {p.sku || 'N/A'}</p>
+                                                            <p className="text-sm text-gray-500 font-medium     ">SKU: {p.sku || 'N/A'}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -203,26 +203,26 @@ export default function InventoryManagementPage() {
                                                 </td>
                                                 <td className="px-6 py-5 whitespace-nowrap">
                                                     <div className="flex flex-col">
-                                                        <p className="text-lg font-black text-primary">Rp {p.price.toLocaleString()}</p>
-                                                        {p.cost_price && <p className="text-xs text-gray-500 font-medium tracking-wider uppercase">Cost: Rp {p.cost_price.toLocaleString()}</p>}
+                                                        <p className="text-lg font-bold text-primary">Rp {p.price.toLocaleString()}</p>
+                                                        {p.cost_price && <p className="text-xs text-gray-500 font-medium      ">Cost: Rp {p.cost_price.toLocaleString()}</p>}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-5 text-center">
                                                     <div className={cn(
-                                                        "inline-flex flex-col items-center justify-center min-w-[80px] py-1.5 rounded-xl border font-black",
+                                                        "inline-flex flex-col items-center justify-center min-w-[80px] py-1.5 rounded-xl border font-bold",
                                                         p.stock_quantity > 10 ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : "bg-red-500/10 text-red-500 border-red-500/20"
                                                     )}>
                                                         <span className="text-lg leading-none">{p.stock_quantity}</span>
-                                                        <span className="text-[10px] uppercase opacity-60">PCS</span>
+                                                        <span className="text-[10px]   opacity-60">PCS</span>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-5 text-center whitespace-nowrap">
                                                     {p.is_available ? (
-                                                        <span className="flex items-center justify-center gap-1.5 text-emerald-500 text-[10px] font-black uppercase tracking-widest">
+                                                        <span className="flex items-center justify-center gap-1.5 text-emerald-500 text-[10px]  font-bold">
                                                             <CheckCircle2 className="w-3 h-3" /> Enabled
                                                         </span>
                                                     ) : (
-                                                        <span className="flex items-center justify-center gap-1.5 text-red-500 text-[10px] font-black uppercase tracking-widest">
+                                                        <span className="flex items-center justify-center gap-1.5 text-red-500 text-[10px]  font-bold">
                                                             <XCircle className="w-3 h-3" /> Disabled
                                                         </span>
                                                     )}
@@ -248,10 +248,10 @@ export default function InventoryManagementPage() {
                             <table className="w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-white/5 bg-white/2">
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap">Category Name</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap">Description</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap text-center">Sort Order</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest whitespace-nowrap text-right">Actions</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap">Category Name</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap">Description</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap text-center">Sort Order</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  whitespace-nowrap text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/2">
@@ -275,7 +275,7 @@ export default function InventoryManagementPage() {
                                                 <p className="text-gray-500 font-medium text-sm line-clamp-1">{cat.description || 'No description provided'}</p>
                                             </td>
                                             <td className="px-6 py-5 text-center">
-                                                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white font-black text-xs">{cat.sort_order}</span>
+                                                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white font-bold text-xs">{cat.sort_order}</span>
                                             </td>
                                             <td className="px-6 py-5 text-right">
                                                 <div className="flex items-center justify-end gap-2">

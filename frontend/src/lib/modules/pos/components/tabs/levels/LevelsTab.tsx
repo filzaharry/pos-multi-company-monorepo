@@ -120,7 +120,7 @@ export const LevelsTab: React.FC<LevelsTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">Levels</h3>
+                    <h3 className="text-xl font-bold text-slate-800   italic    ">Levels</h3>
                     <p className="text-xs text-slate-800">Manage spicy levels or product variations.</p>
                 </div>
                 <button

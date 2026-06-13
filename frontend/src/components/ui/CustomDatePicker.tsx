@@ -11,6 +11,7 @@ export interface CustomDatePickerProps {
     className?: string;
     disabled?: boolean;
     name?: string;
+    variant?: 'light' | 'dark';
 }
 
 export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
@@ -19,7 +20,8 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
     placeholder = 'Select date',
     className,
     disabled,
-    name
+    name,
+    variant = 'dark'
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [currentMonth, setCurrentMonth] = useState(value ? moment(value) : moment());
@@ -39,14 +41,6 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
     const handleDateSelect = (day: number) => {
         const newDate = currentMonth.clone().date(day).format('YYYY-MM-DD');
         if (onChange) {
-            // Mock event structure for standard onChange handlers if they expect it,
-            // though typical custom date pickers just pass the string.
-            // We pass the string directly for simplicity, but we can also mock if needed.
-            // Some forms expect (e) => e.target.value. We'll pass the raw string and let the parent handle it,
-            // but to be safe and compatible with standard handleChange, we could mock it.
-            // For now, let's just pass the string. If the parent needs an event, they must wrap it.
-            // Wait, standard HTML input passes an event. Let's pass the string as primary, but also provide a mock event if possible.
-            // Actually, we defined onChange?: (date: string) => void; so we pass string.
             onChange(newDate);
         }
         setIsOpen(false);
@@ -83,8 +77,12 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
                         isSelected
                             ? "bg-primary text-white font-bold shadow-lg shadow-primary/20"
                             : isToday
-                                ? "bg-white/10 text-white font-bold"
-                                : "text-gray-300 hover:bg-white/5 hover:text-white"
+                                ? variant === 'light'
+                                    ? "bg-slate-100 text-slate-900 font-bold"
+                                    : "bg-white/10 text-white font-bold"
+                                : variant === 'light'
+                                    ? "text-slate-800 hover:bg-slate-50 hover:text-slate-900"
+                                    : "text-gray-300 hover:bg-white/5 hover:text-white"
                     )}
                 >
                     {day}
@@ -101,7 +99,10 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
         <div ref={wrapperRef} className="relative w-full">
             <div
                 className={cn(
-                    "w-full bg-background-dark border border-white/10 rounded-xl px-4 py-3 text-white focus-within:ring-2 focus-within:ring-primary/50 transition-all flex items-center cursor-pointer",
+                    "w-full rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary/50 transition-all flex items-center cursor-pointer",
+                    variant === 'light'
+                        ? "bg-white border border-slate-200 text-black"
+                        : "bg-background-dark border border-white/10 text-white",
                     className,
                     disabled ? "opacity-50 cursor-not-allowed" : ""
                 )}
@@ -110,7 +111,11 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
                 }}
             >
                 <CalendarIcon className="w-4 h-4 text-gray-500 mr-3 shrink-0" />
-                <span className={cn("text-sm truncate w-full", !value && "text-gray-500")}>
+                <span className={cn(
+                    "text-sm truncate w-full",
+                    !value && (variant === 'light' ? "text-slate-500" : "text-gray-500"),
+                    value && (variant === 'light' ? "text-black" : "text-white")
+                )}>
                     {value ? moment(value).format('DD MMM YYYY') : placeholder}
                 </span>
             </div>
@@ -125,24 +130,42 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute z-50 mt-2 p-4 bg-background-dark border border-white/10 rounded-2xl shadow-2xl min-w-[280px]"
+                        className={cn(
+                            "absolute z-50 mt-2 p-4 rounded-2xl shadow-2xl min-w-[280px] border",
+                            variant === 'light'
+                                ? "bg-white border-slate-200 text-slate-800"
+                                : "bg-background-dark border border-white/10 text-white"
+                        )}
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between mb-4">
                             <button
                                 type="button"
                                 onClick={prevMonth}
-                                className="p-1 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
+                                className={cn(
+                                    "p-1 rounded-lg transition-colors",
+                                    variant === 'light'
+                                        ? "hover:bg-slate-100 text-slate-500 hover:text-slate-950"
+                                        : "p-1 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white"
+                                )}
                             >
                                 <ChevronLeft className="w-5 h-5" />
                             </button>
-                            <span className="text-white font-bold text-sm">
+                            <span className={cn(
+                                "font-bold text-sm",
+                                variant === 'light' ? "text-slate-800" : "text-white"
+                            )}>
                                 {currentMonth.format('MMMM YYYY')}
                             </span>
                             <button
                                 type="button"
                                 onClick={nextMonth}
-                                className="p-1 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
+                                className={cn(
+                                    "p-1 rounded-lg transition-colors",
+                                    variant === 'light'
+                                        ? "hover:bg-slate-100 text-slate-500 hover:text-slate-950"
+                                        : "p-1 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white"
+                                )}
                             >
                                 <ChevronRight className="w-5 h-5" />
                             </button>
@@ -151,7 +174,7 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
                         {/* Weekdays */}
                         <div className="grid grid-cols-7 gap-1 mb-2">
                             {weekDays.map(day => (
-                                <div key={day} className="w-8 text-center text-[10px] font-black uppercase tracking-widest text-gray-500">
+                                <div key={day} className="w-8 text-center text-[10px]  font-bold text-gray-500">
                                     {day}
                                 </div>
                             ))}

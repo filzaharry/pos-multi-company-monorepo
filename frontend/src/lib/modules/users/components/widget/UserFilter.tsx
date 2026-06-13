@@ -34,7 +34,7 @@ export const UserFilter: React.FC<UserFilterProps> = ({
         <div className="grid grid-cols-1 gap-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-xs font-black text-primary uppercase tracking-widest">Role</label>
+                    <label className="text-xs font-bold text-primary ">Role</label>
                     <div className="relative">
                         <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                         <select
@@ -52,7 +52,7 @@ export const UserFilter: React.FC<UserFilterProps> = ({
 
                 {isSuperAdmin && (
                     <div className="space-y-2">
-                        <label className="text-xs font-black text-primary uppercase tracking-widest">Company</label>
+                        <label className="text-xs font-bold text-primary ">Company</label>
                         <div className="relative">
                             <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                             <select
@@ -72,7 +72,7 @@ export const UserFilter: React.FC<UserFilterProps> = ({
 
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-xs font-black text-primary uppercase tracking-widest">Joined After</label>
+                    <label className="text-xs font-bold text-primary ">Joined After</label>
                     <div className="relative">
                         <CustomDatePicker
                             value={startDate}
@@ -82,7 +82,7 @@ export const UserFilter: React.FC<UserFilterProps> = ({
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <label className="text-xs font-black text-primary uppercase tracking-widest">Joined Before</label>
+                    <label className="text-xs font-bold text-primary ">Joined Before</label>
                     <div className="relative">
                         <CustomDatePicker
                             value={endDate}

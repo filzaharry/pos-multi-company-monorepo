@@ -8,7 +8,8 @@ import (
 )
 
 type SubscriptionRepository interface {
-	GetAll(params *utils.FilterParams) ([]models.CompanySubscription, int64, error)
+	GetAll(params *utils.FilterParams) ([]models.Company, int64, error)
+	GetHistory(companyID uint) ([]models.CompanySubscription, error)
 	GetByID(id uint) (*models.CompanySubscription, error)
 	Create(subscription *models.CompanySubscription) error
 	Update(subscription *models.CompanySubscription) error
@@ -24,19 +25,21 @@ func NewSubscriptionRepository(db *gorm.DB) SubscriptionRepository {
 	return &subscriptionRepository{db}
 }
 
-func (r *subscriptionRepository) GetAll(params *utils.FilterParams) ([]models.CompanySubscription, int64, error) {
-	var subscriptions []models.CompanySubscription
+func (r *subscriptionRepository) GetAll(params *utils.FilterParams) ([]models.Company, int64, error) {
+	var companies []models.Company
 	var total int64
 
-	db := r.db.Model(&models.CompanySubscription{}).Preload("Package").Preload("Company")
+	db := r.db.Model(&models.Company{}).Preload("Subscriptions", func(db *gorm.DB) *gorm.DB {
+		return db.Order("created_at DESC").Preload("Package")
+	})
 
 	if params.Search != "" {
 		searchText := "%" + params.Search + "%"
-		db = db.Where("company_name LIKE ? OR full_name LIKE ? OR business_email LIKE ?", searchText, searchText, searchText)
+		db = db.Where("name LIKE ? OR email LIKE ?", searchText, searchText)
 	}
 
 	if params.Status != "" {
-		db = db.Where("payment_status = ?", params.Status)
+		db = db.Where("status = ?", params.Status)
 	}
 
 	db.Count(&total)
@@ -54,9 +57,15 @@ func (r *subscriptionRepository) GetAll(params *utils.FilterParams) ([]models.Co
 
 	// Pagination
 	offset := (params.Page - 1) * params.Limit
-	err := db.Offset(offset).Limit(params.Limit).Find(&subscriptions).Error
+	err := db.Offset(offset).Limit(params.Limit).Find(&companies).Error
 
-	return subscriptions, total, err
+	return companies, total, err
+}
+
+func (r *subscriptionRepository) GetHistory(companyID uint) ([]models.CompanySubscription, error) {
+	var subs []models.CompanySubscription
+	err := r.db.Where("company_id = ?", companyID).Preload("Package").Order("created_at desc").Find(&subs).Error
+	return subs, err
 }
 
 func (r *subscriptionRepository) GetByID(id uint) (*models.CompanySubscription, error) {

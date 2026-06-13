@@ -35,7 +35,7 @@ const Tag = ({ children }: { children: React.ReactNode }) => (
 
 // ── Reusable: Section Heading ─────────────────────────────────────────────────
 const SectionHeading = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
-    <h2 className={`text-3xl lg:text-4xl font-black text-slate-900 leading-tight tracking-tight ${className}`}>
+    <h2 className={`text-3xl lg:text-4xl font-bold text-slate-900 leading-tight tracking-tight ${className}`}>
         {children}
     </h2>
 );
@@ -73,8 +73,8 @@ const MockupFrame = ({ src, alt }: { src: string; alt: string }) => (
 // ── Stat Chip ─────────────────────────────────────────────────────────────────
 const StatChip = ({ value, label }: { value: string; label: string }) => (
     <div className="flex flex-col gap-0.5">
-        <span className="text-3xl font-black" style={{ color: '#16a34a' }}>{value}</span>
-        <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">{label}</span>
+        <span className="text-3xl font-bold" style={{ color: '#16a34a' }}>{value}</span>
+        <span className="text-xs font-medium text-slate-500      ">{label}</span>
     </div>
 );
 
@@ -155,7 +155,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                             </div>
 
                             <h1
-                                className="h-title text-5xl font-black text-slate-900 leading-[1.08] tracking-tight"
+                                className="h-title text-5xl font-bold text-slate-900 leading-[1.08] tracking-tight"
                                 style={{ maxWidth: 520 }}
                             >
                                 {heroTitle}
@@ -199,7 +199,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                                 style={{ background: '#fff', border: '1px solid #e2e8f0', minWidth: 160 }}
                             >
                                 <div className="text-xs text-slate-500 mb-1">Pendapatan Hari Ini</div>
-                                <div className="text-xl font-black text-slate-900">Rp 4.8M</div>
+                                <div className="text-xl font-bold text-slate-900">Rp 4.8M</div>
                                 <div className="flex items-center gap-1 mt-1">
                                     <span className="material-symbols-outlined text-xs" style={{ color: '#22c55e', fontVariationSettings: "'FILL' 1" }}>trending_up</span>
                                     <span className="text-xs font-semibold" style={{ color: '#22c55e' }}>+12.4%</span>
@@ -217,7 +217,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                                 style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.08)', minWidth: 150 }}
                             >
                                 <div className="text-xs text-slate-400 mb-1.5">Pesanan Hari Ini</div>
-                                <div className="text-lg font-black text-white">248</div>
+                                <div className="text-lg font-bold text-white">248</div>
                                 <div className="mt-2 h-1.5 rounded-full bg-slate-700">
                                     <div className="h-1.5 rounded-full w-3/4" style={{ background: 'linear-gradient(90deg, #22c55e, #16a34a)' }} />
                                 </div>
@@ -320,7 +320,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                                         style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}
                                     >
                                         <span className="material-symbols-outlined text-xl" style={{ color: '#22c55e' }}>{s.icon}</span>
-                                        <div className="text-xl font-black text-slate-900 mt-1">{s.val}</div>
+                                        <div className="text-xl font-bold text-slate-900 mt-1">{s.val}</div>
                                         <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
                                     </div>
                                 ))}
@@ -494,7 +494,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                                 { step: '03', title: 'Mulai Berjualan', desc: 'POS Anda siap. Mulai proses pesanan sekarang juga.' },
                             ].map(s => (
                                 <div key={s.step} className="flex flex-col gap-3">
-                                    <div className="text-4xl font-black" style={{ color: 'rgba(34,197,94,0.2)', fontFamily: 'monospace' }}>
+                                    <div className="text-4xl font-bold" style={{ color: 'rgba(34,197,94,0.2)', fontFamily: 'monospace' }}>
                                         {s.step}
                                     </div>
                                     <h4 className="font-bold text-slate-900">{s.title}</h4>
@@ -524,7 +524,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                 <div className="max-w-[1280px] mx-auto px-6 lg:px-10 relative z-10">
                     <div className="num-section grid grid-cols-2 gap-16 items-center">
                         <div className="flex flex-col gap-6">
-                            <h2 className="text-4xl font-black text-white leading-tight">
+                            <h2 className="text-4xl font-bold text-white leading-tight">
                                 Biarkan Angka<br />Berbicara
                             </h2>
                             <p className="text-white/80 text-base leading-relaxed max-w-md">
@@ -539,7 +539,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                                 { value: '10+', label: 'Integrasi' },
                             ].map(s => (
                                 <div key={s.label} className="flex flex-col gap-2">
-                                    <div className="text-4xl font-black text-white">{s.value}</div>
+                                    <div className="text-4xl font-bold text-white">{s.value}</div>
                                     <div className="text-white/70 text-sm font-medium">{s.label}</div>
                                     <div className="h-1 w-12 rounded-full bg-white/30 mt-1" />
                                 </div>
@@ -708,7 +708,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                 <div className="max-w-[720px] mx-auto px-6 lg:px-10 relative z-10">
                     <div className="cta-section flex flex-col items-center gap-8 text-center">
                         <Tag>Mulai Sekarang</Tag>
-                        <h2 className="text-5xl font-black text-slate-900 leading-tight tracking-tight">
+                        <h2 className="text-5xl font-bold text-slate-900 leading-tight tracking-tight">
                             Siap Mengambil<br />Langkah Pertama?
                         </h2>
                         <p className="text-slate-500 text-lg leading-relaxed max-w-md">

@@ -64,7 +64,7 @@ export default function SalesReportPage() {
 
     const filteredOrders = orders.filter(o =>
         o.customer_name?.toLowerCase().includes(search.toLowerCase()) ||
-        o.payment_method.toLowerCase().includes(search.toLowerCase()) ||
+        (o.payment_method === 0 ? 'cash' : 'qris').includes(search.toLowerCase()) ||
         String(o.id).includes(search)
     );
 
@@ -75,7 +75,7 @@ export default function SalesReportPage() {
                     <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mb-6 border border-red-500/20">
                         <BarChart3 className="w-12 h-12 text-red-500" />
                     </div>
-                    <h2 className="text-3xl font-black text-white uppercase tracking-tight">No Company Selected</h2>
+                    <h2 className="text-3xl font-bold text-white   tracking-tight">No Company Selected</h2>
                     <p className="text-gray-500 mt-2 max-w-md">Please select a company to view its sales analytics.</p>
                 </div>
             </DashboardLayout>
@@ -88,7 +88,7 @@ export default function SalesReportPage() {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-4xl font-black text-white tracking-tight flex items-center gap-3">
+                        <h1 className="text-4xl font-bold text-white tracking-tight flex items-center gap-3">
                             <BarChart3 className="w-10 h-10 text-primary" />
                             SALES REPORTS
                         </h1>
@@ -124,8 +124,8 @@ export default function SalesReportPage() {
                             <div className={cn("inline-flex p-3 rounded-2xl mb-4 group-hover:scale-110 transition-transform", item.bg, item.color)}>
                                 <item.icon className="w-6 h-6" />
                             </div>
-                            <p className="text-gray-500 text-xs font-black uppercase tracking-[0.2em]">{item.label}</p>
-                            <h3 className="text-2xl font-black text-white mt-1">{item.value}</h3>
+                            <p className="text-gray-500 text-xs font-bold   tracking-[0.2em]">{item.label}</p>
+                            <h3 className="text-2xl font-bold text-white mt-1">{item.value}</h3>
                         </motion.div>
                     ))}
                 </div>
@@ -133,7 +133,7 @@ export default function SalesReportPage() {
                 {/* Order History */}
                 <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-2xl font-black text-white flex items-center gap-2">
+                        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                             <History className="w-6 h-6 text-primary" />
                             ORDER HISTORY
                         </h2>
@@ -154,12 +154,12 @@ export default function SalesReportPage() {
                             <table className="w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-white/5 bg-white/2">
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest">Order ID</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest">Customer</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest">Date & Time</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest text-center">Payment</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest">Amount</th>
-                                        <th className="px-6 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest text-right">Actions</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500 ">Order ID</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500 ">Customer</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500 ">Date & Time</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  text-center">Payment</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500 ">Amount</th>
+                                        <th className="px-6 py-5 text-[10px] font-bold text-gray-500  text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/2">
@@ -176,7 +176,7 @@ export default function SalesReportPage() {
                                             <td colSpan={6} className="px-6 py-20 text-center">
                                                 <div className="flex flex-col items-center gap-3 grayscale opacity-30">
                                                     <Receipt className="w-16 h-16 text-gray-500" />
-                                                    <p className="text-gray-500 font-black tracking-widest uppercase text-xs">No orders found</p>
+                                                    <p className="text-gray-500 font-bold      text-xs">No orders found</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -190,7 +190,7 @@ export default function SalesReportPage() {
                                                 className="group hover:bg-white/[0.02] transition-colors"
                                             >
                                                 <td className="px-6 py-5">
-                                                    <span className="font-black text-primary text-sm uppercase">#ORD-{order.id.toString().padStart(5, '0')}</span>
+                                                    <span className="font-bold text-primary text-sm  ">#ORD-{order.id.toString().padStart(5, '0')}</span>
                                                 </td>
                                                 <td className="px-6 py-5">
                                                     <div className="flex items-center gap-3">
@@ -203,22 +203,22 @@ export default function SalesReportPage() {
                                                 <td className="px-6 py-5">
                                                     <div className="flex flex-col">
                                                         <span className="text-white font-medium">{new Date(order.created_at!).toLocaleDateString()}</span>
-                                                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-wider">{new Date(order.created_at!).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                        <span className="text-[10px] font-bold text-gray-500      ">{new Date(order.created_at!).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-5 text-center">
                                                     <div className="flex flex-col items-center gap-1">
                                                         <div className={cn(
-                                                            "px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter",
+                                                            "px-2 py-0.5 rounded text-[10px] font-bold   tracking-tighter",
                                                             order.payment_status === 'paid' ? "bg-emerald-500/10 text-emerald-500" : "bg-red-500/10 text-red-500"
                                                         )}>
                                                             {order.payment_status}
                                                         </div>
-                                                        <span className="text-[10px] text-gray-500 font-bold uppercase">{order.payment_method}</span>
+                                                        <span className="text-[10px] text-gray-500 font-bold  ">{order.payment_method === 0 ? 'Cash' : 'QRIS'}</span>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-5">
-                                                    <span className="text-white font-black">Rp {order.total_amount.toLocaleString()}</span>
+                                                    <span className="text-white font-bold">Rp {order.total_amount.toLocaleString()}</span>
                                                 </td>
                                                 <td className="px-6 py-5 text-right">
                                                     <button className="p-2.5 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all">

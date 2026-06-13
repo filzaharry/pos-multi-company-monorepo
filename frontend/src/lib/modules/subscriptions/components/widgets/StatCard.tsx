@@ -20,14 +20,14 @@ export const StatCard: React.FC<StatCardProps> = ({ title, value, icon: Icon, co
                 <Icon className="w-6 h-6" />
             </div>
             {trend && (
-                <span className="text-[10px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg uppercase tracking-widest">
+                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg ">
                     {trend}
                 </span>
             )}
         </div>
-        <div className="text-2xl font-black text-white mb-1">
+        <div className="text-2xl font-bold text-white mb-1">
             {typeof value === 'number' && title.includes('Revenue') ? `Rp ${value.toLocaleString()}` : value}
         </div>
-        <div className="text-xs text-gray-500 font-bold uppercase tracking-widest">{title}</div>
+        <div className="text-xs text-gray-500 font-bold ">{title}</div>
     </div>
 );

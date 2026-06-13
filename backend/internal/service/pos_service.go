@@ -179,15 +179,25 @@ func (s *posService) GetOrder(companyID uint, id uint) (models.PosOrder, error) 
 }
 
 func (s *posService) CreateOrder(companyID uint, userID uint, req *dto.PosOrderRequest) (models.PosOrder, error) {
+	var pUserID *uint
+	if userID != 0 {
+		pUserID = &userID
+	}
+
+	var pDeliveryID *uint
+	if req.DeliveryID != 0 {
+		pDeliveryID = &req.DeliveryID
+	}
+
 	order := models.PosOrder{
 		CompanyID:      companyID,
-		UserID:         userID,
+		UserID:         pUserID,
 		CustomerName:   req.CustomerName,
 		PhoneNumber:    req.PhoneNumber,
 		TotalAmount:    req.TotalAmount,
 		TaxAmount:      req.TaxAmount,
 		DiscountAmount: req.DiscountAmount,
-		DeliveryID:     req.DeliveryID,
+		DeliveryID:     pDeliveryID,
 		PaymentMethod:  req.PaymentMethod,
 		PaymentStatus:  req.PaymentStatus,
 		Status:         req.Status,

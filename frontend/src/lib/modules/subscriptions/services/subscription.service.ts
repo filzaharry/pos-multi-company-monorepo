@@ -1,10 +1,12 @@
 import { apiRouter } from '@/lib/api/router';
 import {
     SubscriptionListResponse,
+    SubscriptionHistoryResponse,
     CompanySubscription,
     SubscriptionPayload,
     SubscriptionStats,
-    CompanySubsPackage
+    CompanySubsPackage,
+    CompanyHeader
 } from '../types';
 import { ApiResponse } from '@/lib/types/api';
 
@@ -40,7 +42,10 @@ export const subscriptionService = {
         return apiRouter.get<ApiResponse<CompanySubscription>>(`/subscriptions/${id}`);
     },
 
-    createSubscription: async (data: SubscriptionPayload): Promise<ApiResponse<CompanySubscription>> => {
+    createSubscription: async (data: SubscriptionPayload | FormData): Promise<ApiResponse<CompanySubscription>> => {
+        if (data instanceof FormData) {
+            return apiRouter.upload<ApiResponse<CompanySubscription>>('/subscriptions', data);
+        }
         return apiRouter.post<ApiResponse<CompanySubscription>>('/subscriptions', data);
     },
 
@@ -62,5 +67,13 @@ export const subscriptionService = {
 
     getPackages: async (): Promise<ApiResponse<CompanySubsPackage[]>> => {
         return apiRouter.get<ApiResponse<CompanySubsPackage[]>>('/packages');
+    },
+
+    getHistory: async (companyId: number): Promise<ApiResponse<SubscriptionHistoryResponse>> => {
+        return apiRouter.get<ApiResponse<SubscriptionHistoryResponse>>(`/subscriptions/${companyId}/history`);
+    },
+
+    updateCompanyInfo: async (id: number, data: FormData): Promise<ApiResponse<CompanyHeader>> => {
+        return apiRouter.uploadPut<ApiResponse<CompanyHeader>>(`/subscriptions/company/${id}`, data);
     }
 };

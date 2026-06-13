@@ -85,7 +85,7 @@ export const Desktop: React.FC<DesktopProps> = ({
                         <div className="w-20 h-20 bg-slate-100 border border-slate-200 rounded-full flex items-center justify-center text-slate-800 mb-4">
                             <AlertCircle className="w-10 h-10 opacity-40 text-slate-800" />
                         </div>
-                        <h2 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">No Company Selected</h2>
+                        <h2 className="text-xl font-bold text-slate-800   italic    ">No Company Selected</h2>
                         <p className="text-slate-500 max-w-xs text-sm">Please select a company from the dropdown above to manage items, categories, and orders.</p>
                     </motion.div>
                 )}

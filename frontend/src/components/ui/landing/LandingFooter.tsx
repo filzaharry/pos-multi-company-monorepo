@@ -20,7 +20,7 @@ export const LandingFooter = () => {
                             >
                                 <span className="material-symbols-outlined text-white text-base">point_of_sale</span>
                             </div>
-                            <span className="font-black text-lg text-white">POS SaaS</span>
+                            <span className="font-bold text-lg text-white">POS SaaS</span>
                         </div>
                         <p className="text-slate-400 text-sm leading-relaxed">
                             Solusi POS lengkap untuk bisnis modern. Kelola semuanya dalam satu tempat.
@@ -60,7 +60,7 @@ export const LandingFooter = () => {
                         },
                     ].map(col => (
                         <div key={col.title}>
-                            <h4 className="text-white font-bold text-sm mb-5 uppercase tracking-widest">{col.title}</h4>
+                            <h4 className="text-white font-bold text-sm mb-5 ">{col.title}</h4>
                             <ul className="flex flex-col gap-3">
                                 {col.links.map(link => (
                                     <li key={link}>

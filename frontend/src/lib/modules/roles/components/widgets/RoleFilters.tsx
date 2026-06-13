@@ -80,7 +80,7 @@ export const RoleFilters: React.FC<RoleFiltersProps> = ({
                     <div className="p-4 bg-white/5 border border-white/10 rounded-2xl space-y-4 animate-in slide-in-from-top-2 duration-200">
                         {isSuperAdmin && setCompanyId && (
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest px-1">Company</label>
+                                <label className="text-[10px] font-bold text-gray-500  px-1">Company</label>
                                 <div className="relative">
                                     <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500" />
                                     <select
@@ -100,7 +100,7 @@ export const RoleFilters: React.FC<RoleFiltersProps> = ({
 
                         {setStatus && (
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest px-1">Status</label>
+                                <label className="text-[10px] font-bold text-gray-500  px-1">Status</label>
                                 <div className="relative">
                                     <ShieldCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500" />
                                     <select
@@ -123,7 +123,7 @@ export const RoleFilters: React.FC<RoleFiltersProps> = ({
                                     onResetFilters?.();
                                     setIsExpanded(false);
                                 }}
-                                className="flex-1 py-2 text-xs font-bold text-gray-400 bg-white/5 rounded-xl hover:text-white transition-colors uppercase tracking-wider"
+                                className="flex-1 py-2 text-xs font-bold text-gray-400 bg-white/5 rounded-xl hover:text-white transition-colors      "
                             >
                                 Reset
                             </button>
@@ -132,7 +132,7 @@ export const RoleFilters: React.FC<RoleFiltersProps> = ({
                                     onApplyFilters?.();
                                     setIsExpanded(false);
                                 }}
-                                className="flex-1 py-2 text-xs font-bold text-white bg-primary rounded-xl shadow-lg shadow-primary/20 uppercase tracking-wider"
+                                className="flex-1 py-2 text-xs font-bold text-white bg-primary rounded-xl shadow-lg shadow-primary/20      "
                             >
                                 Apply Filters
                             </button>

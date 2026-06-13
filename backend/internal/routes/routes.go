@@ -62,6 +62,10 @@ func SetupRoutes(app *fiber.App) {
 	tnc.Get("/", handlers.GetTNC)
 	tnc.Put("/", handlers.UpdateTNC)
 
+	// Dashboard Overview
+	dashboard := api.Group("/dashboard", middleware.AuthRequired)
+	dashboard.Get("/overview", handlers.GetDashboardOverview)
+
 	// Order routes
 	orders := api.Group("/orders", middleware.AuthRequired)
 	orders.Post("/checkout", handlers.CreateOrder)
@@ -101,6 +105,8 @@ func SetupRoutes(app *fiber.App) {
 	subscriptions := api.Group("/subscriptions", middleware.AuthRequired)
 	subscriptions.Get("", handlers.GetSubscriptions)
 	subscriptions.Get("/stats", handlers.GetSubscriptionStats)
+	subscriptions.Put("/company/:id", handlers.UpdateCompanyInfo)
+	subscriptions.Get("/:id/history", handlers.GetSubscriptionHistory)
 	subscriptions.Get("/:id", handlers.GetDetailSubscription)
 	subscriptions.Post("/", handlers.CreateSubscription)
 	subscriptions.Post("/:id/approve", handlers.ApproveSubscription)
@@ -114,6 +120,26 @@ func SetupRoutes(app *fiber.App) {
 	pkgs.Post("/", handlers.CreatePackage)
 	pkgs.Put("/:id", handlers.UpdatePackage)
 	pkgs.Delete("/:id", handlers.DeletePackage)
+
+	// Content Management routes (aliased for compatibility)
+	content := api.Group("/content", middleware.AuthRequired)
+	// Content packages
+	content.Get("/packages", handlers.GetPackages)
+	content.Post("/packages", handlers.CreatePackage)
+	content.Put("/packages/:id", handlers.UpdatePackage)
+	content.Delete("/packages/:id", handlers.DeletePackage)
+	// Content testimonials
+	content.Get("/testimonials", handlers.GetAllTestimonials)
+	content.Get("/testimonials/:id", handlers.GetDetailTestimonial)
+	content.Post("/testimonials", handlers.CreateTestimonial)
+	content.Put("/testimonials/:id", handlers.UpdateTestimonial)
+	content.Delete("/testimonials/:id", handlers.DeleteTestimonial)
+	// Content FAQ
+	content.Get("/faq", handlers.GetAllFAQ)
+	content.Get("/faq/:id", handlers.GetDetailFAQ)
+	content.Post("/faq", handlers.CreateFAQ)
+	content.Put("/faq/:id", handlers.UpdateFAQ)
+	content.Delete("/faq/:id", handlers.DeleteFAQ)
 
 	// POS Operations
 	pos := api.Group("/pos", middleware.AuthRequired)
@@ -159,6 +185,7 @@ func SetupRoutes(app *fiber.App) {
 
 	// App Routes (Public for Mobile)
 	appPos := api.Group("/apps/pos")
+	appPos.Get("/resolve/:route", handlers.ResolveAppPosCompany)
 	appPos.Get("/:company_id/categories", handlers.GetAppPosCategories)
 	appPos.Get("/:company_id/products", handlers.GetAppPosProducts)
 	appPos.Get("/:company_id/deliveries", handlers.GetAppPosDeliveries)

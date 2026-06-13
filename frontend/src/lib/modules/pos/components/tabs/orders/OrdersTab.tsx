@@ -100,9 +100,9 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ companyId }) => {
             header: 'Payment',
             accessorKey: 'payment_status',
             cell: (ord) => (
-                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${ord.payment_status === 'Paid' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
-                        ord.payment_status === 'Pending' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
-                            'bg-red-500/10 text-red-500 border-red-500/20'
+                <span className={`px-3 py-1 rounded-full text-[9px]  font-bold border ${ord.payment_status === 'Paid' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                    ord.payment_status === 'Pending' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
+                        'bg-red-500/10 text-red-500 border-red-500/20'
                     }`}>
                     {ord.payment_status}
                 </span>
@@ -112,7 +112,7 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ companyId }) => {
             header: 'Status',
             accessorKey: 'status',
             cell: (ord) => (
-                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getOrderStatusBadgeClass(ord.status)}`}>
+                <span className={`px-3 py-1 rounded-full text-[9px]  font-bold border ${getOrderStatusBadgeClass(ord.status)}`}>
                     {getOrderStatusLabel(ord.status)}
                 </span>
             )
@@ -149,7 +149,7 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ companyId }) => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-slate-800 uppercase italic tracking-wider">Transaction Orders</h3>
+                    <h3 className="text-xl font-bold text-slate-800   italic    ">Transaction Orders</h3>
                     <p className="text-xs text-slate-800">Monitor your sales and payment statuses.</p>
                 </div>
                 <button
